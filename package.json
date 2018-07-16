@@ -1,22 +1,28 @@
 {
-  "name": "talq",
+  "name": "talq-client-web",
   "description": "A communication platform built with React and GraphQL",
   "version": "0.1.0",
   "license": "MIT",
   "private": true,
-  "homepage": "https://github.com/joealden/talq",
+  "homepage": "https://github.com/joealden/talq-client-web",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joealden/talq.git"
+    "url": "git+https://github.com/joealden/talq-client-web.git"
   },
   "scripts": {
-    "client:build": "cd client; yarn build",
-    "client:dev": "cd client; yarn dev",
-    "client:clean": "./scripts/clean.sh client",
-    "client:install": "yarn client:clean; cd client; yarn",
-    "client:start": "cd client; yarn start",
-    "api:clean": "./scripts/clean.sh api",
-    "api:install": "yarn api:clean; cd api; yarn",
-    "api:prisma:deploy": "cd api; yarn prisma:deploy"
+    "build": "next build",
+    "clean": "./scripts/clean.sh",
+    "dev": "node server/index.js",
+    "start": "NODE_ENV=production node server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "next": "^6.1.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "styled-components": "^3.3.3"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.5.1"
   }
 }
