@@ -1,5 +1,5 @@
-const express = require("express");
-const next = require("next");
+import * as express from "express";
+import * as next from "next";
 
 const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT || 3000;

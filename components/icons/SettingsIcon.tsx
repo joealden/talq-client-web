@@ -1,6 +1,10 @@
 import React from "react";
 
-const SettingsIcon = ({ className }) => (
+interface SettingsIconProps {
+  className?: string;
+}
+
+const SettingsIcon = ({ className }: SettingsIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

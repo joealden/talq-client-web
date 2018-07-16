@@ -9,7 +9,7 @@ const ChatList = () => (
     <SearchBox
       type="text"
       placeholder="Search Talq"
-      spellCheck="false"
+      spellCheck={false}
       autoComplete="off"
     />
     <ul>{/* Implement when API has been fleshed out */}</ul>
