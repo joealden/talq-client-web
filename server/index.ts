@@ -1,5 +1,9 @@
 import * as express from "express";
 import * as next from "next";
+import * as dotenv from "dotenv";
+
+/* Add env vars from .env file */
+dotenv.config();
 
 const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT || 3000;

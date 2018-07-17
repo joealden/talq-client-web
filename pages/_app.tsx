@@ -1,6 +1,9 @@
 import App, { Container } from "next/app";
 import React from "react";
 import { injectGlobal } from "styled-components";
+import { ApolloProvider } from "react-apollo";
+
+import client from "../utils/apolloClient";
 
 injectGlobal`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -41,7 +44,9 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <Container>
-        <Component {...pageProps} />
+        <ApolloProvider client={client}>
+          <Component {...pageProps} />
+        </ApolloProvider>
       </Container>
     );
   }
