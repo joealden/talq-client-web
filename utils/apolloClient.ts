@@ -21,7 +21,7 @@ const client = new ApolloClient({
     }),
     new HttpLink({
       uri: publicRuntimeConfig.API_ENDPOINT,
-      credentials: "same-origin",
+      /* Required because of SSR (fetch used in Apollo is not present in Node env) */
       fetch
     })
   ]),
