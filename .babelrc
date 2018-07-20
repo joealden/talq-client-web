@@ -10,7 +10,8 @@
             "displayName": true,
             "preprocess": false
           }
-        ]
+        ],
+        "graphql-tag"
       ]
     },
     "production": {
@@ -23,7 +24,8 @@
             "displayName": true,
             "preprocess": false
           }
-        ]
+        ],
+        "graphql-tag"
       ]
     }
   }
