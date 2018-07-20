@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as next from "next";
 import * as dotenv from "dotenv";
+import * as cookieParser from "cookie-parser";
 
 /* Add env vars from .env file */
 dotenv.config();
@@ -16,6 +17,42 @@ app
   .then(() => {
     const server = express();
 
+    /* 
+     * Redirect all requests but requests
+     * to the signup page to the signin page.
+     */
+
+    server.use(cookieParser());
+
+    /* 
+     * TODO: Do something with query string after '/signin',
+     * for example, '/signin?redirect=true'. Then consume 
+     * this value from the frontend to display a message
+     * telling the user why they were redirected. Also do
+     * the same for the other way round redirect.
+     */
+    server.use((req, res, next) => {
+      if (
+        /* There is no token cookie present */
+        !req.cookies.token &&
+        /* The user is already on the signin page */
+        req.path !== "/signin" &&
+        /* The user is on the signup page */
+        req.path !== "/signup" &&
+        /* The browser is requesting other page resources */
+        req.path.startsWith("/_next") === false
+      ) {
+        res.redirect("/signin");
+      } else if (
+        req.cookies.token &&
+        (req.path === "/signin" || req.path === "/signup")
+      ) {
+        res.redirect("/chat");
+      } else {
+        next();
+      }
+    });
+
     /* ----------------- Custom Routes ----------------- */
 
     /*
@@ -24,11 +61,6 @@ app
      */
     server.get("/", (_req, res) => {
       res.redirect("/chat");
-    });
-
-    /* Redirect due to common route name */
-    server.get("/login", (_req, res) => {
-      res.redirect("/signin");
     });
 
     /* Handle "/chat/" case - currently shows a 404 page */
