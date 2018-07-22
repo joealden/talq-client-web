@@ -8,6 +8,9 @@
   - See if there is a way in next's router to execute a callback on every client
     side route change. If so, set it up so it checks if the user is logged in on
     every route change.
+
+# Later
+
 - Implement interface with API data
 - Add apollo subscription support
 - Look into https://github.com/lfades/next-with-apollo more
