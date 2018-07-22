@@ -8,6 +8,11 @@
   - See if there is a way in next's router to execute a callback on every client
     side route change. If so, set it up so it checks if the user is logged in on
     every route change.
+    - Could cause a flash of content though
+  - Alternative is to render a different message if the user is already logged
+    in on the login and signup pages. Also show a similar message if a logged
+    out user tries to go back in their history to a logged in page (`/chat`
+    etc.)
 
 # Later
 
