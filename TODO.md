@@ -18,7 +18,6 @@
 
 - Make is so that on forms, only allow submittion if all fields are valid
   (entered)
-- Implement interface with API data
 - Add apollo subscription support
 - Look into https://github.com/lfades/next-with-apollo more
   - Had problem in \_app.js where apollo was not being accepted as a prop by
