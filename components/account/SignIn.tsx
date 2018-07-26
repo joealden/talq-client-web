@@ -7,15 +7,15 @@ import Router from "next/router";
 import ErrorMessage from "./AccountError";
 
 const SIGNIN_MUTATION = gql`
-  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
-    signin(email: $email, password: $password) {
-      email
+  mutation SIGNIN_MUTATION($username: String!, $password: String!) {
+    signin(username: $username, password: $password) {
+      username
     }
   }
 `;
 
 export interface SignInState {
-  email: string;
+  username: string;
   password: string;
   /* 
    * Used so that fields stay disabled when a successful
@@ -29,13 +29,13 @@ export interface SignInState {
 
 class SignIn extends React.Component<{}, SignInState> {
   state = {
-    email: "",
+    username: "",
     password: "",
     disabled: false
   };
 
-  updateEmailState = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ email: event.target.value });
+  updateUsernameState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ username: event.target.value });
   };
 
   updatePasswordState = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,13 +43,13 @@ class SignIn extends React.Component<{}, SignInState> {
   };
 
   render() {
-    const { email, password } = this.state;
+    const { username, password } = this.state;
 
     return (
       <Mutation
         mutation={SIGNIN_MUTATION}
         variables={{
-          email,
+          username,
           password
         }}
       >
@@ -69,12 +69,13 @@ class SignIn extends React.Component<{}, SignInState> {
                 aria-busy={loading || this.state.disabled}
               >
                 <input
-                  value={this.state.email}
-                  onChange={this.updateEmailState}
-                  type="email"
-                  placeholder="Email address"
+                  value={this.state.username}
+                  onChange={this.updateUsernameState}
+                  type="text"
+                  placeholder="Username"
                   autoComplete="off"
                 />
+
                 <input
                   value={this.state.password}
                   onChange={this.updatePasswordState}

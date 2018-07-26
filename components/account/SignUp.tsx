@@ -9,23 +9,26 @@ import ErrorMessage from "./AccountError";
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
     $email: String!
+    $username: String!
     $firstName: String!
     $lastName: String!
     $password: String!
   ) {
     signup(
       email: $email
+      username: $username
       firstName: $firstName
       lastName: $lastName
       password: $password
     ) {
-      email
+      username
     }
   }
 `;
 
 export interface SignUpState {
   email: string;
+  username: string;
   firstName: string;
   lastName: string;
   password: string;
@@ -34,6 +37,7 @@ export interface SignUpState {
 class SignUp extends React.Component<{}, SignUpState> {
   state = {
     email: "",
+    username: "",
     firstName: "",
     lastName: "",
     password: ""
@@ -42,6 +46,10 @@ class SignUp extends React.Component<{}, SignUpState> {
   /* TODO: De-dup in a type safe way */
   updateEmailState = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ email: event.target.value });
+  };
+
+  updateUsernameState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ username: event.target.value });
   };
 
   updateFirstNameState = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,12 +79,21 @@ class SignUp extends React.Component<{}, SignUpState> {
               <ErrorMessage error={error} />
               <fieldset disabled={loading} aria-busy={loading}>
                 <input
+                  value={this.state.username}
+                  onChange={this.updateUsernameState}
+                  type="text"
+                  placeholder="Username"
+                  autoComplete="off"
+                />
+
+                <input
                   value={this.state.email}
                   onChange={this.updateEmailState}
                   type="email"
                   placeholder="Email address"
                   autoComplete="off"
                 />
+
                 <input
                   value={this.state.firstName}
                   onChange={this.updateFirstNameState}
@@ -84,6 +101,7 @@ class SignUp extends React.Component<{}, SignUpState> {
                   placeholder="First name"
                   autoComplete="off"
                 />
+
                 <input
                   value={this.state.lastName}
                   onChange={this.updateLastNameState}
@@ -91,6 +109,7 @@ class SignUp extends React.Component<{}, SignUpState> {
                   placeholder="Last name"
                   autoComplete="off"
                 />
+
                 <input
                   value={this.state.password}
                   onChange={this.updatePassword1State}
