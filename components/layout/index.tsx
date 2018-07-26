@@ -4,7 +4,12 @@ import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import Main from "./Main";
 
-const Layout = ({ mainTitle, children }) => (
+interface LayoutProps {
+  mainTitle: string;
+  children: JSX.Element;
+}
+
+const Layout = ({ mainTitle, children }: LayoutProps) => (
   <Page>
     <Sidebar />
     <Main title={mainTitle}>{children}</Main>

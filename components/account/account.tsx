@@ -10,7 +10,11 @@ const AccountPageHeader = () => (
   </React.Fragment>
 );
 
-export const AccountPageWrapper = ({ children }) => (
+interface AccountPageWrapperProps {
+  children: JSX.Element;
+}
+
+export const AccountPageWrapper = ({ children }: AccountPageWrapperProps) => (
   <Main>
     <AccountPageWrapperInternal>
       <AccountPageHeader />

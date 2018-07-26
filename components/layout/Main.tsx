@@ -13,7 +13,13 @@ import constants from "../../utils/constants";
  * Could leave title prop in by require XOR on title and
  * component prop.
  */
-const Main = ({ title, children }) => (
+
+interface MainProps {
+  title: string;
+  children: JSX.Element;
+}
+
+const Main = ({ title, children }: MainProps) => (
   <MainWrapper>
     <TitleWrapper>
       <h1>{title}</h1>
