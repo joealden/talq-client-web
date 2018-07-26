@@ -4,7 +4,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Router from "next/router";
 
-import ErrorMessage from "./AccountError";
+import ShowApolloError from "../ApolloError";
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -76,7 +76,7 @@ class SignUp extends React.Component<{}, SignUpState> {
                 Router.push({ pathname: "/chat" });
               }}
             >
-              <ErrorMessage error={error} />
+              <ShowApolloError error={error} />
               <fieldset disabled={loading} aria-busy={loading}>
                 <input
                   value={this.state.username}
@@ -85,7 +85,6 @@ class SignUp extends React.Component<{}, SignUpState> {
                   placeholder="Username"
                   autoComplete="off"
                 />
-
                 <input
                   value={this.state.email}
                   onChange={this.updateEmailState}
@@ -93,7 +92,6 @@ class SignUp extends React.Component<{}, SignUpState> {
                   placeholder="Email address"
                   autoComplete="off"
                 />
-
                 <input
                   value={this.state.firstName}
                   onChange={this.updateFirstNameState}
@@ -101,7 +99,6 @@ class SignUp extends React.Component<{}, SignUpState> {
                   placeholder="First name"
                   autoComplete="off"
                 />
-
                 <input
                   value={this.state.lastName}
                   onChange={this.updateLastNameState}
@@ -109,7 +106,6 @@ class SignUp extends React.Component<{}, SignUpState> {
                   placeholder="Last name"
                   autoComplete="off"
                 />
-
                 <input
                   value={this.state.password}
                   onChange={this.updatePassword1State}

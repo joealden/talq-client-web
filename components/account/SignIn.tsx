@@ -4,7 +4,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Router from "next/router";
 
-import ErrorMessage from "./AccountError";
+import ShowApolloError from "../ApolloError";
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($username: String!, $password: String!) {
@@ -63,7 +63,7 @@ class SignIn extends React.Component<{}, SignInState> {
                 Router.push({ pathname: "/chat" });
               }}
             >
-              <ErrorMessage error={error} />
+              <ShowApolloError error={error} />
               <fieldset
                 disabled={loading || this.state.disabled}
                 aria-busy={loading || this.state.disabled}
@@ -75,7 +75,6 @@ class SignIn extends React.Component<{}, SignInState> {
                   placeholder="Username"
                   autoComplete="off"
                 />
-
                 <input
                   value={this.state.password}
                   onChange={this.updatePasswordState}

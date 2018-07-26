@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import Router from "next/router";
 
 import Layout from "../components/layout";
-import Error from "../components/account/AccountError";
+import ShowApolloError from "../components/ApolloError";
 import constants from "../utils/constants";
 
 const SIGNOUT_MUTATION = gql`
@@ -22,7 +22,7 @@ const SettingsPage = () => (
       {(signOut, { loading, error }) => {
         return (
           <SettingsWrapper>
-            <Error error={error} />
+            <ShowApolloError error={error} />
             <button
               disabled={loading}
               onClick={async event => {
