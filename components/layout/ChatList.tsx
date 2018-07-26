@@ -2,11 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import Link from "next/link";
 
-/* Move account error out into generic component */
-import Error from "../account/AccountError";
 import constants from "../../utils/constants";
+import ShowApolloError from "../ApolloError";
+import ChatListUI from "./ChatListUI";
 
 const CHAT_LIST_QUERY = gql`
   query {
@@ -17,33 +16,27 @@ const CHAT_LIST_QUERY = gql`
   }
 `;
 
+/* 
+ * TODO: Figure out a way to type the data variable coming
+ * from the Query render function in the same shape as the
+ * above query.
+ */
 const ChatList = () => (
   <ChatListWrapper>
     <Query query={CHAT_LIST_QUERY}>
       {({ data, error, loading }) => {
-        if (error) return <Error error={error} />;
-        if (loading) return <p>Loading...</p>;
-        if (data.chats.length === 0) return <p>Chat list is empty.</p>;
+        if (error) return <ShowApolloError error={error} />;
+        if (loading) return <CenterDiv>Loading...</CenterDiv>;
 
-        return (
-          <React.Fragment>
-            <SearchBox
-              type="text"
-              placeholder="Search Talq"
-              spellCheck={false}
-              autoComplete="off"
-            />
-            <ul>
-              {data.chats.map(chat => (
-                <li key={chat.id}>
-                  <Link as={`/chat/${chat.id}`} href={`/chat?id=${chat.id}`}>
-                    <a>{chat.title}</a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </React.Fragment>
-        );
+        if (data.chats.length === 0) {
+          return <CenterDiv>Chat list is empty.</CenterDiv>;
+        }
+
+        if (data) {
+          return <ChatListUI data={data} />;
+        }
+
+        return null;
       }}
     </Query>
   </ChatListWrapper>
@@ -77,15 +70,10 @@ const ChatListWrapper = styled.nav`
   }
 `;
 
-// TODO: Add search icon inside box like messenger
-const searchBoxMargin = 12;
-const SearchBox = styled.input`
-  margin: ${searchBoxMargin}px;
-  width: calc(100% - ${searchBoxMargin * 2}px);
-  height: 35px;
-  padding: 10px;
-  font-size: 14px;
-  background-color: #f5f6f7;
-  border: none;
-  border-radius: 5px;
+const CenterDiv = styled.div`
+  height: calc(100vh - ${constants.headerHeight});
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
