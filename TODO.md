@@ -18,6 +18,7 @@
 
 - Make is so that on forms, only allow submittion if all fields are valid
   (entered)
+- Make toast errors stack and dismissable like on prisma.io
 - Add apollo subscription support
 - Look into https://github.com/lfades/next-with-apollo more
   - Had problem in \_app.js where apollo was not being accepted as a prop by
