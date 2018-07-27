@@ -62,6 +62,7 @@ const SettingsPage = () => (
 export default SettingsPage;
 
 const SettingsWrapper = styled.div`
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

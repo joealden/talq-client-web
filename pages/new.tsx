@@ -12,6 +12,7 @@ const NewChatPage = () => (
 export default NewChatPage;
 
 const ChatWrapper = styled.div`
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

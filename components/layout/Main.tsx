@@ -24,7 +24,7 @@ const Main = ({ title, children }: MainProps) => (
     <TitleWrapper>
       <h1>{title}</h1>
     </TitleWrapper>
-    <div>{children}</div>
+    <ContentWrapper>{children}</ContentWrapper>
   </MainWrapper>
 );
 
@@ -34,7 +34,6 @@ const MainWrapper = styled.main`
   grid-area: "main";
   background-color: white;
   border-left: ${constants.borderVertical};
-  display: grid;
 `;
 
 const TitleWrapper = styled.div`
@@ -50,4 +49,8 @@ const TitleWrapper = styled.div`
     font-size: 17px;
     font-weight: normal;
   }
+`;
+
+const ContentWrapper = styled.div`
+  height: calc(100vh - ${constants.headerHeight});
 `;
