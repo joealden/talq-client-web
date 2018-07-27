@@ -4,8 +4,9 @@ import styled from "styled-components";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import ShowApolloError from "../components/ApolloError";
 import Layout from "../components/layout";
+import ShowApolloError from "../components/ApolloError";
+import ChatUI from "../components/chat/ChatUI";
 
 const CHAT_PAGE_QUERY = gql`
   query CHAT_PAGE_QUERY($chatId: ID!) {
@@ -52,12 +53,10 @@ const ChatPage = ({ router }: WithRouterProps) => {
             if (!data.chats[0]) {
               return (
                 <Layout mainTitle="Chat Page">
-                  <ChatWrapper>
-                    <div>
-                      You don't have any chats. To create a new chat, click the
-                      new chat icon in the toolbar.
-                    </div>
-                  </ChatWrapper>
+                  <CenterDiv>
+                    You don't have any chats. To create a new chat, click the
+                    new chat icon in the toolbar.
+                  </CenterDiv>
                 </Layout>
               );
             }
@@ -78,16 +77,14 @@ const ChatPage = ({ router }: WithRouterProps) => {
             data ? (data.chat ? data.chat.title : "Loading...") : "Loading..."
           }
         >
-          <ChatWrapper>
-            {error ? <ShowApolloError error={error} /> : null}
+          <React.Fragment>
+            <ShowApolloError error={error} />
             {loading ? (
-              <p>Loading...</p>
+              <CenterDiv>Loading...</CenterDiv>
             ) : (
-              <div>
-                Data arrived! - <span>{data.chat.title}</span>
-              </div>
+              <ChatUI data={data} />
             )}
-          </ChatWrapper>
+          </React.Fragment>
         </Layout>
       )}
     </Query>
@@ -96,7 +93,8 @@ const ChatPage = ({ router }: WithRouterProps) => {
 
 export default withRouter(ChatPage);
 
-const ChatWrapper = styled.div`
+const CenterDiv = styled.div`
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
