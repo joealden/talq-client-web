@@ -44,10 +44,24 @@ const ChatPage = ({ router }: WithRouterProps) => {
     return (
       <Query query={FALLBACK_CHAT_PAGE_QUERY}>
         {({ data, loading, error }) => {
-          /* Replace null with centered spinner with redirecting text? */
+          /* TODO: Replace null with centered spinner with redirecting text? */
           if (loading || !data) return null;
           if (error) return <ShowApolloError error={error} />;
           if (data) {
+            /* Display a message if the logged in user doesn't have any chats */
+            if (!data.chats[0]) {
+              return (
+                <Layout mainTitle="Chat Page">
+                  <ChatWrapper>
+                    <div>
+                      You don't have any chats. To create a new chat, click the
+                      new chat icon in the toolbar.
+                    </div>
+                  </ChatWrapper>
+                </Layout>
+              );
+            }
+            /* If the user does have a chat, redirect to the most recent one */
             router.push({ pathname: `/chat/${data.chats[0].id}` });
           }
         }}
