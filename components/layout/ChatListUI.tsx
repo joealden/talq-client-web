@@ -42,15 +42,19 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
           autoComplete="off"
           onChange={event => this.updateFilteredChatsState(event.target.value)}
         />
-        <ul>
-          {this.state.filteredChats.map(chat => (
-            <li key={chat.id}>
-              <Link as={`/chat/${chat.id}`} href={`/chat?id=${chat.id}`}>
-                <a>{chat.title}</a>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {this.state.filteredChats.length !== 0 ? (
+          <ul>
+            {this.state.filteredChats.map(chat => (
+              <li key={chat.id}>
+                <Link as={`/chat/${chat.id}`} href={`/chat?id=${chat.id}`}>
+                  <a>{chat.title}</a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <NoMatches>No chats match this search term.</NoMatches>
+        )}
       </div>
     );
   }
@@ -69,4 +73,9 @@ const SearchBox = styled.input`
   background-color: #f5f6f7;
   border: none;
   border-radius: 5px;
+`;
+
+const NoMatches = styled.p`
+  text-align: center;
+  margin-top: 12px;
 `;
