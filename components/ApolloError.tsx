@@ -17,6 +17,8 @@ const ErrorMessage = ({ error }: ErrorMessageProps) => {
   );
 };
 
+export default ErrorMessage;
+
 const ErrorMessageStyles = styled.div`
   @keyframes fade-in {
     from {
@@ -39,5 +41,3 @@ const ErrorMessageStyles = styled.div`
     margin-right: 5px;
   }
 `;
-
-export default ErrorMessage;
