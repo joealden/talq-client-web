@@ -19,7 +19,7 @@ const SIGNOUT_MUTATION = gql`
 const SettingsPage = () => (
   <Layout mainTitle="Settings">
     <Mutation mutation={SIGNOUT_MUTATION}>
-      {(signOut, { loading, error }) => {
+      {(signOut, { loading, error, client }) => {
         return (
           <SettingsWrapper>
             <ShowApolloError error={error} />
@@ -27,7 +27,26 @@ const SettingsPage = () => (
               disabled={loading}
               onClick={async event => {
                 event.preventDefault();
+                /* 
+                 * Perform the logout mutation which deletes
+                 * the token cookie
+                 */
                 await signOut();
+                /* 
+                 * Required so that data is not left in the
+                 * cache after the user has logged out. This
+                 * is so that if the user was to log in again
+                 * in the same session into another account,
+                 * the data in the cache from the previous 
+                 * account could be used. This would be a
+                 * security issue as it would mean the newly
+                 * logged in user could potentially see data
+                 * such as chats, messages, and personal user
+                 * data such as their email address and their
+                 * friends.
+                 */
+                client.resetStore();
+                /* Redirect the user to the signin page */
                 Router.push({ pathname: "/signin" });
               }}
             >
