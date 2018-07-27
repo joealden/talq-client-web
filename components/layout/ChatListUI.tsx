@@ -40,7 +40,9 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
           placeholder="Search Talq"
           spellCheck={false}
           autoComplete="off"
-          onChange={event => this.updateFilteredChatsState(event.target.value)}
+          onChange={event =>
+            this.updateFilteredChatsState(event.target.value.trim())
+          }
         />
         {this.state.filteredChats.length !== 0 ? (
           <ul>
