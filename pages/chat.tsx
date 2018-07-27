@@ -71,12 +71,8 @@ const ChatPage = ({ router }: WithRouterProps) => {
   return (
     <Query query={CHAT_PAGE_QUERY} variables={{ chatId: router.query.id }}>
       {({ data, loading, error }) => (
-        <Layout
-          mainTitle={
-            /* TODO: simplify this horrible ternary */
-            data ? (data.chat ? data.chat.title : "Loading...") : "Loading..."
-          }
-        >
+        /* Render data.chat.title if it exists */
+        <Layout mainTitle={data && data.chat && data.chat.title}>
           <React.Fragment>
             <ShowApolloError error={error} />
             {loading ? (

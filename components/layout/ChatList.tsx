@@ -48,6 +48,7 @@ const ChatListWrapper = styled.nav`
   height: calc(100vh - ${constants.headerHeight});
   overflow: auto;
 
+  /* Move this CSS into ChatListUI.tsx */
   ul {
     list-style: none;
 
@@ -62,7 +63,8 @@ const ChatListWrapper = styled.nav`
         color: black;
         transition: 0.1s ease-in-out;
 
-        &:hover {
+        &:hover,
+        &:focus {
           color: ${constants.color};
         }
       }
