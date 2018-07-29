@@ -32,6 +32,8 @@ const SettingsPage = () => (
                  * the token cookie
                  */
                 await signOut();
+                /* Redirect the user to the signin page */
+                await Router.push({ pathname: "/signin" });
                 /* 
                  * Required so that data is not left in the
                  * cache after the user has logged out. This
@@ -46,8 +48,6 @@ const SettingsPage = () => (
                  * friends.
                  */
                 client.resetStore();
-                /* Redirect the user to the signin page */
-                Router.push({ pathname: "/signin" });
               }}
             >
               Sign Out
