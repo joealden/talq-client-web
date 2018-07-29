@@ -4,6 +4,8 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Router from "next/router";
 
+import loggedIn from "../utils/loggedIn";
+import NotLoggedIn from "../components/account/NotLoggedIn";
 import Layout from "../components/layout";
 import ShowApolloError from "../components/ApolloError";
 import constants from "../utils/constants";
@@ -16,25 +18,32 @@ const SIGNOUT_MUTATION = gql`
   }
 `;
 
-const SettingsPage = () => (
-  <Layout mainTitle="Settings">
-    <Mutation mutation={SIGNOUT_MUTATION}>
-      {(signOut, { loading, error, client }) => {
-        return (
-          <SettingsWrapper>
-            <ShowApolloError error={error} />
-            <button
-              disabled={loading}
-              onClick={async event => {
-                event.preventDefault();
-                /* 
+const SettingsPage = () => {
+  /* Makes sure client side routing checks for auth */
+  if (typeof window !== "undefined" && !loggedIn()) {
+    return <NotLoggedIn />;
+  }
+
+  return (
+    <Layout mainTitle="Settings">
+      <Mutation mutation={SIGNOUT_MUTATION}>
+        {(signOut, { loading, error, client }) => {
+          return (
+            <SettingsWrapper>
+              <ShowApolloError error={error} />
+              <button
+                disabled={loading}
+                onClick={async event => {
+                  event.preventDefault();
+                  /* 
                  * Perform the logout mutation which deletes
                  * the token cookie
                  */
-                await signOut();
-                /* Redirect the user to the signin page */
-                await Router.push({ pathname: "/signin" });
-                /* 
+                  await signOut();
+                  localStorage.removeItem("loggedIn");
+                  /* Redirect the user to the signin page */
+                  await Router.push({ pathname: "/signin" });
+                  /* 
                  * Required so that data is not left in the
                  * cache after the user has logged out. This
                  * is so that if the user was to log in again
@@ -47,17 +56,18 @@ const SettingsPage = () => (
                  * data such as their email address and their
                  * friends.
                  */
-                client.resetStore();
-              }}
-            >
-              Sign Out
-            </button>
-          </SettingsWrapper>
-        );
-      }}
-    </Mutation>
-  </Layout>
-);
+                  client.resetStore();
+                }}
+              >
+                Sign Out
+              </button>
+            </SettingsWrapper>
+          );
+        }}
+      </Mutation>
+    </Layout>
+  );
+};
 
 export default SettingsPage;
 

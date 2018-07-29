@@ -60,6 +60,7 @@ class SignIn extends React.Component<{}, SignInState> {
                 event.preventDefault();
                 await signIn();
                 this.setState({ disabled: true });
+                localStorage.setItem("loggedIn", "true");
                 Router.push({ pathname: "/chat" });
               }}
             >

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import constants from "../../utils/constants";
 
-const AccountPageHeader = () => (
+export const AccountPageHeader = () => (
   <React.Fragment>
     <h1>Talq</h1>
     <h2>A Facebook Messenger Clone</h2>

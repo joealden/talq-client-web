@@ -73,6 +73,7 @@ class SignUp extends React.Component<{}, SignUpState> {
               onSubmit={async event => {
                 event.preventDefault();
                 await signUp();
+                localStorage.setItem("loggedIn", "true");
                 Router.push({ pathname: "/chat" });
               }}
             >

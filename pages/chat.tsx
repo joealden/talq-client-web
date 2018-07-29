@@ -5,6 +5,8 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 import Layout from "../components/layout";
+import loggedIn from "../utils/loggedIn";
+import NotLoggedIn from "../components/account/NotLoggedIn";
 import ShowApolloError from "../components/ApolloError";
 import ChatUI from "../components/chat/ChatUI";
 
@@ -40,6 +42,11 @@ const FALLBACK_CHAT_PAGE_QUERY = gql`
 `;
 
 const ChatPage = ({ router }: WithRouterProps) => {
+  /* Makes sure client side routing checks for auth */
+  if (typeof window !== "undefined" && !loggedIn()) {
+    return <NotLoggedIn />;
+  }
+
   /* Redirect user to most recent chat if id query string is empty */
   if (!router.query.id) {
     return (
@@ -63,6 +70,8 @@ const ChatPage = ({ router }: WithRouterProps) => {
             /* If the user does have a chat, redirect to the most recent one */
             router.push({ pathname: `/chat/${data.chats[0].id}` });
           }
+
+          return null;
         }}
       </Query>
     );
