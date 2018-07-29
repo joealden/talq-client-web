@@ -1,18 +1,17 @@
 # TODO
 
-- Think about way to stop user from logging in then going back to the signin /
-  signup page via the back button in the browser (client side routing). Possible
-  solution is to create a site wide context that keeps track of if the user is
-  logged in, and on the account pages, if this context state is true, redirect
-  them to "/chat" or where they were before.
-  - See if there is a way in next's router to execute a callback on every client
-    side route change. If so, set it up so it checks if the user is logged in on
-    every route change.
-    - Could cause a flash of content though
-  - Alternative is to render a different message if the user is already logged
-    in on the login and signup pages. Also show a similar message if a logged
-    out user tries to go back in their history to a logged in page (`/chat`
-    etc.)
+- Display warning message when user uses back button to a page that they can no
+  longer access. For example:
+  - When a user signs in / signs up and is redirected to `/chat`, they could
+    press the back button to get back to the sign in / sign up page through
+    client side routing. In this scenario, show a message to tell them that they
+    are already logged in, and give them the option to either continue using the
+    account logged in (Show then the username) or log out (and be redirected to
+    the login page).
+  - When a user logs out, they could press the back button to get back to a page
+    that requires authorization. In this secnario, show a message to tell them
+    that they are not logged in, and this page requires auth. Then give them the
+    option to either login or signup (with links).
 
 # Later
 
