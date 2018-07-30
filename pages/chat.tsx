@@ -85,7 +85,7 @@ const ChatPage = ({ router }: WithRouterProps) => {
           <React.Fragment>
             <ShowApolloError error={error} />
             {loading ? (
-              <CenterDiv>Loading...</CenterDiv>
+              <CenterDiv>Loading chat...</CenterDiv>
             ) : (
               <ChatUI data={data} />
             )}
