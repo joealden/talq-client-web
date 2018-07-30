@@ -64,17 +64,22 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
 
 export default ChatListUI;
 
-/* TODO: Add search icon inside box like messenger */
 const searchBoxMargin = 12;
+const searchBoxHeight = 36;
+
 const SearchBox = styled.input`
   margin: ${searchBoxMargin}px;
   width: calc(100% - ${searchBoxMargin * 2}px);
-  height: 35px;
-  padding: 10px;
+  height: ${searchBoxHeight}px;
+  padding: 10px 10px 10px ${searchBoxHeight}px;
   font-size: 14px;
-  background-color: #f5f6f7;
   border: none;
   border-radius: 5px;
+  background-color: #f5f6f7;
+  background-image: url("/static/search-icon.svg");
+  background-size: ${searchBoxHeight / 2}px;
+  background-position: ${searchBoxHeight / 4}px;
+  background-repeat: no-repeat;
 `;
 
 const NoMatches = styled.p`
