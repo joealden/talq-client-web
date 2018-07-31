@@ -1,11 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import Router from "next/router";
+
+import { UserDetailsContext } from "../layout";
+import constants from "../../utils/constants";
+
+/* 
+ * TODO: Update cache for sidebar with latest message when user
+ * sends a message (Or just wait for GraphQL Subscriptions to be added?)
+ */
 
 /*
  * NOTE: SearchBox state is kept uncontrolled because it reduces
- * the complexity of the code and reduces the amount of possible
- * re-renders.
+ * the complexity of the code and reduces the amount of possible re-renders.
  */
 
 /* TODO: Type props and state better */
@@ -34,35 +42,116 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
   /* TODO: Add reset button in the right of the box (clears input) */
   render() {
     return (
-      <div>
-        <SearchBox
-          type="search"
-          placeholder="Search Talq"
-          spellCheck={false}
-          autoComplete="off"
-          onChange={event =>
-            this.updateFilteredChatsState(event.target.value.trim())
-          }
-        />
-        {this.state.filteredChats.length !== 0 ? (
-          <ul>
-            {this.state.filteredChats.map(chat => (
-              <li key={chat.id}>
-                <Link as={`/chat/${chat.id}`} href={`/chat?id=${chat.id}`}>
-                  <a>{chat.title}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <NoMatches>No chats match this search term.</NoMatches>
+      <UserDetailsContext.Consumer>
+        {({ username }) => (
+          <ChatListWrapper>
+            <SearchBox
+              type="search"
+              placeholder="Search Talq"
+              spellCheck={false}
+              autoComplete="off"
+              onChange={event =>
+                this.updateFilteredChatsState(event.target.value.trim())
+              }
+            />
+            {this.state.filteredChats.length !== 0 ? (
+              <ul>
+                {this.state.filteredChats.map(chat => {
+                  if (chat.messages.length === 0) {
+                    return (
+                      <li
+                        key={chat.id}
+                        className={
+                          Router.query.id === chat.id ? "current" : null
+                        }
+                      >
+                        <Link
+                          as={`/chat/${chat.id}`}
+                          href={`/chat?id=${chat.id}`}
+                        >
+                          <a>
+                            <span>{chat.title}</span>
+                            <span>This chat has no messages.</span>
+                          </a>
+                        </Link>
+                      </li>
+                    );
+                  }
+
+                  let usernameToDisplay;
+                  if (chat.messages[0].author.username === username) {
+                    usernameToDisplay = "You";
+                  } else {
+                    usernameToDisplay = chat.messages[0].author.username;
+                  }
+
+                  return (
+                    <li
+                      key={chat.id}
+                      className={Router.query.id === chat.id ? "current" : null}
+                    >
+                      <Link
+                        as={`/chat/${chat.id}`}
+                        href={`/chat?id=${chat.id}`}
+                      >
+                        <a>
+                          <span>{chat.title}</span>
+                          <span>
+                            {usernameToDisplay}: {chat.messages[0].content}
+                          </span>
+                        </a>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <NoMatches>No chats match this search term.</NoMatches>
+            )}
+          </ChatListWrapper>
         )}
-      </div>
+      </UserDetailsContext.Consumer>
     );
   }
 }
 
 export default ChatListUI;
+
+const ChatListWrapper = styled.div`
+  list-style: none;
+
+  li {
+    a {
+      outline: none;
+      display: flex;
+      flex-direction: column;
+
+      padding: 10px;
+      text-decoration: none;
+      color: black;
+
+      span:first-child {
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      span:last-child {
+        font-size: 12px;
+        color: rgba(153, 153, 153, 1);
+      }
+    }
+
+    &.current,
+    &:hover,
+    &:focus {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+`;
 
 const searchBoxMargin = 12;
 const searchBoxHeight = 36;

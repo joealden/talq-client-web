@@ -12,6 +12,12 @@ const CHAT_LIST_QUERY = gql`
     chats {
       id
       title
+      messages(first: 1, orderBy: createdAt_DESC) {
+        author {
+          username
+        }
+        content
+      }
     }
   }
 `;
@@ -47,29 +53,6 @@ export default ChatList;
 const ChatListWrapper = styled.nav`
   height: calc(100vh - ${constants.headerHeight});
   overflow: auto;
-
-  /* Move this CSS into ChatListUI.tsx */
-  ul {
-    list-style: none;
-
-    li {
-      border: 1px solid black;
-      margin: 4px;
-
-      a {
-        display: block;
-        padding: 10px;
-        text-decoration: none;
-        color: black;
-        transition: 0.1s ease-in-out;
-
-        &:hover,
-        &:focus {
-          color: ${constants.color};
-        }
-      }
-    }
-  }
 `;
 
 const CenterDiv = styled.div`
