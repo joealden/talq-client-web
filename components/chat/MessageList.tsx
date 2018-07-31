@@ -110,8 +110,6 @@ class MessageList extends React.Component<MessageListProps> {
           return (
             <MessageListWrapper innerRef={this.messageListRef}>
               {reducedMessages.map((message: reducedMessage) => {
-                console.log(message.author.username);
-
                 if (message.author.username === username) {
                   if (message.messages.length === 1) {
                     return (
