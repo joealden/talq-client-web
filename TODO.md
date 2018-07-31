@@ -1,6 +1,9 @@
 # TODO
 
-Complete the todo in MessageList.tsx
+- Create New Chat Page
+- Create Settings Page
+- Work on switching chat page over to use subscriptions
+  - will require API work as well
 
 # Later
 
