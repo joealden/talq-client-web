@@ -1,12 +1,6 @@
 # TODO
 
-- Continue working on chat page
-  - Delete test message from most recent chat
-  - Add mutation to CreateMessageBox.tsx so users can send messages to chat
-  - Complete the todo in MessageList.tsx
-  - Scroll to the bottom of the chat to start
-    - Will require pagigation of messages (Load last 25 messages or so)
-    - Will require button (at first) / trigger to load more when scrolling up
+Complete the todo in MessageList.tsx
 
 # Later
 
