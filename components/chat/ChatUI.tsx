@@ -36,6 +36,10 @@ class ChatUI extends React.Component<ChatUIProps, ChatUIState> {
     messageListRef: undefined as React.RefObject<HTMLUListElement>
   };
 
+  componentDidUpdate() {
+    this.scrollMessageListToBottom();
+  }
+
   updateMessageListRefState = (
     messageListRef: React.RefObject<HTMLUListElement>
   ) => {
@@ -44,9 +48,10 @@ class ChatUI extends React.Component<ChatUIProps, ChatUIState> {
 
   scrollMessageListToBottom = () => {
     const messageList = this.state.messageListRef.current;
-    console.log(messageList);
-    console.log(messageList.scrollHeight);
-    messageList.scrollTop = messageList.scrollHeight;
+
+    if (messageList) {
+      messageList.scrollTop = messageList.scrollHeight;
+    }
   };
 
   render() {
