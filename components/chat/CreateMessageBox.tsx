@@ -24,7 +24,7 @@ const SEND_MUTATION = gql`
 
 /* 
  * TODO:
- * - Make message state clear when navigating between chats
+ * - Make message state change when navigating between chats
  * - Dedupe sendMessage mutation calls
  * - Work out updating cache if using GraphQL Subscriptons
  */
@@ -67,7 +67,11 @@ class CreateMessageBox extends React.Component<
                       onKeyDown={async event => {
                         /* If key pressed is the enter key */
                         if (event.keyCode === 13) {
-                          const { message } = this.state;
+                          const trimmedMessage = this.state.message.trim();
+
+                          if (trimmedMessage === "") {
+                            return;
+                          }
 
                           await sendMessage({
                             variables: {
@@ -88,7 +92,7 @@ class CreateMessageBox extends React.Component<
                                 __typename: "Message",
                                 id: sendMessageToChat.id,
                                 author: sendMessageToChat.author,
-                                content: message
+                                content: trimmedMessage
                               });
 
                               cache.writeQuery({
@@ -118,9 +122,18 @@ class CreateMessageBox extends React.Component<
                       }}
                     />
                     <button
-                      disabled={loading}
+                      className={
+                        this.state.message.trim() !== "" && !loading
+                          ? "enabled"
+                          : null
+                      }
+                      disabled={this.state.message.trim() === "" || loading}
                       onClick={async () => {
-                        const { message } = this.state;
+                        const trimmedMessage = this.state.message.trim();
+
+                        if (trimmedMessage === "") {
+                          return;
+                        }
 
                         await sendMessage({
                           variables: {
@@ -138,7 +151,7 @@ class CreateMessageBox extends React.Component<
                               __typename: "Message",
                               id: sendMessageToChat.id,
                               author: sendMessageToChat.author,
-                              content: message
+                              content: trimmedMessage
                             });
 
                             cache.writeQuery({
@@ -219,13 +232,21 @@ const CreateMessageBoxWrapper = styled.div`
     transition: 0.1s ease-in-out;
     cursor: pointer;
 
-    &:hover,
-    &:focus {
-      background-color: rgba(0, 0, 0, 0.1);
+    &.enabled {
+      &:hover,
+      &:focus {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      &:active {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
     }
 
-    &:active {
-      background-color: rgba(0, 0, 0, 0.2);
+    &:disabled {
+      cursor: not-allowed;
+      background-color: rgba(0, 0, 0, 0.1);
+      color: rgba(0, 0, 0, 0.5);
     }
   }
 `;
