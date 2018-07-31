@@ -13,7 +13,6 @@ interface user {
 export interface message {
   id: string;
   author: user;
-  createdAt: string;
   content: string;
 }
 

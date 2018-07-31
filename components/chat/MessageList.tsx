@@ -1,60 +1,82 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import * as R from "ramda";
 
 import { message } from "./ChatUI";
 
 import constants from "../../utils/constants";
-import ShowApolloError from "../ApolloError";
+import { UserDetailsContext } from "../layout";
 
-/*
- * TODO: Figure out how to correct styles consecutive message
- * like messenger does with the following traits:
- * 
- * - Less spacing
- * - Name is not repeated
- * - Message bubble corners come together.
- * 
- * Possible solution
- * -----------------
- * Use a reduce function on the messages array before mapping
- * to list items (li).
- * 
- * Start with an empty array in the acc reducing the messages 
- * array. If the last item in the array has the same author as
- * the current message that is being acted upon, modify that last
- * item in the array by appending an extra paragraph (p) tag with
- * the contents of the current message. 
- * 
- * This item will now need to be wrapped with a different styled
- * component to handle the message bubble corner styling. This would
- * mean that a regular wrapper around a single message would have 
- * regular border radius. Then a different wrapper would be used to
- * contain multiple consecutive messages that would use the following
- * styling:
- * 
- * 
- * p:first-child {
- *   border-bottom-left-radius: 4px;
- *   border-top-left:radius: 15px;
- * }
- * p {
- *   border-radius: 4px 15px 15px 4px;
- * }
- * p:last-child {
- *   border-bottom-left:radius: 15px;
- *   border-top-left-radius: 4px;
- * }
- */
+/* TODO: Refactor both JSX and CSS to reduce repetition */
 
-const USERNAME_QUERY = gql`
-  query USERNAME_QUERY {
-    user {
-      username
-    }
+interface singleReducedMessage {
+  id: string;
+  content: string;
+}
+
+interface reducedMessage {
+  id: string;
+  author: {
+    username: string;
+  };
+  messages: singleReducedMessage[];
+}
+
+const messageReducer = (acc: any[], currentMessage: message) => {
+  /* If accumulator is currently empty */
+
+  if (acc.length === 0) {
+    return [
+      {
+        /* Uses last id in consecutive messages, does this need changing? */
+        id: currentMessage.id,
+        author: currentMessage.author,
+        messages: [
+          {
+            id: currentMessage.id,
+            content: currentMessage.content
+          }
+        ]
+      }
+    ];
   }
-`;
+
+  /* If the current message has the same author as the previous */
+  const previousMessageUsername = R.last(acc).author.username;
+  const currentMessageUsername = currentMessage.author.username;
+
+  if (previousMessageUsername === currentMessageUsername) {
+    return [
+      ...R.dropLast(1, acc),
+      {
+        id: currentMessage.id,
+        author: currentMessage.author,
+        messages: [
+          ...R.last(acc).messages,
+          {
+            id: currentMessage.id,
+            content: currentMessage.content
+          }
+        ]
+      }
+    ];
+  }
+
+  /* If the current message has a different author than the previous */
+  return [
+    ...acc,
+    {
+      id: currentMessage.id,
+      author: currentMessage.author,
+      messages: [
+        {
+          id: currentMessage.id,
+          content: currentMessage.content
+        }
+      ]
+    }
+  ];
+};
 
 interface MessageListProps {
   messages: message[];
@@ -81,43 +103,65 @@ class MessageList extends React.Component<MessageListProps> {
       );
 
     return (
-      <Query query={USERNAME_QUERY}>
-        {({ data, loading, error }) => {
-          if (loading) {
-            return (
-              <MessageListWrapper>
-                <CenterDiv>Loading messages...</CenterDiv>
-              </MessageListWrapper>
-            );
-          }
+      <UserDetailsContext.Consumer>
+        {({ username }) => {
+          const reducedMessages = messages.reduce(messageReducer, []);
 
           return (
-            <React.Fragment>
-              <ShowApolloError error={error} />
-              <MessageListWrapper innerRef={this.messageListRef}>
-                {messages.map(message => {
-                  if (message.author.username === data.user.username) {
+            <MessageListWrapper innerRef={this.messageListRef}>
+              {reducedMessages.map((message: reducedMessage) => {
+                console.log(message.author.username);
+
+                if (message.author.username === username) {
+                  if (message.messages.length === 1) {
                     return (
-                      <MyMessage key={message.id}>
-                        <p>{message.content}</p>
-                      </MyMessage>
+                      <MySingleMessage key={message.id}>
+                        <p>{message.messages[0].content}</p>
+                      </MySingleMessage>
                     );
                   }
 
                   return (
-                    <MembersMessage key={message.id}>
+                    <MyMultipleMessage key={message.id}>
+                      <div>
+                        {message.messages.map(singleMessage => (
+                          <span key={singleMessage.id}>
+                            <p>{singleMessage.content}</p>
+                          </span>
+                        ))}
+                      </div>
+                    </MyMultipleMessage>
+                  );
+                } else {
+                  if (message.messages.length === 1) {
+                    return (
+                      <MembersSingleMessage key={message.id}>
+                        <span>{message.author.username}</span>
+                        <div>
+                          <p>{message.messages[0].content}</p>
+                        </div>
+                      </MembersSingleMessage>
+                    );
+                  }
+
+                  return (
+                    <MembersMultipleMessage key={message.id}>
                       <span>{message.author.username}</span>
                       <div>
-                        <p>{message.content}</p>
+                        {message.messages.map(singleMessage => (
+                          <span key={singleMessage.id}>
+                            <p>{singleMessage.content}</p>
+                          </span>
+                        ))}
                       </div>
-                    </MembersMessage>
+                    </MembersMultipleMessage>
                   );
-                })}
-              </MessageListWrapper>
-            </React.Fragment>
+                }
+              })}
+            </MessageListWrapper>
           );
         }}
-      </Query>
+      </UserDetailsContext.Consumer>
     );
   }
 }
@@ -140,16 +184,18 @@ const CenterDiv = styled.div`
 
 const messageStyles = css`
   display: flex;
-  margin-bottom: 6px;
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 10px;
+  }
 
   p {
-    border-radius: 15px;
     padding: 6px 10px;
-    max-width: 60%;
   }
 `;
 
-const MyMessage = styled.li`
+const MySingleMessage = styled.li`
   ${messageStyles};
 
   justify-content: flex-end;
@@ -157,10 +203,49 @@ const MyMessage = styled.li`
   p {
     background-color: ${constants.color};
     color: white;
+    border-radius: 15px;
+    max-width: 60%;
   }
 `;
 
-const MembersMessage = styled.li`
+const MyMultipleMessage = styled.li`
+  ${messageStyles};
+
+  justify-content: flex-end;
+
+  div {
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+
+    span {
+      display: flex;
+      justify-content: flex-end;
+
+      p {
+        background-color: ${constants.color};
+        color: white;
+        border-radius: 15px 4px 4px 15px;
+        display: inline-block;
+      }
+    }
+
+    span:first-child p {
+      border-top-right-radius: 15px;
+      border-top-left-radius: 15px;
+    }
+
+    span:last-child p {
+      border-bottom-right-radius: 15px;
+    }
+
+    span:not(:last-child) {
+      margin-bottom: 2px;
+    }
+  }
+`;
+
+const MembersSingleMessage = styled.li`
   ${messageStyles};
   flex-direction: column;
 
@@ -177,6 +262,50 @@ const MembersMessage = styled.li`
     p {
       background-color: #f1f0f0;
       color: black;
+      border-radius: 15px;
+      max-width: 60%;
+    }
+  }
+`;
+
+const MembersMultipleMessage = styled.li`
+  ${messageStyles};
+
+  flex-direction: column;
+
+  & > span {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.4);
+    padding-left: 12px;
+    margin-bottom: 1px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    max-width: 60%;
+
+    span {
+      display: flex;
+
+      p {
+        background-color: #f1f0f0;
+        color: black;
+        border-radius: 4px 15px 15px 4px;
+        display: inline-block;
+      }
+    }
+
+    span:first-child p {
+      border-top-left-radius: 15px;
+    }
+
+    span:last-child p {
+      border-bottom-left-radius: 15px;
+    }
+
+    span:not(:last-child) {
+      margin-bottom: 2px;
     }
   }
 `;
