@@ -1,17 +1,46 @@
 import React from "react";
 import styled from "styled-components";
-// import { Mutation } from "react-apollo";
-// import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
+import { ChatIdContext } from "../../pages/chat";
+import { UserDetailsContext } from "../layout";
+
+import ShowApolloError from "../ApolloError";
 import constants from "../../utils/constants";
 
-/* TODO: Make message state clear when navigating between chats */
+import { CHAT_PAGE_QUERY } from "../../pages/chat";
+
+const SEND_MUTATION = gql`
+  mutation SEND_MUTATION($chatId: ID!, $content: String!) {
+    sendMessageToChat(chatId: $chatId, content: $content) {
+      id
+      author {
+        username
+      }
+    }
+  }
+`;
+
+/* 
+ * TODO:
+ * - Make message state clear when navigating between chats
+ * - Dedupe sendMessage mutation calls
+ * - Work out updating cache if using GraphQL Subscriptons
+ */
+
+interface CreateMessageBoxProps {
+  scrollMessageListToBottom: Function;
+}
 
 interface CreateMessageBoxState {
   message: string;
 }
 
-class CreateMessageBox extends React.Component<{}, CreateMessageBoxState> {
+class CreateMessageBox extends React.Component<
+  CreateMessageBoxProps,
+  CreateMessageBoxState
+> {
   state = {
     message: ""
   };
@@ -22,21 +51,130 @@ class CreateMessageBox extends React.Component<{}, CreateMessageBoxState> {
 
   render() {
     return (
-      <CreateMessageBoxWrapper>
-        <textarea
-          placeholder="Type a message..."
-          value={this.state.message}
-          onChange={this.updateMessageState}
-          onKeyDown={event => {
-            /* If key pressed is the enter key */
-            if (event.keyCode === 13) {
-              /* TODO: call send mutation */
-              console.log("enter has been pressed");
-            }
-          }}
-        />
-        <button onClick={/* TODO */ () => null}>Send</button>
-      </CreateMessageBoxWrapper>
+      <Mutation mutation={SEND_MUTATION}>
+        {(sendMessage, { loading, error }) => (
+          <UserDetailsContext.Consumer>
+            {({ username }) => (
+              <ChatIdContext.Consumer>
+                {chatId => (
+                  <CreateMessageBoxWrapper>
+                    <ShowApolloError error={error} />
+                    <textarea
+                      placeholder="Type a message..."
+                      disabled={loading}
+                      value={this.state.message}
+                      onChange={this.updateMessageState}
+                      onKeyDown={async event => {
+                        /* If key pressed is the enter key */
+                        if (event.keyCode === 13) {
+                          const { message } = this.state;
+
+                          await sendMessage({
+                            variables: {
+                              chatId,
+                              content: this.state.message
+                            },
+
+                            update: (
+                              cache,
+                              { data: { sendMessageToChat } }
+                            ) => {
+                              const { chat } = cache.readQuery({
+                                query: CHAT_PAGE_QUERY,
+                                variables: { chatId }
+                              });
+
+                              chat.messages.push({
+                                __typename: "Message",
+                                id: sendMessageToChat.id,
+                                author: sendMessageToChat.author,
+                                content: message
+                              });
+
+                              cache.writeQuery({
+                                query: CHAT_PAGE_QUERY,
+                                variables: { chatId },
+                                data: { chat }
+                              });
+                            },
+
+                            optimisticResponse: {
+                              __typename: "Mutation",
+                              sendMessageToChat: {
+                                /* Placeholder ID value */
+                                __typename: "Message",
+                                id: "0",
+                                author: {
+                                  __typename: "PublicUser",
+                                  username: username
+                                }
+                              }
+                            }
+                          });
+
+                          this.setState({ message: "" });
+                          this.props.scrollMessageListToBottom();
+                        }
+                      }}
+                    />
+                    <button
+                      disabled={loading}
+                      onClick={async () => {
+                        const { message } = this.state;
+
+                        await sendMessage({
+                          variables: {
+                            chatId,
+                            content: this.state.message
+                          },
+
+                          update: (cache, { data: { sendMessageToChat } }) => {
+                            const { chat } = cache.readQuery({
+                              query: CHAT_PAGE_QUERY,
+                              variables: { chatId }
+                            });
+
+                            chat.messages.push({
+                              __typename: "Message",
+                              id: sendMessageToChat.id,
+                              author: sendMessageToChat.author,
+                              content: message
+                            });
+
+                            cache.writeQuery({
+                              query: CHAT_PAGE_QUERY,
+                              variables: { chatId },
+                              data: { chat }
+                            });
+                          },
+
+                          optimisticResponse: {
+                            __typename: "Mutation",
+                            sendMessageToChat: {
+                              /* Placeholder ID value */
+                              __typename: "Message",
+                              id: "0",
+                              author: {
+                                __typename: "PublicUser",
+                                username: username
+                              }
+                            }
+                          }
+                        });
+
+                        this.setState({ message: "" });
+                        this.props.scrollMessageListToBottom();
+                      }}
+                    >
+                      Send
+                    </button>
+                  </CreateMessageBoxWrapper>
+                )}
+              </ChatIdContext.Consumer>
+            )}
+          </UserDetailsContext.Consumer>
+        )}
+      </Mutation>
     );
   }
 }

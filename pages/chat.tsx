@@ -10,23 +10,20 @@ import NotLoggedIn from "../components/account/NotLoggedIn";
 import ShowApolloError from "../components/ApolloError";
 import ChatUI from "../components/chat/ChatUI";
 
-const CHAT_PAGE_QUERY = gql`
+export const ChatIdContext = React.createContext(undefined);
+
+export const CHAT_PAGE_QUERY = gql`
   query CHAT_PAGE_QUERY($chatId: ID!) {
     chat(chatId: $chatId) {
       title
       members {
         username
-        firstName
-        lastName
       }
       messages {
         id
         author {
           username
-          firstName
-          lastName
         }
-        createdAt
         content
       }
     }
@@ -87,7 +84,9 @@ const ChatPage = ({ router }: WithRouterProps) => {
             {loading ? (
               <CenterDiv>Loading chat...</CenterDiv>
             ) : (
-              <ChatUI data={data} />
+              <ChatIdContext.Provider value={router.query.id}>
+                <ChatUI data={data} />
+              </ChatIdContext.Provider>
             )}
           </React.Fragment>
         </Layout>

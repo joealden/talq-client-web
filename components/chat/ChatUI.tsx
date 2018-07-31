@@ -27,18 +27,48 @@ interface ChatUIProps {
   };
 }
 
-const ChatUI = ({ data }: ChatUIProps) => {
-  if (data && data.chat) {
-    return (
-      <ChatUIWrapper>
-        <MessageList messages={data.chat.messages} />
-        <CreateMessageBox />
-      </ChatUIWrapper>
-    );
-  }
+interface ChatUIState {
+  messageListRef: React.RefObject<HTMLUListElement>;
+}
 
-  return null;
-};
+class ChatUI extends React.Component<ChatUIProps, ChatUIState> {
+  state = {
+    messageListRef: undefined as React.RefObject<HTMLUListElement>
+  };
+
+  updateMessageListRefState = (
+    messageListRef: React.RefObject<HTMLUListElement>
+  ) => {
+    this.setState({ messageListRef });
+  };
+
+  scrollMessageListToBottom = () => {
+    const messageList = this.state.messageListRef.current;
+    console.log(messageList);
+    console.log(messageList.scrollHeight);
+    messageList.scrollTop = messageList.scrollHeight;
+  };
+
+  render() {
+    const { data } = this.props;
+
+    if (data && data.chat) {
+      return (
+        <ChatUIWrapper>
+          <MessageList
+            messages={data.chat.messages}
+            updateParentRefState={this.updateMessageListRefState}
+          />
+          <CreateMessageBox
+            scrollMessageListToBottom={this.scrollMessageListToBottom}
+          />
+        </ChatUIWrapper>
+      );
+    }
+
+    return null;
+  }
+}
 
 export default ChatUI;
 

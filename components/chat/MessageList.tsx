@@ -58,56 +58,69 @@ const USERNAME_QUERY = gql`
 
 interface MessageListProps {
   messages: message[];
+  updateParentRefState: Function;
 }
 
-const MessageList = ({ messages }: MessageListProps) => {
-  if (messages.length === 0)
+class MessageList extends React.Component<MessageListProps> {
+  /* TODO: Figure out typing of styled component as any */
+  messageListRef: React.RefObject<HTMLUListElement> = React.createRef();
+
+  /* Pass ul ref up so parent can control scrolling */
+  componentDidMount() {
+    this.props.updateParentRefState(this.messageListRef);
+  }
+
+  render() {
+    const { messages } = this.props;
+
+    if (messages.length === 0)
+      return (
+        <MessageListWrapper>
+          <CenterDiv>No messages have been sent in this chat yet.</CenterDiv>
+        </MessageListWrapper>
+      );
+
     return (
-      <MessageListWrapper>
-        <CenterDiv>No messages have been sent in this chat yet.</CenterDiv>
-      </MessageListWrapper>
-    );
+      <Query query={USERNAME_QUERY}>
+        {({ data, loading, error }) => {
+          if (loading) {
+            return (
+              <MessageListWrapper>
+                <CenterDiv>Loading messages...</CenterDiv>
+              </MessageListWrapper>
+            );
+          }
 
-  return (
-    <Query query={USERNAME_QUERY}>
-      {({ data, loading, error }) => {
-        if (loading) {
           return (
-            <MessageListWrapper>
-              <CenterDiv>Loading messages...</CenterDiv>
-            </MessageListWrapper>
-          );
-        }
+            <React.Fragment>
+              <ShowApolloError error={error} />
+              <MessageListWrapper innerRef={this.messageListRef}>
+                {messages.map(message => {
+                  if (message.author.username === data.user.username) {
+                    return (
+                      <MyMessage key={message.id}>
+                        <p>{message.content}</p>
+                      </MyMessage>
+                    );
+                  }
 
-        return (
-          <React.Fragment>
-            <ShowApolloError error={error} />
-            <MessageListWrapper>
-              {messages.map(message => {
-                if (message.author.username === data.user.username) {
                   return (
-                    <MyMessage key={message.id}>
-                      <p>{message.content}</p>
-                    </MyMessage>
+                    <MembersMessage key={message.id}>
+                      <span>{message.author.username}</span>
+                      <div>
+                        <p>{message.content}</p>
+                      </div>
+                    </MembersMessage>
                   );
-                }
-
-                return (
-                  <MembersMessage key={message.id}>
-                    <span>{message.author.username}</span>
-                    <div>
-                      <p>{message.content}</p>
-                    </div>
-                  </MembersMessage>
-                );
-              })}
-            </MessageListWrapper>
-          </React.Fragment>
-        );
-      }}
-    </Query>
-  );
-};
+                })}
+              </MessageListWrapper>
+            </React.Fragment>
+          );
+        }}
+      </Query>
+    );
+  }
+}
 
 export default MessageList;
 

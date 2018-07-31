@@ -1,8 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 import Sidebar from "./Sidebar";
 import Main from "./Main";
+import ShowApolloError from "../ApolloError";
+
+export const UserDetailsContext = React.createContext(undefined);
+
+const USER_QUERY = gql`
+  query USER_QUERY {
+    user {
+      username
+    }
+  }
+`;
 
 interface LayoutProps {
   mainTitle: string;
@@ -10,10 +23,22 @@ interface LayoutProps {
 }
 
 const Layout = ({ mainTitle, children }: LayoutProps) => (
-  <Page>
-    <Sidebar />
-    <Main title={mainTitle}>{children}</Main>
-  </Page>
+  <Query query={USER_QUERY}>
+    {({ data: { user }, loading, error }) => {
+      /* TODO: Replace with spinner */
+      if (!user || loading) return null;
+
+      return (
+        <UserDetailsContext.Provider value={user}>
+          <ShowApolloError error={error} />
+          <Page>
+            <Sidebar />
+            <Main title={mainTitle}>{children}</Main>
+          </Page>
+        </UserDetailsContext.Provider>
+      );
+    }}
+  </Query>
 );
 
 export default Layout;
