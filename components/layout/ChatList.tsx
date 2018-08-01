@@ -51,12 +51,12 @@ const ChatList = () => (
 export default ChatList;
 
 const ChatListWrapper = styled.nav`
-  height: calc(100vh - ${constants.headerHeight});
+  height: calc(100vh - ${constants.headerHeight}px);
   overflow: auto;
 `;
 
 const CenterDiv = styled.div`
-  height: calc(100vh - ${constants.headerHeight});
+  height: calc(100vh - ${constants.headerHeight}px);
   width: 100%;
   display: flex;
   justify-content: center;

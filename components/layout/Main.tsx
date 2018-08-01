@@ -39,7 +39,7 @@ const MainWrapper = styled.main`
 const TitleWrapper = styled.div`
   background-color: white;
   border-bottom: ${constants.borderHorizontal};
-  height: ${constants.headerHeight};
+  height: ${constants.headerHeight}px;
   padding: 8px;
   display: flex;
   justify-content: center;
@@ -52,5 +52,5 @@ const TitleWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  height: calc(100vh - ${constants.headerHeight});
+  height: calc(100vh - ${constants.headerHeight}px);
 `;

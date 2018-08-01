@@ -32,7 +32,7 @@ export default Toolbar;
 const ToolbarWrapper = styled.div`
   background-color: white;
   border-bottom: ${constants.borderHorizontal};
-  height: ${constants.headerHeight};
+  height: ${constants.headerHeight}px;
   padding: 8px;
   display: flex;
   justify-content: space-between;
