@@ -6,22 +6,34 @@ import Router from "next/router";
 import { UserDetailsContext } from "../layout";
 
 /* 
- * TODO: 
- * - Update cache for sidebar with latest message when user
- *   sends a message (Or just wait for GraphQL Subscriptions to be added?)
- * - Reduce the last sent message that is display for each chat in the
- *   sidebar. (if string length > ~75 chars, cut and append '...')
+ * TODO: Update cache for sidebar with latest message when user sends
+ * a message (Or just wait for GraphQL Subscriptions to be added?).
  */
 
 /*
- * NOTE: SearchBox state is kept uncontrolled because it reduces
- * the complexity of the code and reduces the amount of possible re-renders.
+ * NOTE: SearchBox state is kept uncontrolled because it reduces the
+ * complexity of the code and reduces the amount of possible re-renders.
  */
 
-/* TODO: Type props and state better */
+/* TODO: Extract types out into util file */
+type user = {
+  username: string;
+};
+
+type message = {
+  author: user;
+  content: string;
+};
+
+type chat = {
+  id: string;
+  title: string;
+  messages: message[];
+};
+
 interface ChatListUIProps {
   data: {
-    chats: any[];
+    chats: chat[];
   };
 }
 
@@ -59,32 +71,21 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
             {this.state.filteredChats.length !== 0 ? (
               <ul>
                 {this.state.filteredChats.map(chat => {
+                  /* Determine what to display below chat title */
+                  let mostRecentMessage;
                   if (chat.messages.length === 0) {
-                    return (
-                      <li
-                        key={chat.id}
-                        className={
-                          Router.query.id === chat.id ? "current" : null
-                        }
-                      >
-                        <Link
-                          as={`/chat/${chat.id}`}
-                          href={`/chat?id=${chat.id}`}
-                        >
-                          <a>
-                            <span>{chat.title}</span>
-                            <span>This chat has no messages.</span>
-                          </a>
-                        </Link>
-                      </li>
-                    );
-                  }
-
-                  let usernameToDisplay;
-                  if (chat.messages[0].author.username === username) {
-                    usernameToDisplay = "You";
+                    mostRecentMessage = "This chat has no messages.";
                   } else {
-                    usernameToDisplay = chat.messages[0].author.username;
+                    let usernameToDisplay;
+                    /* If most recent message was sent by the current user */
+                    if (chat.messages[0].author.username === username) {
+                      usernameToDisplay = "You";
+                    } else {
+                      usernameToDisplay = chat.messages[0].author.username;
+                    }
+
+                    const messageContent = chat.messages[0].content;
+                    mostRecentMessage = `${usernameToDisplay}: ${messageContent}`;
                   }
 
                   return (
@@ -98,9 +99,7 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
                       >
                         <a>
                           <span>{chat.title}</span>
-                          <span>
-                            {usernameToDisplay}: {chat.messages[0].content}
-                          </span>
+                          <span>{mostRecentMessage}</span>
                         </a>
                       </Link>
                     </li>
@@ -127,7 +126,6 @@ const ChatListWrapper = styled.div`
       outline: none;
       display: flex;
       flex-direction: column;
-
       padding: 10px;
       text-decoration: none;
       color: black;
@@ -140,6 +138,10 @@ const ChatListWrapper = styled.div`
       span:last-child {
         font-size: 12px;
         color: rgba(153, 153, 153, 1);
+        margin-right: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
