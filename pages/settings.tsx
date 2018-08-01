@@ -1,22 +1,12 @@
 import React from "react";
-import styled from "styled-components";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import Router from "next/router";
+import styled, { css } from "styled-components";
 
 import loggedIn from "../utils/loggedIn";
 import NotLoggedIn from "../components/account/NotLoggedIn";
 import Layout from "../components/layout";
-import ShowApolloError from "../components/ApolloError";
-import constants from "../utils/constants";
+import SignOutButton from "../components/settings/SignOutButton";
 
-const SIGNOUT_MUTATION = gql`
-  mutation SIGNOUT_MUTATION {
-    signout {
-      message
-    }
-  }
-`;
+import constants from "../utils/constants";
 
 const SettingsPage = () => {
   /* Makes sure client side routing checks for auth */
@@ -26,45 +16,31 @@ const SettingsPage = () => {
 
   return (
     <Layout mainTitle="Settings">
-      <Mutation mutation={SIGNOUT_MUTATION}>
-        {(signOut, { loading, error, client }) => {
-          return (
-            <SettingsWrapper>
-              <ShowApolloError error={error} />
-              <button
-                disabled={loading}
-                onClick={async event => {
-                  event.preventDefault();
-                  /* 
-                 * Perform the logout mutation which deletes
-                 * the token cookie
-                 */
-                  await signOut();
-                  localStorage.removeItem("loggedIn");
-                  /* Redirect the user to the signin page */
-                  await Router.push({ pathname: "/signin" });
-                  /* 
-                 * Required so that data is not left in the
-                 * cache after the user has logged out. This
-                 * is so that if the user was to log in again
-                 * in the same session into another account,
-                 * the data in the cache from the previous 
-                 * account could be used. This would be a
-                 * security issue as it would mean the newly
-                 * logged in user could potentially see data
-                 * such as chats, messages, and personal user
-                 * data such as their email address and their
-                 * friends.
-                 */
-                  client.resetStore();
-                }}
-              >
-                Sign Out
-              </button>
-            </SettingsWrapper>
-          );
-        }}
-      </Mutation>
+      <SettingsWrapper>
+        <UserSettingsWrapper>
+          <div>
+            <h3>User Settings</h3>
+          </div>
+          <div>
+            <SignOutButton />
+          </div>
+        </UserSettingsWrapper>
+        <FriendsListWrapper>
+          <div>
+            <h3>Friends List</h3>
+          </div>
+          <div>
+            <SearchBox
+              type="search"
+              title="Search for chats"
+              placeholder="Search for chats..."
+              spellCheck={false}
+              autoComplete="off"
+            />
+            <TestList />
+          </div>
+        </FriendsListWrapper>
+      </SettingsWrapper>
     </Layout>
   );
 };
@@ -73,29 +49,162 @@ export default SettingsPage;
 
 const SettingsWrapper = styled.div`
   height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const titleSectionHeight = 40;
+
+const titleSectionStyles = css`
+  border-bottom: ${constants.borderHorizontal};
+  height: ${titleSectionHeight}px;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  button {
-    border: 1px solid #0084ff;
-    background-color: ${constants.color};
-    color: white;
-    border-radius: 4px;
-    font-size: 17px;
-    width: 286px;
-    height: 42px;
-    font-weight: normal;
-    cursor: pointer;
-
-    &:focus {
-      box-shadow: 0 0 1px 2px rgba(88, 144, 255, 0.75),
-        0 1px 1px rgba(0, 0, 0, 0.15);
-    }
-
-    &:active,
-    &:disabled {
-      opacity: 0.6;
-    }
+  h3 {
+    font-size: 16px;
+    text-align: center;
   }
 `;
+
+const mainSectionStyles = css`
+  height: calc(100vh - ${constants.headerHeight + titleSectionHeight}px);
+  overflow: auto;
+`;
+
+const UserSettingsWrapper = styled.div`
+  border-right: ${constants.borderVertical};
+
+  & > div:first-child {
+    ${titleSectionStyles};
+  }
+
+  & > div:last-child {
+    ${mainSectionStyles};
+    /* Temp */
+    padding: 15px;
+    text-align: center;
+  }
+`;
+
+const FriendsListWrapper = styled.div`
+  & > div:first-child {
+    ${titleSectionStyles};
+  }
+
+  & > div:last-child {
+    ${mainSectionStyles};
+    /* Temp */
+    padding: 15px;
+  }
+`;
+
+const searchBoxMargin = 0;
+const searchBoxHeight = 36;
+
+const SearchBox = styled.input`
+  margin: ${searchBoxMargin}px;
+  width: calc(100% - ${searchBoxMargin * 2}px);
+  height: ${searchBoxHeight}px;
+  padding: 10px 10px 10px ${searchBoxHeight}px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f5f6f7;
+  background-image: url("/static/search-icon.svg");
+  background-size: ${searchBoxHeight / 2}px;
+  background-position: ${searchBoxHeight / 4}px;
+  background-repeat: no-repeat;
+`;
+
+const TestList = () => (
+  <ul>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+    <li>Test Item</li>
+  </ul>
+);
