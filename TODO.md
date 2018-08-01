@@ -7,6 +7,8 @@
 
 # Later
 
+- Implement Apollo CLI codegen workflow to automatically creates types for query
+  and mutation responses
 - Type component data props better
 - Make is so that on forms, only allow submittion if all fields are valid
   (entered)
