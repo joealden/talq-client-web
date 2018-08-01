@@ -6,7 +6,7 @@ import constants from "../../utils/constants";
 export const AccountPageHeader = () => (
   <React.Fragment>
     <h1>Talq</h1>
-    <h2>A Facebook Messenger Clone</h2>
+    <h2>A Modern Communication Platform</h2>
   </React.Fragment>
 );
 

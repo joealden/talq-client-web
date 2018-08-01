@@ -1,21 +1,17 @@
 # talq
 
-A communication platform built with React and GraphQL.
+A modern communication platform built with React and GraphQL.
 
 ## Plan
 
-### Idea
-
-Build a Facebook Messenger clone with the following technologies and tools:
-
-#### Frontend
+### Frontend
 
 - React (Using a high level context provider to give login info)
 - Next.js (For file based routing and easy SSR)
 - Apollo client (To interface with the API)
 - Styled Components (For Styling and theming)
 
-#### API
+### API
 
 - Node
 - Prisma
@@ -24,7 +20,7 @@ Build a Facebook Messenger clone with the following technologies and tools:
 - GraphQL Subscriptions (For live message updates)
   - For both currently viewed contact and all contacts to show in sidebar
 
-#### Both
+### Both
 
 - Typescript
 - TSLint
