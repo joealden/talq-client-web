@@ -32,8 +32,8 @@ const SettingsPage = () => {
           <div>
             <SearchBox
               type="search"
-              title="Search for chats"
-              placeholder="Search for chats..."
+              title="Search for friends by username"
+              placeholder="Search for friends by username..."
               spellCheck={false}
               autoComplete="off"
             />
