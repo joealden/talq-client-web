@@ -15,25 +15,18 @@ import { UserDetailsContext } from "../layout";
  * complexity of the code and reduces the amount of possible re-renders.
  */
 
-/* TODO: Extract types out into util file */
-type user = {
-  username: string;
-};
-
-type message = {
-  author: user;
-  content: string;
-};
-
-type chat = {
-  id: string;
-  title: string;
-  messages: message[];
-};
-
 interface ChatListUIProps {
   data: {
-    chats: chat[];
+    chats: Array<{
+      id: string;
+      title: string;
+      messages: Array<{
+        author: {
+          username: string;
+        };
+        content: string;
+      }>;
+    }>;
   };
 }
 
@@ -123,7 +116,6 @@ const ChatListWrapper = styled.div`
 
   li {
     a {
-      outline: none;
       display: flex;
       flex-direction: column;
       padding: 10px;
