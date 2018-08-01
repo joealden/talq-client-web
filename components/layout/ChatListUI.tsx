@@ -54,7 +54,8 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
           <ChatListWrapper>
             <SearchBox
               type="search"
-              placeholder="Search Talq"
+              title="Search for chats"
+              placeholder="Search for chats..."
               spellCheck={false}
               autoComplete="off"
               onChange={event =>

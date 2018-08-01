@@ -14,13 +14,13 @@ import NewChatIcon from "../icons/NewChatIcon";
 const Toolbar = () => (
   <ToolbarWrapper>
     <Link prefetch href="/settings">
-      <a>
+      <a title="Settings">
         <StyledSettingsIcon />
       </a>
     </Link>
     <h1>Talq</h1>
     <Link prefetch href="/new">
-      <a>
+      <a title="Create a new chat">
         <StyledNewChatIcon />
       </a>
     </Link>

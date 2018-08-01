@@ -122,6 +122,7 @@ class CreateMessageBox extends React.Component<
                       }}
                     />
                     <button
+                      title="Send message to chat"
                       className={
                         this.state.message.trim() !== "" && !loading
                           ? "enabled"
