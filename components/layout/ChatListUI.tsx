@@ -4,11 +4,13 @@ import Link from "next/link";
 import Router from "next/router";
 
 import { UserDetailsContext } from "../layout";
-import constants from "../../utils/constants";
 
 /* 
- * TODO: Update cache for sidebar with latest message when user
- * sends a message (Or just wait for GraphQL Subscriptions to be added?)
+ * TODO: 
+ * - Update cache for sidebar with latest message when user
+ *   sends a message (Or just wait for GraphQL Subscriptions to be added?)
+ * - Reduce the last sent message that is display for each chat in the
+ *   sidebar. (if string length > ~75 chars, cut and append '...')
  */
 
 /*
