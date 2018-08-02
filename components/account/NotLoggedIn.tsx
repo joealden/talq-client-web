@@ -65,7 +65,6 @@ const InnerWrapper = styled.div`
     }
 
     a {
-      text-decoration: none;
       color: ${constants.color};
     }
   }

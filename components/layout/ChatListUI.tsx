@@ -120,7 +120,6 @@ const ChatListWrapper = styled.div`
       display: flex;
       flex-direction: column;
       padding: 10px;
-      text-decoration: none;
       color: black;
 
       span:first-child {

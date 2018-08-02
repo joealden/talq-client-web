@@ -98,7 +98,6 @@ const AccountPageWrapperInternal = styled.div`
 
     span {
       a {
-        text-decoration: none;
         color: ${constants.color};
       }
     }

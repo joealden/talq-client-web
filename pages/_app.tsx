@@ -24,6 +24,10 @@ injectGlobal`
     max-height: 100vh;
   }
 
+  a {
+    text-decoration: none;
+  }
+
   #__next {
     height: 100%;
   }
