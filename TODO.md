@@ -10,6 +10,9 @@
 
 # Later
 
+- Look at the following links for handling the scrolling of the chat page:
+  - https://twitter.com/james_k_nelson/status/1024980685507973122
+  - https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate
 - Make is so that on forms, only allow submittion if fields are valid (entered)
 - Make toast errors stack and dismissable like on prisma.io
 - Type component data props better
