@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Router from "next/router";
 
+import SearchBox from "../SearchBox";
 import { UserDetailsContext } from "../layout";
 
 /* 
@@ -53,6 +54,7 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
         {({ username }) => (
           <ChatListWrapper>
             <SearchBox
+              boxMargin={10}
               type="search"
               title="Search for chats"
               placeholder="Search for chats..."
@@ -147,24 +149,6 @@ const ChatListWrapper = styled.div`
       background-color: rgba(0, 0, 0, 0.1);
     }
   }
-`;
-
-const searchBoxMargin = 12;
-const searchBoxHeight = 36;
-
-const SearchBox = styled.input`
-  margin: ${searchBoxMargin}px;
-  width: calc(100% - ${searchBoxMargin * 2}px);
-  height: ${searchBoxHeight}px;
-  padding: 10px 10px 10px ${searchBoxHeight}px;
-  font-size: 14px;
-  border: none;
-  border-radius: 5px;
-  background-color: #f5f6f7;
-  background-image: url("/static/search-icon.svg");
-  background-size: ${searchBoxHeight / 2}px;
-  background-position: ${searchBoxHeight / 4}px;
-  background-repeat: no-repeat;
 `;
 
 const NoMatches = styled.p`
