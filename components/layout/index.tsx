@@ -45,7 +45,7 @@ export default Layout;
 
 const Page = styled.div`
   display: grid;
-  grid-template-columns: minmax(240px, 17vw) auto;
+  grid-template-columns: minmax(270px, 17vw) auto;
   grid-template-areas: "sidebar main";
   height: 100%;
 `;
