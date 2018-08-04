@@ -8,6 +8,7 @@ class AllUsers extends React.Component {
     return (
       <div>
         <SearchBox
+          boxMargin={10}
           type="search"
           title="Search for new friends"
           placeholder="Search for new friends..."

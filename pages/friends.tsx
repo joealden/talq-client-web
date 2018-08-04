@@ -70,6 +70,5 @@ const FriendsColumn = styled.div`
   & > :last-child {
     height: calc(100vh - ${constants.headerHeight + titleSectionHeight}px);
     overflow: auto;
-    padding: 10px;
   }
 `;
