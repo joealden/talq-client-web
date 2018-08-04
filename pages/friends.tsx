@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import loggedIn from "../utils/loggedIn";
 import NotLoggedIn from "../components/account/NotLoggedIn";
+
 import Layout from "../components/layout";
 import CurrentFriends from "../components/friends/CurrentFriends";
 import AllUsers from "../components/friends/AllUsers";
@@ -69,5 +70,6 @@ const FriendsColumn = styled.div`
   & > :last-child {
     height: calc(100vh - ${constants.headerHeight + titleSectionHeight}px);
     overflow: auto;
+    padding: 10px;
   }
 `;
