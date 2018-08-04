@@ -31,6 +31,7 @@ interface ChatListUIProps {
   };
 }
 
+/* TODO: Improve tying */
 interface ChatListUIState {
   filteredChats: any;
 }
