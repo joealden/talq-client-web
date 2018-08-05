@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import * as R from "ramda";
 
 import { message } from "./ChatUI";
-
 import constants from "../../utils/constants";
 import { UserDetailsContext } from "../layout";
 

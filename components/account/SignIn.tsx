@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 import Router from "next/router";
 
 import ShowApolloError from "../ApolloError";
@@ -17,12 +17,11 @@ const SIGNIN_MUTATION = gql`
 export interface SignInState {
   username: string;
   password: string;
-  /* 
-   * Used so that fields stay disabled when a successful
-   * login happens, the fields do not flash back to being
-   * enabled for a small amount of time before the user is
-   * redirect. This means that until the component unmounts,
-   * the fields will be disabled.
+  /**
+   * Used so that fields stay disabled when a successful login happens,
+   * the fields do not flash back to being enabled for a small amount of
+   * time before the user is redirect. This means that until the component
+   * unmounts, the fields will be disabled.
    */
   disabled: boolean;
 }

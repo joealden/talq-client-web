@@ -17,19 +17,18 @@ app
   .then(() => {
     const server = express();
 
-    /* 
-     * Redirect all requests but requests
-     * to the signup page to the signin page.
+    /**
+     * Redirect all requests but requests to the signup page to the
+     * signin page.
      */
 
     server.use(cookieParser());
 
-    /* 
-     * TODO: Do something with query string after '/signin',
-     * for example, '/signin?redirect=true'. Then consume 
-     * this value from the frontend to display a message
-     * telling the user why they were redirected. Also do
-     * the same for the other way round redirect.
+    /**
+     * TODO: Do something with query string after '/signin', for example,
+     * '/signin?redirect=true'. Then consume this value from the frontend
+     * to display a message telling the user why they were redirected.
+     * Also do the same for the other way round redirect.
      */
     server.use((req, res, next) => {
       if (
@@ -53,10 +52,10 @@ app
       }
     });
 
-    /* ----------------- Custom Routes ----------------- */
+    /* ------------------------ Custom Routes ------------------------ */
 
-    /*
-     * Temp until implement client side redirect switch 
+    /**
+     * Temp until implement client side redirect switch
      * on login state
      */
     server.get("/", (_req, res) => {
@@ -69,7 +68,7 @@ app
       app.render(req, res, "/chat", queryParams);
     });
 
-    /* ------------------------------------------------- */
+    /* --------------------------------------------------------------- */
 
     server.get("*", (req, res) => {
       return handle(req, res);

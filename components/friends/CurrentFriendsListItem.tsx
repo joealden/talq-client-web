@@ -3,7 +3,6 @@ import { Mutation } from "react-apollo";
 
 import { UserDetailsContext } from "../layout";
 import ShowApolloError from "../ApolloError";
-
 import {
   REMOVE_FRIEND_MUTATION,
   updateCacheForFriendRemoval,

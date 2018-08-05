@@ -6,10 +6,9 @@ import constants from "../../utils/constants";
 import SettingsIcon from "../icons/SettingsIcon";
 import NewChatIcon from "../icons/NewChatIcon";
 
-/* 
- * TODO: Look into stopping auto scroll to top
- * when settings / new-chat is pressed. Already
- * tried scroll={false} on links, doesn't work.
+/**
+ * TODO: Look into stopping auto scroll to top when settings / new-chat
+ * is pressed. Already tried scroll={false} on links, doesn't work.
  */
 const Toolbar = () => (
   <ToolbarWrapper>

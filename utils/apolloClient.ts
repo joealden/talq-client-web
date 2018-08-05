@@ -11,7 +11,10 @@ const client = new ApolloClient({
     uri: publicRuntimeConfig.API_ENDPOINT,
     credentials: "include",
 
-    /* Required because of SSR (fetch used in Apollo is not present in Node env) */
+    /**
+     * Required because of SSR
+     * (fetch used in Apollo is not present in Node env)
+     */
     fetch
   }),
   cache: new InMemoryCache()

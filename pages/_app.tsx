@@ -1,5 +1,5 @@
-import App, { Container } from "next/app";
 import React from "react";
+import App, { Container } from "next/app";
 import { injectGlobal } from "styled-components";
 import { ApolloProvider } from "react-apollo";
 

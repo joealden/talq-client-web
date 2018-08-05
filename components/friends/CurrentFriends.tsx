@@ -2,7 +2,6 @@ import React from "react";
 
 import SearchBox from "../SearchBox";
 import CurrentFriendsList from "./CurrentFriendsList";
-
 import { user, CenterDiv, ListWrapper } from "./utils";
 
 interface CurrentFriendsProps {

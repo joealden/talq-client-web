@@ -61,7 +61,6 @@ export const updateCacheForFriendAddition = ({
   result,
   friendsUsernameToAdd
 }: IUpdateCacheForFriendAddition) => {
-  /* Errors are already handled in component */
   if (!result.errors) {
     let data: UsersQueryResultType = cache.readQuery({
       query: USER_FRIENDS_AND_ALL_USERS_QUERY
@@ -97,7 +96,6 @@ export const updateCacheForFriendRemoval = ({
   result,
   friendsUsernameToDelete
 }: IUpdateCacheForFriendRemoval) => {
-  /* Errors are already handled in component */
   if (!result.errors) {
     let data: UsersQueryResultType = cache.readQuery({
       query: USER_FRIENDS_AND_ALL_USERS_QUERY

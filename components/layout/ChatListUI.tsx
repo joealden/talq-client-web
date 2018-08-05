@@ -6,12 +6,12 @@ import Router from "next/router";
 import SearchBox from "../SearchBox";
 import { UserDetailsContext } from "../layout";
 
-/* 
+/**
  * TODO: Update cache for sidebar with latest message when user sends
  * a message (Or just wait for GraphQL Subscriptions to be added?).
  */
 
-/*
+/**
  * NOTE: SearchBox state is kept uncontrolled because it reduces the
  * complexity of the code and reduces the amount of possible re-renders.
  */

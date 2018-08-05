@@ -1,8 +1,9 @@
 import React from "react";
-import { ApolloError } from "apollo-client";
 import styled from "styled-components";
 
-export interface ErrorMessageProps {
+import { ApolloError } from "apollo-client";
+
+interface ErrorMessageProps {
   error: ApolloError;
 }
 

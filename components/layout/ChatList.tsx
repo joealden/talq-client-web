@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { Query } from "react-apollo";
 
 import constants from "../../utils/constants";
 import ShowApolloError from "../ApolloError";
@@ -22,10 +22,9 @@ const CHAT_LIST_QUERY = gql`
   }
 `;
 
-/* 
- * TODO: Figure out a way to type the data variable coming
- * from the Query render function in the same shape as the
- * above query.
+/**
+ * TODO: Figure out a way to type the data variable coming from the
+ * Query render function in the same shape as the above query.
  */
 const ChatList = () => (
   <ChatListWrapper>

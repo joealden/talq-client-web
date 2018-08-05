@@ -3,15 +3,14 @@ import styled from "styled-components";
 
 import constants from "../../utils/constants";
 
-/* title prop may need to be reworked when buttons
- * like video call etc. are added to chat page header.
- * Also needs changing if new chat is to work exactly
- * like Messenger.
- * 
- * Possible solution is to pass a component down in
- * place of title so consumer can decide what the render.
- * Could leave title prop in by require XOR on title and
- * component prop.
+/**
+ * title prop may need to be reworked when buttons like video call etc.
+ * are added to chat page header. Also needs changing if new chat is to
+ * work exactly like Messenger.
+ *
+ * Possible solution is to pass a component down in place of title so
+ * consumer can decide what the render. Could leave title prop in by
+ * require XOR on title and component prop.
  */
 
 interface MainProps {

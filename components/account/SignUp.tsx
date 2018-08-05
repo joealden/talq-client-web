@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 import Router from "next/router";
 
 import ShowApolloError from "../ApolloError";

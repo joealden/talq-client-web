@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { Query } from "react-apollo";
 
 import Sidebar from "./Sidebar";
 import Main from "./Main";

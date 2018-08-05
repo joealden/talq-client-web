@@ -1,15 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 
 import { ChatIdContext } from "../../pages/chat";
 import { UserDetailsContext } from "../layout";
-
+import { CHAT_PAGE_QUERY } from "../../pages/chat";
 import ShowApolloError from "../ApolloError";
 import constants from "../../utils/constants";
 
-import { CHAT_PAGE_QUERY } from "../../pages/chat";
+/**
+ * TODO:
+ * - Make message state change when navigating between chats
+ * - Dedupe sendMessage mutation calls
+ * - Work out updating cache if using GraphQL Subscriptons
+ */
 
 const SEND_MUTATION = gql`
   mutation SEND_MUTATION($chatId: ID!, $content: String!) {
@@ -21,13 +26,6 @@ const SEND_MUTATION = gql`
     }
   }
 `;
-
-/* 
- * TODO:
- * - Make message state change when navigating between chats
- * - Dedupe sendMessage mutation calls
- * - Work out updating cache if using GraphQL Subscriptons
- */
 
 interface CreateMessageBoxProps {
   scrollMessageListToBottom: Function;
@@ -195,7 +193,7 @@ class CreateMessageBox extends React.Component<
 
 export default CreateMessageBox;
 
-/* 
+/**
  * TODO:
  * - Make it so that like messenger, the box
  *   grows to a certain point(max-height) when

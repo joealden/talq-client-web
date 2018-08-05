@@ -1,8 +1,8 @@
 import React from "react";
-import { withRouter, WithRouterProps } from "next/router";
 import styled from "styled-components";
-import { Query } from "react-apollo";
+import { withRouter, WithRouterProps } from "next/router";
 import gql from "graphql-tag";
+import { Query } from "react-apollo";
 
 import Layout from "../components/layout";
 import loggedIn from "../utils/loggedIn";

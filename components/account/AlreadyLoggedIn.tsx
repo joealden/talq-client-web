@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { Query, Mutation } from "react-apollo";
 import Link from "next/link";
 import Router from "next/router";
 
@@ -68,27 +68,28 @@ const AlreadyLoggedIn = () => (
                     disabled={loading}
                     onClick={async event => {
                       event.preventDefault();
-                      /* 
-                     * Perform the logout mutation which deletes
-                     * the token cookie
-                     */
+                      /**
+                       * Perform the logout mutation which deletes the token
+                       * cookie
+                       */
+
                       await signOut();
                       localStorage.removeItem("loggedIn");
+
                       /* Redirect the user to the signin page */
                       await Router.push({ pathname: "/signin" });
-                      /* 
-                     * Required so that data is not left in the
-                     * cache after the user has logged out. This
-                     * is so that if the user was to log in again
-                     * in the same session into another account,
-                     * the data in the cache from the previous 
-                     * account could be used. This would be a
-                     * security issue as it would mean the newly
-                     * logged in user could potentially see data
-                     * such as chats, messages, and personal user
-                     * data such as their email address and their
-                     * friends.
-                     */
+
+                      /**
+                       * Required so that data is not left in the cache after
+                       * the user has logged out. This is so that if the user
+                       * was to log in again in the same session into another
+                       * account, the data in the cache from the previous
+                       * account could be used. This would be a security issue
+                       * as it would mean the newly logged in user could
+                       * potentially see data such as chats, messages, and
+                       * personal user data such as their email address and
+                       * their friends.
+                       */
                       client.resetStore();
                     }}
                   >
