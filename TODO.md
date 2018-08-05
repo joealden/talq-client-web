@@ -1,13 +1,17 @@
 # TODO
 
-- Complete todo found in pages/settings.tsx
+- Add title field in new chat page
+- Extract out common code in new chat components
 - Extract out Remove and Add buttons in friends lists
+- Update chatlist cache when sending a message from a chat page
 - Add GraphQL Subscriptions for:
   - Chat messages
   - Chats in sidebar
 - Add more features to chat page
+  - Will require modifying Layout component to accept arbitrary component
+  - Button and popup to change chat title
   - List of current members
-    - Will require modifying Layout component to accept arbitrary component
+    - Ability to add and remove users
 
 # Later
 
