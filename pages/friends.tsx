@@ -24,7 +24,9 @@ const FriendsPage = () => {
         if (loading) {
           return (
             <Layout mainTitle="Friends">
-              <p>Loading...</p>
+              <CenterDiv>
+                <p>Loading...</p>
+              </CenterDiv>
             </Layout>
           );
         }
@@ -92,4 +94,11 @@ const FriendsColumn = styled.div`
     height: calc(100vh - ${constants.headerHeight + titleSectionHeight}px);
     overflow: auto;
   }
+`;
+
+const CenterDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;
