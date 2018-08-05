@@ -1,17 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 
 import CurrentFriendsListItem from "./CurrentFriendsListItem";
-import constants from "../../utils/constants";
-
-/* TODO: Dedup code between both friends page lists */
-
-type friend = {
-  username: string;
-};
+import { user, NoMatches, StyledList } from "./utils";
 
 interface CurrentFriendsListProps {
-  friends: Array<friend>;
+  friends: Array<user>;
   searchTerm: string;
 }
 
@@ -32,57 +25,12 @@ const CurrentFriendsList = ({
   }
 
   return (
-    <CurrentFriendsListWrapper>
+    <StyledList>
       {filteredFriends.map(friend => (
         <CurrentFriendsListItem key={friend.username} friend={friend} />
       ))}
-    </CurrentFriendsListWrapper>
+    </StyledList>
   );
 };
 
 export default CurrentFriendsList;
-
-const CurrentFriendsListWrapper = styled.ul`
-  li {
-    padding: 5px 10px;
-
-    &:hover {
-      background-color: #f5f6f7;
-    }
-
-    display: flex;
-    justify-content: space-between;
-
-    div {
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
-      background-color: ${constants.color};
-      padding: 5px 8px;
-      color: white;
-      font-weight: normal;
-      font-size: 15px;
-
-      &:hover {
-        background-color: #ea3232;
-      }
-
-      &:disabled {
-        background-color: grey;
-        cursor: not-allowed;
-      }
-    }
-  }
-`;
-
-const NoMatches = styled.div`
-  text-align: center;
-  font-size: 15px;
-  margin-top: 12px;
-`;

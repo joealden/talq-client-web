@@ -1,12 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 
 import SearchBox from "../SearchBox";
 import AllUsersList from "./AllUsersList";
 
-interface user {
-  username: string;
-}
+import { user, CenterDiv, ListWrapper } from "./utils";
 
 interface AllUsersProps {
   users: Array<user>;
@@ -62,15 +59,3 @@ class AllUsers extends React.Component<AllUsersProps, AllUsersState> {
 }
 
 export default AllUsers;
-
-const CenterDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ListWrapper = styled.div`
-  ul {
-    list-style: none;
-  }
-`;

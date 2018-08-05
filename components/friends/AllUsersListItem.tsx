@@ -1,33 +1,18 @@
 import React from "react";
-import styled from "styled-components";
-import gql from "graphql-tag";
-import { Mutation, FetchResult } from "react-apollo";
+import { Mutation } from "react-apollo";
 
 import { UserDetailsContext } from "../layout";
 import ShowApolloError from "../ApolloError";
-import { DataProxy } from "apollo-cache";
 
 import {
+  ADD_FRIEND_MUTATION,
   REMOVE_FRIEND_MUTATION,
-  updateCacheForFriendRemoval
-} from "./CurrentFriendsListItem";
-
-import {
-  USER_FRIENDS_AND_ALL_USERS_QUERY,
-  UsersQueryResultType
-} from "../../pages/friends";
-
-const ADD_FRIEND_MUTATION = gql`
-  mutation ADD_FRIEND_MUTATION($username: String!) {
-    addFriend(username: $username) {
-      username
-    }
-  }
-`;
-
-interface user {
-  username: string;
-}
+  updateCacheForFriendAddition,
+  updateCacheForFriendRemoval,
+  user,
+  RemoveButton,
+  AddButton
+} from "./utils";
 
 interface AllUsersListItemProps {
   user: user;
@@ -131,41 +116,3 @@ const AllUsersListItem = ({ user, friends }: AllUsersListItemProps) => (
 );
 
 export default AllUsersListItem;
-
-interface IUpdateCacheForFriendAddition {
-  cache: DataProxy;
-  result: FetchResult<any, Record<string, any>>;
-  friendsUsernameToAdd: string;
-}
-
-export const updateCacheForFriendAddition = ({
-  cache,
-  result,
-  friendsUsernameToAdd
-}: IUpdateCacheForFriendAddition) => {
-  /* Errors are already handled in component */
-  if (!result.errors) {
-    let data: UsersQueryResultType = cache.readQuery({
-      query: USER_FRIENDS_AND_ALL_USERS_QUERY
-    });
-
-    data.user.friends.push({
-      __typename: "User",
-      username: friendsUsernameToAdd
-    });
-
-    cache.writeQuery({ query: USER_FRIENDS_AND_ALL_USERS_QUERY, data });
-  }
-};
-
-const AddButton = styled.button`
-  &:hover {
-    background-color: #66cd00;
-  }
-`;
-
-const RemoveButton = styled.button`
-  &:hover {
-    background-color: #ea3232;
-  }
-`;

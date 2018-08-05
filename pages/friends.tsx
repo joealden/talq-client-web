@@ -1,40 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
 import loggedIn from "../utils/loggedIn";
 import NotLoggedIn from "../components/account/NotLoggedIn";
+
 import Layout from "../components/layout";
 import ShowApolloError from "../components/ApolloError";
 import CurrentFriends from "../components/friends/CurrentFriends";
 import AllUsers from "../components/friends/AllUsers";
 import constants from "../utils/constants";
-
-export const USER_FRIENDS_AND_ALL_USERS_QUERY = gql`
-  query USER_FRIENDS_AND_ALL_USERS_QUERY {
-    users {
-      username
-    }
-    user {
-      friends {
-        username
-      }
-    }
-  }
-`;
-
-interface user {
-  __typename?: string;
-  username: string;
-}
-
-export interface UsersQueryResultType {
-  users: Array<user>;
-  user: {
-    friends: Array<user>;
-  };
-}
+import { USER_FRIENDS_AND_ALL_USERS_QUERY } from "../components/friends/utils";
 
 const FriendsPage = () => {
   /* Makes sure client side routing checks for auth */

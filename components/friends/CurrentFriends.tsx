@@ -1,15 +1,12 @@
 import React from "react";
-import styled from "styled-components";
 
 import SearchBox from "../SearchBox";
 import CurrentFriendsList from "./CurrentFriendsList";
 
-interface friend {
-  username: string;
-}
+import { user, CenterDiv, ListWrapper } from "./utils";
 
 interface CurrentFriendsProps {
-  friends: Array<friend>;
+  friends: Array<user>;
 }
 
 interface CurrentFriendsState {
@@ -70,15 +67,3 @@ class CurrentFriends extends React.Component<
 }
 
 export default CurrentFriends;
-
-const CenterDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ListWrapper = styled.div`
-  ul {
-    list-style: none;
-  }
-`;
