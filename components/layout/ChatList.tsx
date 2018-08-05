@@ -7,7 +7,7 @@ import constants from "../../utils/constants";
 import ShowApolloError from "../ApolloError";
 import ChatListUI from "./ChatListUI";
 
-const CHAT_LIST_QUERY = gql`
+export const CHAT_LIST_QUERY = gql`
   query {
     chats {
       id
@@ -33,11 +33,15 @@ const ChatList = () => (
         if (error) return <ShowApolloError error={error} />;
         if (loading) return <CenterDiv>Loading...</CenterDiv>;
 
-        if (data.chats.length === 0) {
-          return <CenterDiv>Chat list is empty.</CenterDiv>;
-        }
+        if (data.chats) {
+          if (data.chats.length === 0) {
+            return (
+              <CenterDiv>
+                <p>Chat list is empty.</p>
+              </CenterDiv>
+            );
+          }
 
-        if (data) {
           return <ChatListUI data={data} />;
         }
 
@@ -60,4 +64,9 @@ const CenterDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  p {
+    text-align: center;
+    margin: 15px;
+  }
 `;
