@@ -1,48 +1,46 @@
 import React from "react";
 import styled from "styled-components";
 
-import CurrentFriendsListItem from "./CurrentFriendsListItem";
+import AllUsersListItem from "./AllUsersListItem";
 import constants from "../../utils/constants";
 
 /* TODO: Dedup code between both friends page lists */
 
-type friend = {
+type user = {
   username: string;
 };
 
-interface CurrentFriendsListProps {
-  friends: Array<friend>;
+interface AllUsersListProps {
+  users: Array<user>;
+  friends: Array<user>;
   searchTerm: string;
 }
 
-const CurrentFriendsList = ({
-  friends,
-  searchTerm
-}: CurrentFriendsListProps) => {
-  const filteredFriends = friends.filter(friend =>
-    friend.username.includes(searchTerm)
+const AllUsersList = ({ users, friends, searchTerm }: AllUsersListProps) => {
+  const filteredUsers = users.filter(user =>
+    user.username.includes(searchTerm)
   );
 
-  if (filteredFriends.length === 0) {
+  if (filteredUsers.length === 0) {
     return (
       <NoMatches>
-        None of your friend's usernames match this search term.
+        No users have a username that match this search term.
       </NoMatches>
     );
   }
 
   return (
-    <CurrentFriendsListWrapper>
-      {filteredFriends.map(friend => (
-        <CurrentFriendsListItem key={friend.username} friend={friend} />
+    <AllUsersListWrapper>
+      {filteredUsers.map(user => (
+        <AllUsersListItem key={user.username} user={user} friends={friends} />
       ))}
-    </CurrentFriendsListWrapper>
+    </AllUsersListWrapper>
   );
 };
 
-export default CurrentFriendsList;
+export default AllUsersList;
 
-const CurrentFriendsListWrapper = styled.ul`
+const AllUsersListWrapper = styled.ul`
   li {
     padding: 5px 10px;
 
@@ -68,10 +66,6 @@ const CurrentFriendsListWrapper = styled.ul`
       color: white;
       font-weight: normal;
       font-size: 15px;
-
-      &:hover {
-        background-color: #ea3232;
-      }
 
       &:disabled {
         background-color: grey;

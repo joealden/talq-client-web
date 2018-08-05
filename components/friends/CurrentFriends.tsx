@@ -1,62 +1,77 @@
 import React from "react";
 import styled from "styled-components";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
 
-import ShowApolloError from "../ApolloError";
+import SearchBox from "../SearchBox";
 import CurrentFriendsList from "./CurrentFriendsList";
 
-export const USER_FRIENDS_QUERY = gql`
-  query USER_FRIENDS_QUERY {
-    user {
-      friends {
-        username
-      }
-    }
-  }
-`;
-
-/* TODO: Generate automatically with apollo codegen */
-export interface IUserFriendsQuery {
-  user: {
-    friends: Array<{
-      username: string;
-    }>;
-  };
+interface friend {
+  username: string;
 }
 
-const CurrentFriends = () => (
-  <Query query={USER_FRIENDS_QUERY}>
-    {({ data, loading, error }) => {
-      if (loading) return <p>Loading...</p>;
+interface CurrentFriendsProps {
+  friends: Array<friend>;
+}
 
-      if (data && data.user) {
-        if (data.user.friends && data.user.friends.length === 0) {
-          return (
-            <EmptyListWrapper>
-              <p>You don't have any friends.</p>
-            </EmptyListWrapper>
-          );
-        }
+interface CurrentFriendsState {
+  searchTerm: string;
+}
 
-        return (
-          <div>
-            <ShowApolloError error={error} />
-            <ListWrapper>
-              <CurrentFriendsList friends={data.user.friends} />
-            </ListWrapper>
-          </div>
-        );
-      }
+class CurrentFriends extends React.Component<
+  CurrentFriendsProps,
+  CurrentFriendsState
+> {
+  state = {
+    searchTerm: ""
+  };
 
-      return null;
-    }}
-  </Query>
-);
+  updateSearchTermState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchTerm: event.target.value.trim() });
+  };
+
+  componentDidUpdate() {
+    /* Reset the search input if friends list becomes empty */
+    if (this.props.friends.length === 0 && this.state.searchTerm !== "") {
+      this.setState({ searchTerm: "" });
+    }
+  }
+
+  render() {
+    const { friends } = this.props;
+
+    if (friends.length === 0) {
+      return (
+        <CenterDiv>
+          <p>You don't have any friends.</p>
+        </CenterDiv>
+      );
+    }
+
+    return (
+      <div>
+        <SearchBox
+          boxMargin={10}
+          type="search"
+          title="Search current friends"
+          placeholder="Search for current friends..."
+          spellCheck={false}
+          autoComplete="off"
+          onChange={this.updateSearchTermState}
+          value={this.state.searchTerm}
+        />
+        <ListWrapper>
+          <CurrentFriendsList
+            friends={friends}
+            searchTerm={this.state.searchTerm}
+          />
+        </ListWrapper>
+      </div>
+    );
+  }
+}
 
 export default CurrentFriends;
 
-const EmptyListWrapper = styled.div`
+const CenterDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

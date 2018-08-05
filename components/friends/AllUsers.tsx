@@ -2,25 +2,59 @@ import React from "react";
 import styled from "styled-components";
 
 import SearchBox from "../SearchBox";
+import AllUsersList from "./AllUsersList";
 
-class AllUsers extends React.Component {
+interface user {
+  username: string;
+}
+
+interface AllUsersProps {
+  users: Array<user>;
+  friends: Array<user>;
+}
+
+interface AllUsersState {
+  searchTerm: string;
+}
+
+class AllUsers extends React.Component<AllUsersProps, AllUsersState> {
+  state = {
+    searchTerm: ""
+  };
+
+  updateSearchTermState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchTerm: event.target.value.trim() });
+  };
+
   render() {
+    const { users, friends } = this.props;
+
+    if (users.length === 0) {
+      return (
+        <CenterDiv>
+          <p>You are the sole member of talq :(</p>
+        </CenterDiv>
+      );
+    }
+
     return (
       <div>
         <SearchBox
           boxMargin={10}
           type="search"
-          title="Search for new friends"
-          placeholder="Search for new friends..."
+          title="Search current friends"
+          placeholder="Search for current friends..."
           spellCheck={false}
           autoComplete="off"
+          onChange={this.updateSearchTermState}
+          value={this.state.searchTerm}
         />
         <ListWrapper>
-          <ul>
-            <li>Test Item</li>
-            <li>Test Item</li>
-            <li>Test Item</li>
-          </ul>
+          <AllUsersList
+            users={users}
+            friends={friends}
+            searchTerm={this.state.searchTerm}
+          />
         </ListWrapper>
       </div>
     );
@@ -29,14 +63,14 @@ class AllUsers extends React.Component {
 
 export default AllUsers;
 
-const ListWrapper = styled.div`
-  margin-top: 10px;
+const CenterDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
+const ListWrapper = styled.div`
   ul {
     list-style: none;
-
-    li {
-      padding: 5px 0;
-    }
   }
 `;
