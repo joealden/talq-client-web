@@ -1,6 +1,7 @@
 # TODO
 
 - Complete todo found in pages/settings.tsx
+- Extract out Remove and Add buttons in friends lists
 - Add GraphQL Subscriptions for:
   - Chat messages
   - Chats in sidebar
