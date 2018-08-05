@@ -97,7 +97,9 @@ class MessageList extends React.Component<MessageListProps> {
     if (messages.length === 0)
       return (
         <MessageListWrapper>
-          <CenterDiv>No messages have been sent in this chat yet.</CenterDiv>
+          <CenterDiv>
+            <p>No messages have been sent in this chat yet.</p>
+          </CenterDiv>
         </MessageListWrapper>
       );
 
@@ -177,6 +179,11 @@ const CenterDiv = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+
+  p {
+    text-align: center;
+    margin: 15px;
+  }
 `;
 
 const messageStyles = css`

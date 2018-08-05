@@ -115,6 +115,11 @@ export const CenterDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  p {
+    text-align: center;
+    margin: 15px;
+  }
 `;
 
 export const ListWrapper = styled.div`
@@ -164,7 +169,7 @@ export const StyledList = styled.ul`
 export const NoMatches = styled.div`
   text-align: center;
   font-size: 15px;
-  margin-top: 12px;
+  margin: 12px 15px 0px 15px;
 `;
 
 export const AddButton = styled.button`

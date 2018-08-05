@@ -154,5 +154,6 @@ const ChatListWrapper = styled.div`
 
 const NoMatches = styled.p`
   text-align: center;
-  margin-top: 12px;
+  font-size: 15px;
+  margin: 12px 15px 0px 15px;
 `;

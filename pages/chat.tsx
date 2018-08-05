@@ -58,8 +58,10 @@ const ChatPage = ({ router }: WithRouterProps) => {
               return (
                 <Layout mainTitle="Chat Page">
                   <CenterDiv>
-                    You don't have any chats. To create a new chat, click the
-                    new chat icon in the toolbar.
+                    <p>
+                      You don't have any chats. To create a new chat, click the
+                      new chat icon in the toolbar.
+                    </p>
                   </CenterDiv>
                 </Layout>
               );
@@ -102,4 +104,9 @@ const CenterDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  p {
+    text-align: center;
+    margin: 15px;
+  }
 `;
