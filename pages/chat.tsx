@@ -79,8 +79,15 @@ const ChatPage = ({ router }: WithRouterProps) => {
   return (
     <Query query={CHAT_PAGE_QUERY} variables={{ chatId: router.query.id }}>
       {({ data, loading, error }) => (
-        /* Render data.chat.title if it exists */
-        <Layout mainTitle={data && data.chat && data.chat.title}>
+        /**
+         * Render data.chat.title if it exists, otherwise render default
+         *
+         * TODO: Update this logic when usernames of members are used as
+         * the default chat title
+         */
+        <Layout
+          mainTitle={(data && data.chat && data.chat.title) || "Untitled Chat"}
+        >
           <React.Fragment>
             <ShowApolloError error={error} />
             {loading ? (
