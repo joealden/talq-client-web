@@ -78,10 +78,9 @@ class InitialMessageBox extends React.Component<
                   <input
                     type="text"
                     placeholder="Chat title (optional)..."
+                    maxLength={40}
                     onChange={this.updateTitleState}
                     value={this.state.title}
-                    /* TODO: Enforce max on server side as well */
-                    maxLength={50}
                   />
                   <button
                     className={buttonDisabled ? null : "enabled"}

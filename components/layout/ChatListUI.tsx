@@ -143,20 +143,23 @@ const ChatListWrapper = styled.div`
       display: flex;
       flex-direction: column;
       padding: 10px;
-      color: black;
+
+      span {
+        margin-right: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
 
       span:first-child {
         font-size: 15px;
+        color: black;
         margin-bottom: 4px;
       }
 
       span:last-child {
         font-size: 12px;
         color: rgba(153, 153, 153, 1);
-        margin-right: 10px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
       }
     }
 
