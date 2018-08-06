@@ -195,12 +195,9 @@ export default CreateMessageBox;
 
 /**
  * TODO:
- * - Make it so that like messenger, the box
- *   grows to a certain point(max-height) when
- *   the amount of text increases (also using
- *   min-height).
- * - Like messenger, remove padding at top of
- *   box when scrolling
+ * - Make it so that like messenger, the box grows to a certain point
+ *   (max-height) when the amount of text increases (also using min-height).
+ * - Like messenger, remove padding at top of box when scrolling
  */
 
 const createMessageBoxHeight = 60;
