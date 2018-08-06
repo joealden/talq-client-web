@@ -6,7 +6,7 @@ import constants from "../../utils/constants";
 
 import Members from "./Members";
 import Friends from "./Friends";
-import InitalMessageBox from "./InitialMessageBox";
+import InitalMessageAndTitle from "./InitialMessageAndTitle";
 
 interface user {
   username: string;
@@ -70,7 +70,7 @@ class NewChat extends React.Component<{}, NewChatState> {
             </ChatColumn>
           </div>
           <div>
-            <InitalMessageBox members={this.state.members} />
+            <InitalMessageAndTitle members={this.state.members} />
           </div>
         </ChatWrapper>
       </Layout>

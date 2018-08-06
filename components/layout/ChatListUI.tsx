@@ -85,6 +85,9 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
                     mostRecentMessage = `${usernameToDisplay}: ${messageContent}`;
                   }
 
+                  /* TODO: Instead of using untitled chat, uses member usernames */
+                  const chatTitle = chat.title ? chat.title : "Untitled Chat";
+
                   return (
                     <li
                       key={chat.id}
@@ -96,7 +99,7 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
                         href={`/chat?id=${chat.id}`}
                       >
                         <a>
-                          <span>{chat.title}</span>
+                          <span>{chatTitle}</span>
                           <span>{mostRecentMessage}</span>
                         </a>
                       </Link>

@@ -35,6 +35,7 @@ interface InitialMessageBoxProps {
 
 interface InitialMessageBoxState {
   message: string;
+  title: string;
 }
 
 class InitialMessageBox extends React.Component<
@@ -42,11 +43,16 @@ class InitialMessageBox extends React.Component<
   InitialMessageBoxState
 > {
   state = {
-    message: ""
+    message: "",
+    title: ""
   };
 
   updateMessageState = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ message: event.target.value });
+  };
+
+  updateTitleState = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ title: event.target.value });
   };
 
   render() {
@@ -71,17 +77,25 @@ class InitialMessageBox extends React.Component<
                     onChange={this.updateMessageState}
                     value={this.state.message}
                   />
+                  <input
+                    type="text"
+                    placeholder="Chat title (optional)..."
+                    onChange={this.updateTitleState}
+                    value={this.state.title}
+                    /* TODO: Enforce max on server side as well */
+                    maxLength={50}
+                  />
                   <button
                     className={buttonDisabled ? null : "enabled"}
                     disabled={buttonDisabled}
                     title="Start a chat with the above members"
                     onClick={() => {
                       const initialMessage = this.state.message.trim();
+                      const title = this.state.title.trim();
 
                       startChat({
                         variables: {
-                          /* TODO: Add optional field for title */
-                          title: "Placeholder chat title",
+                          title: title ? title : null,
                           usernames,
                           initialMessage
                         },
@@ -97,8 +111,7 @@ class InitialMessageBox extends React.Component<
                             const newChat = {
                               __typename: "Chat",
                               id: newChatId,
-                              /* TODO: Add optional field for title */
-                              title: "Placeholder chat title",
+                              title: title ? title : null,
                               messages: [
                                 {
                                   __typename: "Message",
@@ -147,12 +160,9 @@ export default InitialMessageBox;
 
 /**
  * TODO:
- * - Make it so that like messenger, the box
- *   grows to a certain point(max-height) when
- *   the amount of text increases (also using
- *   min-height).
- * - Like messenger, remove padding at top of
- *   box when scrolling
+ * - Make it so that like messenger, the box grows to a certain point
+ *   (max-height) when the amount of text increases (also using min-height).
+ * - Like messenger, remove padding at top of box when scrolling
  */
 
 const initialMessageBoxHeight = 60;
@@ -167,13 +177,20 @@ const InitialMessageBoxWrapper = styled.div`
 
   textarea {
     height: 100%;
-    flex: 1;
+    flex: 3;
     padding: 14px;
     padding-bottom: 0;
     resize: none;
     outline: none;
     border: none;
     border-right: ${constants.borderHorizontal};
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    border-right: ${constants.borderHorizontal};
+    padding: 15px;
   }
 
   button {
