@@ -6,6 +6,11 @@ import { FetchResult } from "react-apollo";
 
 import constants from "../../utils/constants";
 
+/**
+ * TODO: Extract out common code
+ * between new chat page and friends page
+ */
+
 /* ------------------------------ TYPES ------------------------------ */
 
 /**
@@ -183,3 +188,5 @@ export const RemoveButton = styled.button`
     background-color: #ea3232;
   }
 `;
+
+/* ------------------------------------------------------------------ */
