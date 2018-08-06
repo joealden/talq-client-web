@@ -1,6 +1,6 @@
 import React from "react";
-import styled from "styled-components";
 
+import { CenterDiv, ListWrapper } from "./utils";
 import SearchBox from "../SearchBox";
 import MembersList from "./MembersList";
 
@@ -69,20 +69,3 @@ class Members extends React.Component<MembersProps, MembersState> {
 }
 
 export default Members;
-
-const CenterDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  p {
-    text-align: center;
-    margin: 15px;
-  }
-`;
-
-const ListWrapper = styled.div`
-  ul {
-    list-style: none;
-  }
-`;

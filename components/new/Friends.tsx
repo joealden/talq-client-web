@@ -1,8 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
+import { CenterDiv, ListWrapper } from "./utils";
 import ShowApolloError from "../ApolloError";
 import SearchBox from "../SearchBox";
 import FriendsList from "./FriendsList";
@@ -52,6 +52,7 @@ class Members extends React.Component<FriendsProps, FriendsState> {
             if (data.user.friends.length === 0) {
               return (
                 <CenterDiv>
+                  <ShowApolloError error={error} />
                   <p>You don't have any friends.</p>
                 </CenterDiv>
               );
@@ -91,20 +92,3 @@ class Members extends React.Component<FriendsProps, FriendsState> {
 }
 
 export default Members;
-
-const CenterDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  p {
-    text-align: center;
-    margin: 15px;
-  }
-`;
-
-const ListWrapper = styled.div`
-  ul {
-    list-style: none;
-  }
-`;

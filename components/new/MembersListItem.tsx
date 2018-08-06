@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+
+import { RemoveButton } from "./utils";
 
 interface user {
   username: string;
@@ -20,9 +21,3 @@ const MembersListItem = ({ member, removeMember }: MembersListItemProps) => (
 );
 
 export default MembersListItem;
-
-const RemoveButton = styled.button`
-  &:hover {
-    background-color: #ea3232;
-  }
-`;

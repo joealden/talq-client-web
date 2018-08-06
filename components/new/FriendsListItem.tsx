@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+
+import { RemoveButton, AddButton } from "./utils";
 
 interface user {
   username: string;
@@ -42,15 +43,3 @@ const FriendsListItem = ({
 };
 
 export default FriendsListItem;
-
-const AddButton = styled.button`
-  &:hover {
-    background-color: #66cd00;
-  }
-`;
-
-const RemoveButton = styled.button`
-  &:hover {
-    background-color: #ea3232;
-  }
-`;

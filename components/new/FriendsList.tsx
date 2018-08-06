@@ -1,7 +1,6 @@
 import React from "react";
-import styled from "styled-components";
 
-import constants from "../../utils/constants";
+import { NoMatches, StyledList } from "./utils";
 import FriendsListItem from "./FriendsListItem";
 
 interface user {
@@ -54,47 +53,3 @@ const FriendsList = ({
 };
 
 export default FriendsList;
-
-export const StyledList = styled.ul`
-  li {
-    padding: 5px 10px;
-
-    &:hover {
-      background-color: #f5f6f7;
-    }
-
-    display: flex;
-    justify-content: space-between;
-
-    div {
-      display: flex;
-      align-items: center;
-      font-size: 15px;
-    }
-
-    button {
-      background-color: ${constants.color};
-      border: none;
-      border-radius: 4px;
-      padding: 5px 8px;
-      font-weight: normal;
-      font-size: 15px;
-      color: white;
-      cursor: pointer;
-
-      /* So that both add and remove buttons are same width */
-      min-width: 70px;
-
-      &:disabled {
-        background-color: grey;
-        cursor: not-allowed;
-      }
-    }
-  }
-`;
-
-export const NoMatches = styled.div`
-  text-align: center;
-  font-size: 15px;
-  margin: 12px 15px 0px 15px;
-`;
