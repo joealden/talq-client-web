@@ -4,6 +4,8 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import Router from "next/router";
 
+import { user } from "./utils";
+
 import { UserDetailsContext } from "../layout";
 import ShowApolloError from "../ApolloError";
 import { CHAT_LIST_QUERY } from "../layout/ChatList";
@@ -24,10 +26,6 @@ const START_CHAT_MUTATION = gql`
     }
   }
 `;
-
-interface user {
-  username: string;
-}
 
 interface InitialMessageBoxProps {
   members: Array<user>;

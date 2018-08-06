@@ -6,6 +6,15 @@ import constants from "../../utils/constants";
  * between new chat page and friends page
  */
 
+/* ----------------------------- TYPES ----------------------------- */
+
+export interface user {
+  username: string;
+}
+
+export type removeMember = (usernameOfUserToRemove: string) => void;
+export type addMember = (usernameOfUserToAdd: string) => void;
+
 /* ----------------------------- STYLES ----------------------------- */
 
 export const CenterDiv = styled.div`

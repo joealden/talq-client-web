@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
-import { CenterDiv, ListWrapper } from "./utils";
+import { user, removeMember, addMember, CenterDiv, ListWrapper } from "./utils";
 import ShowApolloError from "../ApolloError";
 import SearchBox from "../SearchBox";
 import FriendsList from "./FriendsList";
@@ -17,14 +17,10 @@ const USER_FRIENDS_QUERY = gql`
   }
 `;
 
-interface user {
-  username: string;
-}
-
 interface FriendsProps {
   members: Array<user>;
-  removeMember: (usernameOfUserToRemove: string) => void;
-  addMember: (usernameOfUserToAdd: string) => void;
+  removeMember: removeMember;
+  addMember: addMember;
 }
 
 interface FriendsState {

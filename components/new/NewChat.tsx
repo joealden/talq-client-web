@@ -1,16 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
+import { user } from "./utils";
+
 import Layout from "../layout";
 import constants from "../../utils/constants";
 
 import Members from "./Members";
 import Friends from "./Friends";
 import InitalMessageAndTitle from "./InitialMessageAndTitle";
-
-interface user {
-  username: string;
-}
 
 interface NewChatState {
   members: Array<user>;

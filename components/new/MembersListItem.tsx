@@ -1,14 +1,10 @@
 import React from "react";
 
-import { RemoveButton } from "./utils";
-
-interface user {
-  username: string;
-}
+import { user, removeMember, RemoveButton } from "./utils";
 
 interface MembersListItemProps {
   member: user;
-  removeMember: (usernameOfUserToRemove: string) => void;
+  removeMember: removeMember;
 }
 
 const MembersListItem = ({ member, removeMember }: MembersListItemProps) => (

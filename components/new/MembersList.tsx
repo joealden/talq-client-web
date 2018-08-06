@@ -1,16 +1,12 @@
 import React from "react";
 
-import { NoMatches, StyledList } from "./utils";
+import { user, removeMember, NoMatches, StyledList } from "./utils";
 import MembersListItem from "./MembersListItem";
-
-interface user {
-  username: string;
-}
 
 interface MembersListProps {
   members: Array<user>;
   searchTerm: string;
-  removeMember: (usernameOfUserToRemove: string) => void;
+  removeMember: removeMember;
 }
 
 const MembersList = ({

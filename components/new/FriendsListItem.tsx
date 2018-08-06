@@ -1,16 +1,18 @@
 import React from "react";
 
-import { RemoveButton, AddButton } from "./utils";
-
-interface user {
-  username: string;
-}
+import {
+  user,
+  removeMember,
+  addMember,
+  RemoveButton,
+  AddButton
+} from "./utils";
 
 interface FriendsListItemProps {
   friend: user;
   members: Array<user>;
-  removeMember: (usernameOfUserToRemove: string) => void;
-  addMember: (usernameOfUserToAdd: string) => void;
+  removeMember: removeMember;
+  addMember: addMember;
 }
 
 const FriendsListItem = ({
