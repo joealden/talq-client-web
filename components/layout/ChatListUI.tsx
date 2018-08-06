@@ -41,10 +41,22 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
     filteredChats: this.props.data.chats
   };
 
-  updateFilteredChatsState = searchTerm => {
-    const filteredChats = this.props.data.chats.filter(chat =>
-      chat.title.includes(searchTerm)
-    );
+  updateFilteredChatsState = (searchTerm: string) => {
+    const normalisedSearchTerm = searchTerm.toLowerCase();
+
+    const filteredChats = this.props.data.chats.filter(chat => {
+      if (chat.title) {
+        const normalisedChatTitle = chat.title.toLowerCase();
+
+        return normalisedChatTitle.includes(normalisedSearchTerm);
+      }
+
+      /**
+       * TODO: Will require changing when untitled chats are given
+       * the title of the member's usernames.
+       */
+      return "Untitled Chat".toLowerCase().includes(normalisedSearchTerm);
+    });
     this.setState({ filteredChats });
   };
 
@@ -85,7 +97,11 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
                     mostRecentMessage = `${usernameToDisplay}: ${messageContent}`;
                   }
 
-                  /* TODO: Instead of using untitled chat, uses member usernames */
+                  /**
+                   * TODO: Instead of using untitled chat, uses member usernames.
+                   * This will require updating the query and query type above
+                   * to include the member's usernames of each chat.
+                   */
                   const chatTitle = chat.title ? chat.title : "Untitled Chat";
 
                   return (
