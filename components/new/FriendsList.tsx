@@ -23,9 +23,12 @@ const FriendsList = ({
   removeMember,
   addMember
 }: MembersListProps) => {
-  const filteredFriends = friends.filter(friend =>
-    friend.username.includes(searchTerm)
-  );
+  const normalisedSearchTerm = searchTerm.toLowerCase();
+
+  const filteredFriends = friends.filter(friend => {
+    const normalisedUsername = friend.username.toLowerCase();
+    return normalisedUsername.includes(normalisedSearchTerm);
+  });
 
   if (filteredFriends.length === 0) {
     return (

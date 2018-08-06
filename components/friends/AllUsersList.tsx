@@ -10,9 +10,12 @@ interface AllUsersListProps {
 }
 
 const AllUsersList = ({ users, friends, searchTerm }: AllUsersListProps) => {
-  const filteredUsers = users.filter(user =>
-    user.username.includes(searchTerm)
-  );
+  const normalisedSearchTerm = searchTerm.toLowerCase();
+
+  const filteredUsers = users.filter(user => {
+    const normalisedUsername = user.username.toLowerCase();
+    return normalisedUsername.includes(normalisedSearchTerm);
+  });
 
   if (filteredUsers.length === 0) {
     return (

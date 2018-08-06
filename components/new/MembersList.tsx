@@ -19,9 +19,12 @@ const MembersList = ({
   searchTerm,
   removeMember
 }: MembersListProps) => {
-  const filteredMembers = members.filter(member =>
-    member.username.includes(searchTerm)
-  );
+  const normalisedSearchTerm = searchTerm.toLowerCase();
+
+  const filteredMembers = members.filter(member => {
+    const normalisedUsername = member.username.toLowerCase();
+    return normalisedUsername.includes(normalisedSearchTerm);
+  });
 
   if (filteredMembers.length === 0) {
     return (
