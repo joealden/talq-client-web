@@ -1,8 +1,9 @@
 # TODO
 
-- Add title field in new chat page
 - Extract out common code in new chat components
 - Extract out Remove and Add buttons in friends lists
+- Extract out common code between new chat page and friends page (into root
+  `/utils` folder)
 - Update chatlist cache when sending a message from a chat page
 - Add GraphQL Subscriptions for:
   - Chat messages
