@@ -18,7 +18,7 @@ const SettingsPage = () => {
     <Layout mainTitle="Settings">
       <SettingsWrapper>
         <p>
-          <Link href="/friends">
+          <Link prefetch href="/friends">
             <a>Friends Page</a>
           </Link>
         </p>

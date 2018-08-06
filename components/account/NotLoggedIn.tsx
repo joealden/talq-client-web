@@ -15,14 +15,14 @@ const AlreadyLoggedIn = () => (
         </p>
         <p>
           If you already have an account, click{" "}
-          <Link href="/signin">
+          <Link prefetch href="/signin">
             <a>here</a>
           </Link>{" "}
           to be taken to the sign in page.
         </p>
         <p>
           If you don't already have an account but would like one, click{" "}
-          <Link href="/signup">
+          <Link prefetch href="/signup">
             <a>here</a>
           </Link>{" "}
           to be taken to the sign up page.

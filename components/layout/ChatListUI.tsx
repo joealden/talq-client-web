@@ -91,6 +91,7 @@ class ChatListUI extends React.Component<ChatListUIProps, ChatListUIState> {
                       className={Router.query.id === chat.id ? "current" : null}
                     >
                       <Link
+                        prefetch
                         as={`/chat/${chat.id}`}
                         href={`/chat?id=${chat.id}`}
                       >

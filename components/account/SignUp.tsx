@@ -118,7 +118,7 @@ class SignUp extends React.Component<{}, SignUpState> {
               </fieldset>
               <span>
                 Already have an account?{" "}
-                <Link href="/signin">
+                <Link prefetch href="/signin">
                   <a>Sign In</a>
                 </Link>
               </span>

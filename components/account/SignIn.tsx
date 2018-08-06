@@ -86,7 +86,7 @@ class SignIn extends React.Component<{}, SignInState> {
               </fieldset>
               <span>
                 Don't have an account?{" "}
-                <Link href="/signup">
+                <Link prefetch href="/signup">
                   <a>Sign Up</a>
                 </Link>
               </span>

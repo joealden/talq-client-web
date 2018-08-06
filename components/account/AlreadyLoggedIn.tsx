@@ -51,7 +51,7 @@ const AlreadyLoggedIn = () => (
         </p>
         <p>
           If you want to continue using this account, please click{" "}
-          <Link href="/chat">
+          <Link prefetch href="/chat">
             <a>here</a>
           </Link>{" "}
           to go the chat page.
