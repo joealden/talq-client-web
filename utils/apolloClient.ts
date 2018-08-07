@@ -5,16 +5,43 @@ import { HttpLink } from "apollo-link-http";
 import { WebSocketLink } from "apollo-link-ws";
 import { getOperationDefinition } from "apollo-utilities";
 
-import fetch from "cross-fetch";
+import NodeWebSocket from "ws";
+import serverFetch from "cross-fetch";
 import getConfig from "next/config";
 
 const { publicRuntimeConfig } = getConfig();
 const { API_ENDPOINT, API_SUBSCRIPTION_ENDPOINT } = publicRuntimeConfig;
 
-export enum executeContextEnum {
-  Browser = "browser",
-  Server = "server"
+/* Required because fetch isn't available in node */
+let fetchOption;
+if (typeof window === "undefined") {
+  fetchOption = serverFetch;
+} else {
+  fetchOption = fetch;
 }
+
+const httpLink = new HttpLink({
+  uri: API_ENDPOINT,
+  credentials: "include",
+
+  fetch: fetchOption
+});
+
+/* Required because WebSocket isn't available in node */
+let webSocketImpl;
+if (typeof window === "undefined") {
+  webSocketImpl = NodeWebSocket;
+} else {
+  webSocketImpl = WebSocket;
+}
+
+const wsLink = new WebSocketLink({
+  uri: API_SUBSCRIPTION_ENDPOINT,
+  options: {
+    reconnect: true
+  },
+  webSocketImpl
+});
 
 /**
  * The reason this function is needed is because Web Sockets don't
@@ -40,44 +67,20 @@ export enum executeContextEnum {
  * - getOperationDefinitionOrDie
  */
 
-export const createApolloClient = (executeContext: executeContextEnum) => {
-  if (executeContext === executeContextEnum.Browser) {
-    const httpLink = new HttpLink({
-      uri: API_ENDPOINT,
-      credentials: "include"
-    });
+const link = split(
+  ({ query }) => {
+    const { kind, operation } = getOperationDefinition(query);
+    return kind === "OperationDefinition" && operation === "subscription";
+  },
+  wsLink,
+  httpLink
+);
 
-    const wsLink = new WebSocketLink({
-      uri: API_SUBSCRIPTION_ENDPOINT,
-      options: {
-        reconnect: true
-      }
-    });
+const client = new ApolloClient({
+  link,
+  cache: new InMemoryCache(),
+  /* Enable SSR mode if code is executed on the server */
+  ssrMode: typeof window === "undefined"
+});
 
-    const link = split(
-      ({ query }) => {
-        const { kind, operation } = getOperationDefinition(query);
-        return kind === "OperationDefinition" && operation === "subscription";
-      },
-      wsLink,
-      httpLink
-    );
-
-    return new ApolloClient({
-      link,
-      cache: new InMemoryCache()
-    });
-  } else if (executeContext === executeContextEnum.Server) {
-    const link = new HttpLink({
-      uri: API_ENDPOINT,
-      credentials: "include",
-      /* Required because fetch isn't available in node */
-      fetch
-    });
-
-    return new ApolloClient({
-      link,
-      cache: new InMemoryCache()
-    });
-  }
-};
+export default client;

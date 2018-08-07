@@ -3,10 +3,7 @@ import App, { Container } from "next/app";
 import { injectGlobal } from "styled-components";
 import { ApolloProvider } from "react-apollo";
 
-import {
-  createApolloClient,
-  executeContextEnum
-} from "../utils/createApolloClient";
+import client from "../utils/apolloClient";
 
 injectGlobal`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -35,19 +32,6 @@ injectGlobal`
     height: 100%;
   }
 `;
-
-/**
- * Provide altered version of the apollo
- * client depending on the execute context.
- */
-
-let client;
-
-if (typeof window === "undefined") {
-  client = createApolloClient(executeContextEnum.Server);
-} else {
-  client = createApolloClient(executeContextEnum.Browser);
-}
 
 export default class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
