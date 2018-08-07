@@ -3,7 +3,7 @@ const nextRuntimeDotenv = require("next-runtime-dotenv");
 
 const withConfig = nextRuntimeDotenv({
   path: ".env",
-  public: ["API_ENDPOINT"],
+  public: ["API_ENDPOINT", "API_SUBSCRIPTION_ENDPOINT"],
   server: ["PORT"]
 });
 
