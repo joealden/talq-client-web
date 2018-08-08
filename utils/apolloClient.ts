@@ -23,7 +23,6 @@ if (typeof window === "undefined") {
 const httpLink = new HttpLink({
   uri: API_ENDPOINT,
   credentials: "include",
-
   fetch: fetchOption
 });
 
