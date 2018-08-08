@@ -8,6 +8,7 @@ import Layout from "../components/layout";
 import loggedIn from "../utils/loggedIn";
 import NotLoggedIn from "../components/account/NotLoggedIn";
 import ShowApolloError from "../components/ApolloError";
+import { UserDetailsContext } from "../components/layout";
 import ChatUI from "../components/chat/ChatUI";
 
 export const ChatIdContext = React.createContext(undefined);
@@ -26,6 +27,19 @@ export const CHAT_PAGE_QUERY = gql`
         }
         content
       }
+    }
+  }
+`;
+
+const CHAT_PAGE_SUBSCRIPTION = gql`
+  subscription CHAT_PAGE_SUBSCRIPTION($chatId: ID!) {
+    newChatMessage(chatId: $chatId) {
+      id
+      author {
+        username
+      }
+      createdAt
+      content
     }
   }
 `;
@@ -78,28 +92,79 @@ const ChatPage = ({ router }: WithRouterProps) => {
 
   return (
     <Query query={CHAT_PAGE_QUERY} variables={{ chatId: router.query.id }}>
-      {({ data, loading, error }) => (
+      {({ data, loading, error, subscribeToMore }) => {
         /**
          * Render data.chat.title if it exists, otherwise render default
          *
          * TODO: Update this logic when usernames of members are used as
          * the default chat title
          */
-        <Layout
-          mainTitle={(data && data.chat && data.chat.title) || "Untitled Chat"}
-        >
-          <React.Fragment>
-            <ShowApolloError error={error} />
-            {loading ? (
-              <CenterDiv>Loading chat...</CenterDiv>
-            ) : (
-              <ChatIdContext.Provider value={router.query.id}>
-                <ChatUI data={data} />
-              </ChatIdContext.Provider>
-            )}
-          </React.Fragment>
-        </Layout>
-      )}
+
+        if (loading) {
+          return (
+            <Layout mainTitle="Loading Chat...">
+              <CenterDiv> Loading chat...</CenterDiv>
+            </Layout>
+          );
+        }
+
+        if (data && data.chat) {
+          return (
+            <Layout mainTitle={data.chat.title || "Untitled Chat"}>
+              <UserDetailsContext.Consumer>
+                {({ username }) => {
+                  const subscribeToMoreMessages = () =>
+                    subscribeToMore({
+                      document: CHAT_PAGE_SUBSCRIPTION,
+                      variables: { chatId: router.query.id },
+                      updateQuery: (previous, { subscriptionData }) => {
+                        if (!subscriptionData.data) return previous;
+
+                        const newMessage = subscriptionData.data.newChatMessage;
+
+                        /**
+                         * TODO: Think about scenario where the same account
+                         * is logged in on two different devices (will be more
+                         * important when native app is developed). A way to
+                         * solve this would be to check the most recent messages
+                         * id and compare it against the new messages id. This
+                         * would mean that local store updates wouldn't effect
+                         * other devices that are logged into the same account
+                         * but didn't make the mutation.
+                         */
+                        if (newMessage.author.username === username) {
+                          return previous;
+                        }
+
+                        return {
+                          ...previous,
+                          chat: {
+                            ...previous.chat,
+                            messages: [...previous.chat.messages, newMessage]
+                          }
+                        };
+                      }
+                    });
+
+                  return (
+                    <React.Fragment>
+                      <ShowApolloError error={error} />
+                      <ChatIdContext.Provider value={router.query.id}>
+                        <ChatUI
+                          data={data}
+                          subscribeToMoreMessages={subscribeToMoreMessages}
+                        />
+                      </ChatIdContext.Provider>
+                    </React.Fragment>
+                  );
+                }}
+              </UserDetailsContext.Consumer>
+            </Layout>
+          );
+        }
+
+        return null;
+      }}
     </Query>
   );
 };

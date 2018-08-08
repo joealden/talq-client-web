@@ -24,6 +24,7 @@ interface ChatUIProps {
       messages: message[];
     };
   };
+  subscribeToMoreMessages: Function;
 }
 
 interface ChatUIState {
@@ -34,6 +35,10 @@ class ChatUI extends React.Component<ChatUIProps, ChatUIState> {
   state = {
     messageListRef: undefined as React.RefObject<HTMLUListElement>
   };
+
+  componentDidMount() {
+    this.props.subscribeToMoreMessages();
+  }
 
   componentDidUpdate() {
     this.scrollMessageListToBottom();

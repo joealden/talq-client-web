@@ -14,7 +14,7 @@
   - List of current members
     - Ability to add and remove users
 
-# Later
+## Later
 
 - Look at the following links for handling the scrolling of the chat page:
   - https://twitter.com/james_k_nelson/status/1024980685507973122
@@ -32,3 +32,8 @@
   - Would be useful to add becuase from the looks of things, it provides a 0C
     way to fetch the page data before it is sent to the user (Would be even more
     useful is the application server and the web server were on the same host).
+
+## Notes
+
+Subsciptions get completely borked by HMR updates when in dev mode. This will
+results in a network error from Apollo.
