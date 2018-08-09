@@ -1,5 +1,14 @@
 # TODO
 
+## Important Note
+
+Subsciptions get completely borked by HMR updates when in dev mode. This will
+results in a network error from Apollo. This is likely because HMR uses a
+WebSocket connection to provide the updates to the browser, and this is messing
+with the WebSocket connection that Apollo creates.
+
+## Now
+
 - Extract out common code in new chat components
 - Extract out Remove and Add buttons in friends lists
 - Extract out common code between new chat page and friends page (into root
@@ -32,8 +41,3 @@
   - Would be useful to add becuase from the looks of things, it provides a 0C
     way to fetch the page data before it is sent to the user (Would be even more
     useful is the application server and the web server were on the same host).
-
-## Notes
-
-Subsciptions get completely borked by HMR updates when in dev mode. This will
-results in a network error from Apollo.
