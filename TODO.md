@@ -9,22 +9,24 @@ with the WebSocket connection that Apollo creates.
 
 ## Now
 
+- Implement `overflow-wrap: break-word` in chat page correctly so continuous
+  words in messages that would be longer than 60% of the width of the container
+  break at 60% width.
+
+## Later
+
 - Extract out common code in new chat components
 - Extract out Remove and Add buttons in friends lists
 - Extract out common code between new chat page and friends page (into root
   `/utils` folder)
 - Update chatlist cache when sending a message from a chat page
 - Add GraphQL Subscriptions for:
-  - Chat messages
   - Chats in sidebar
 - Add more features to chat page
   - Will require modifying Layout component to accept arbitrary component
   - Button and popup to change chat title
   - List of current members
     - Ability to add and remove users
-
-## Later
-
 - Look at the following links for handling the scrolling of the chat page:
   - https://twitter.com/james_k_nelson/status/1024980685507973122
   - https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate
