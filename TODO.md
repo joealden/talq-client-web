@@ -9,9 +9,7 @@ with the WebSocket connection that Apollo creates.
 
 ## Now
 
-- Implement `overflow-wrap: break-word` in chat page correctly so continuous
-  words in messages that would be longer than 60% of the width of the container
-  break at 60% width.
+- Update chatlist cache when sending a message from a chat page
 
 ## Later
 
@@ -19,7 +17,6 @@ with the WebSocket connection that Apollo creates.
 - Extract out Remove and Add buttons in friends lists
 - Extract out common code between new chat page and friends page (into root
   `/utils` folder)
-- Update chatlist cache when sending a message from a chat page
 - Add GraphQL Subscriptions for:
   - Chats in sidebar
 - Add more features to chat page
