@@ -196,6 +196,7 @@ const messageStyles = css`
 
   p {
     padding: 6px 10px;
+    overflow-wrap: break-word;
   }
 `;
 
@@ -231,6 +232,7 @@ const MyMultipleMessage = styled.li`
         color: white;
         border-radius: 15px 4px 4px 15px;
         display: inline-block;
+        max-width: 100%;
       }
     }
 
@@ -297,6 +299,7 @@ const MembersMultipleMessage = styled.li`
         color: black;
         border-radius: 4px 15px 15px 4px;
         display: inline-block;
+        max-width: 100%;
       }
     }
 
