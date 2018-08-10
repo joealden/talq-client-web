@@ -14,6 +14,6 @@ const Sidebar = () => (
 export default Sidebar;
 
 const SidebarWrapper = styled.div`
-  grid-area: "sidebar";
+  grid-area: sidebar;
   height: 100%;
 `;

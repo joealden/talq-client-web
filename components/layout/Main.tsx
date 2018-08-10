@@ -30,7 +30,7 @@ const Main = ({ title, children }: MainProps) => (
 export default Main;
 
 const MainWrapper = styled.main`
-  grid-area: "main";
+  grid-area: main;
   background-color: white;
   border-left: ${constants.borderVertical};
 `;
