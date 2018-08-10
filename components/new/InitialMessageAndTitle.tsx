@@ -191,7 +191,8 @@ const InitialMessageBoxWrapper = styled.div`
   }
 
   button {
-    width: 125px;
+    width: 110px;
+    padding: 10px;
     background-color: white;
     color: ${constants.color};
     font-weight: normal;
