@@ -10,7 +10,7 @@ import NewChatIcon from "../icons/NewChatIcon";
  * TODO: Look into stopping auto scroll to top when settings / new-chat
  * is pressed. Already tried scroll={false} on links, doesn't work.
  */
-const Toolbar = () => (
+const Toolbar: React.SFC = () => (
   <ToolbarWrapper>
     <Link prefetch href="/settings">
       <a title="Settings">

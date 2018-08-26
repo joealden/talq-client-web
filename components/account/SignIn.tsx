@@ -14,6 +14,22 @@ const SIGNIN_MUTATION = gql`
   }
 `;
 
+interface SigninMutationData {
+  signin: {
+    username: string;
+  };
+}
+
+interface SigninMutationVariables {
+  username: string;
+  password: string;
+}
+
+class SigninMutation extends Mutation<
+  SigninMutationData,
+  SigninMutationVariables
+> {}
+
 export interface SignInState {
   username: string;
   password: string;
@@ -45,7 +61,7 @@ class SignIn extends React.Component<{}, SignInState> {
     const { username, password } = this.state;
 
     return (
-      <Mutation
+      <SigninMutation
         mutation={SIGNIN_MUTATION}
         variables={{
           username,
@@ -93,7 +109,7 @@ class SignIn extends React.Component<{}, SignInState> {
             </form>
           );
         }}
-      </Mutation>
+      </SigninMutation>
     );
   }
 }

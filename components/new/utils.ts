@@ -8,10 +8,6 @@ import constants from "../../utils/constants";
 
 /* ----------------------------- TYPES ----------------------------- */
 
-export interface user {
-  username: string;
-}
-
 export type removeMember = (usernameOfUserToRemove: string) => void;
 export type addMember = (usernameOfUserToAdd: string) => void;
 

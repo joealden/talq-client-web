@@ -1,10 +1,10 @@
 import React from "react";
-import { Mutation } from "react-apollo";
 
 import { UserDetailsContext } from "../layout";
 import ShowApolloError from "../ApolloError";
 import {
   REMOVE_FRIEND_MUTATION,
+  RemoveFriendMutation,
   updateCacheForFriendRemoval,
   user,
   RemoveButton
@@ -14,10 +14,12 @@ interface CurrentFriendsListItemProps {
   friend: user;
 }
 
-const CurrentFriendsListItem = ({ friend }: CurrentFriendsListItemProps) => (
+const CurrentFriendsListItem: React.SFC<CurrentFriendsListItemProps> = ({
+  friend
+}) => (
   <UserDetailsContext.Consumer>
     {({ username }) => (
-      <Mutation mutation={REMOVE_FRIEND_MUTATION}>
+      <RemoveFriendMutation mutation={REMOVE_FRIEND_MUTATION}>
         {(removeFriend, { loading, error }) => (
           <li>
             <ShowApolloError error={error} />
@@ -48,7 +50,7 @@ const CurrentFriendsListItem = ({ friend }: CurrentFriendsListItemProps) => (
             </RemoveButton>
           </li>
         )}
-      </Mutation>
+      </RemoveFriendMutation>
     )}
   </UserDetailsContext.Consumer>
 );

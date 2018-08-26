@@ -1,13 +1,18 @@
 import React from "react";
 
-import { user, removeMember, RemoveButton } from "./utils";
+import { removeMember, RemoveButton } from "./utils";
 
 interface MembersListItemProps {
-  member: user;
+  member: {
+    username: string;
+  };
   removeMember: removeMember;
 }
 
-const MembersListItem = ({ member, removeMember }: MembersListItemProps) => (
+const MembersListItem: React.SFC<MembersListItemProps> = ({
+  member,
+  removeMember
+}) => (
   <li>
     <div>{member.username}</div>
     <RemoveButton onClick={() => removeMember(member.username)}>

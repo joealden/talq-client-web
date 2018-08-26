@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
-import { user, removeMember, addMember, CenterDiv, ListWrapper } from "./utils";
+import { removeMember, addMember, CenterDiv, ListWrapper } from "./utils";
 import ShowApolloError from "../ApolloError";
 import SearchBox from "../SearchBox";
 import FriendsList from "./FriendsList";
@@ -17,8 +17,18 @@ const USER_FRIENDS_QUERY = gql`
   }
 `;
 
+interface UserFriendsQueryData {
+  user: {
+    friends: Array<{
+      username: string;
+    }>;
+  };
+}
+
+class UserFriendsQuery extends Query<UserFriendsQueryData> {}
+
 interface FriendsProps {
-  members: Array<user>;
+  members: Array<{ username: string }>;
   removeMember: removeMember;
   addMember: addMember;
 }
@@ -40,7 +50,7 @@ class Members extends React.Component<FriendsProps, FriendsState> {
     const { members, removeMember, addMember } = this.props;
 
     return (
-      <Query query={USER_FRIENDS_QUERY}>
+      <UserFriendsQuery query={USER_FRIENDS_QUERY}>
         {({ data, loading, error }) => {
           if (loading) return <p>Loading...</p>;
 
@@ -82,7 +92,7 @@ class Members extends React.Component<FriendsProps, FriendsState> {
 
           return null;
         }}
-      </Query>
+      </UserFriendsQuery>
     );
   }
 }

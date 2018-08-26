@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import * as R from "ramda";
 
-import { message } from "./ChatUI";
 import constants from "../../utils/constants";
 import { UserDetailsContext } from "../layout";
 
@@ -19,6 +18,14 @@ interface reducedMessage {
     username: string;
   };
   messages: singleReducedMessage[];
+}
+
+interface message {
+  id: string;
+  author: {
+    username: string;
+  };
+  content: string;
 }
 
 const messageReducer = (acc: any[], currentMessage: message) => {

@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import { user } from "./utils";
-
 import Layout from "../layout";
 import constants from "../../utils/constants";
 
@@ -11,7 +9,7 @@ import Friends from "./Friends";
 import InitalMessageAndTitle from "./InitialMessageAndTitle";
 
 interface NewChatState {
-  members: Array<user>;
+  members: Array<{ username: string }>;
 }
 
 class NewChat extends React.Component<{}, NewChatState> {

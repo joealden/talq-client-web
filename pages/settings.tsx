@@ -8,7 +8,7 @@ import Layout from "../components/layout";
 import SignOutButton from "../components/settings/SignOutButton";
 import constants from "../utils/constants";
 
-const SettingsPage = () => {
+const SettingsPage: React.SFC = () => {
   /* Makes sure client side routing checks for auth */
   if (typeof window !== "undefined" && !loggedIn()) {
     return <NotLoggedIn />;

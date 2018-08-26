@@ -7,6 +7,12 @@ import constants from "../../utils/constants";
 import ShowApolloError from "../ApolloError";
 import ChatListUI from "./ChatListUI";
 
+/**
+ * TODO:
+ * Alter return of chats query so that instead 'messages' with
+ * params, replace with mostRecentMessage of type message instead
+ * of [message] (also modify below interface to conform to this).
+ */
 export const CHAT_LIST_QUERY = gql`
   query {
     chats {
@@ -23,12 +29,28 @@ export const CHAT_LIST_QUERY = gql`
 `;
 
 /**
- * TODO: Figure out a way to type the data variable coming from the
- * Query render function in the same shape as the above query.
+ * NOTE:
+ * Messages is a tuple of length 1 because the query will always
+ * return an array with a length of 1 (The most recent message).
  */
-const ChatList = () => (
+export interface ChatListQueryData {
+  chats: Array<{
+    id: string;
+    title: string;
+    messages: Array<{
+      author: {
+        username: string;
+      };
+      content: string;
+    }>;
+  }>;
+}
+
+class ChatListQuery extends Query<ChatListQueryData> {}
+
+const ChatList: React.SFC = () => (
   <ChatListWrapper>
-    <Query query={CHAT_LIST_QUERY}>
+    <ChatListQuery query={CHAT_LIST_QUERY}>
       {({ data, error, loading }) => {
         if (error) return <ShowApolloError error={error} />;
         if (loading) return <CenterDiv>Loading...</CenterDiv>;
@@ -47,7 +69,7 @@ const ChatList = () => (
 
         return null;
       }}
-    </Query>
+    </ChatListQuery>
   </ChatListWrapper>
 );
 

@@ -7,7 +7,7 @@ interface ErrorMessageProps {
   error: ApolloError;
 }
 
-const ErrorMessage = ({ error }: ErrorMessageProps) => {
+const ErrorMessage: React.SFC<ErrorMessageProps> = ({ error }) => {
   if (!error || !error.message) return null;
 
   return (

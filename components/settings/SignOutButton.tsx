@@ -15,8 +15,16 @@ const SIGNOUT_MUTATION = gql`
   }
 `;
 
-const SignOutButton = () => (
-  <Mutation mutation={SIGNOUT_MUTATION}>
+interface SignoutMutationData {
+  signout: {
+    message: string;
+  };
+}
+
+class SignoutMutation extends Mutation<SignoutMutationData> {}
+
+const SignOutButton: React.SFC = () => (
+  <SignoutMutation mutation={SIGNOUT_MUTATION}>
     {(signOut, { loading, error, client }) => {
       return (
         <SignOutButtonWrapper>
@@ -48,7 +56,7 @@ const SignOutButton = () => (
         </SignOutButtonWrapper>
       );
     }}
-  </Mutation>
+  </SignoutMutation>
 );
 
 export default SignOutButton;

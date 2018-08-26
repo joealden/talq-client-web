@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Toolbar from "./Toolbar";
 import ChatList from "./ChatList";
 
-const Sidebar = () => (
+const Sidebar: React.SFC = () => (
   <SidebarWrapper>
     <Toolbar />
     <ChatList />

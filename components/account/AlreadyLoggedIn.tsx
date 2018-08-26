@@ -17,6 +17,14 @@ const USERNAME_QUERY = gql`
   }
 `;
 
+interface UsernameQueryData {
+  user: {
+    username: string;
+  };
+}
+
+class UsernameQuery extends Query<UsernameQueryData> {}
+
 /* TODO: Extract signout button into its own component */
 const SIGNOUT_MUTATION = gql`
   mutation SIGNOUT_MUTATION {
@@ -26,15 +34,23 @@ const SIGNOUT_MUTATION = gql`
   }
 `;
 
-const AlreadyLoggedIn = () => (
+interface SignoutMutationData {
+  signout: {
+    message: string;
+  };
+}
+
+class SignoutMutation extends Mutation<SignoutMutationData> {}
+
+const AlreadyLoggedIn: React.SFC = () => (
   <Main>
     <Wrapper>
       <AccountPageHeader />
       <InnerWrapper>
         <p>
           You are already logged in as:{" "}
-          <Query query={USERNAME_QUERY}>
-            {({ loading, data, error }) => {
+          <UsernameQuery query={USERNAME_QUERY}>
+            {({ loading, data: { user }, error }) => {
               if (loading) return <span>...</span>;
               if (error) {
                 return (
@@ -45,9 +61,9 @@ const AlreadyLoggedIn = () => (
                 );
               }
 
-              return <span>{data.user.username}</span>;
+              return <span>{user.username}</span>;
             }}
-          </Query>
+          </UsernameQuery>
         </p>
         <p>
           If you want to continue using this account, please click{" "}
@@ -57,7 +73,7 @@ const AlreadyLoggedIn = () => (
           to go the chat page.
         </p>
 
-        <Mutation mutation={SIGNOUT_MUTATION}>
+        <SignoutMutation mutation={SIGNOUT_MUTATION}>
           {(signOut, { loading, error, client }) => {
             return (
               <React.Fragment>
@@ -100,7 +116,7 @@ const AlreadyLoggedIn = () => (
               </React.Fragment>
             );
           }}
-        </Mutation>
+        </SignoutMutation>
       </InnerWrapper>
     </Wrapper>
   </Main>

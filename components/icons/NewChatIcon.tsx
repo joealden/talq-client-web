@@ -4,7 +4,7 @@ interface NewChatIconProps {
   className?: string;
 }
 
-const NewChatIcon = ({ className }: NewChatIconProps) => (
+const NewChatIcon: React.SFC<NewChatIconProps> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

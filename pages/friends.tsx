@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Query } from "react-apollo";
 
 import loggedIn from "../utils/loggedIn";
 import NotLoggedIn from "../components/account/NotLoggedIn";
@@ -10,16 +9,19 @@ import ShowApolloError from "../components/ApolloError";
 import CurrentFriends from "../components/friends/CurrentFriends";
 import AllUsers from "../components/friends/AllUsers";
 import constants from "../utils/constants";
-import { USER_FRIENDS_AND_ALL_USERS_QUERY } from "../components/friends/utils";
+import {
+  USER_FRIENDS_AND_ALL_USERS_QUERY,
+  UserFriendsAndAllUsersQuery
+} from "../components/friends/utils";
 
-const FriendsPage = () => {
+const FriendsPage: React.SFC = () => {
   /* Makes sure client side routing checks for auth */
   if (typeof window !== "undefined" && !loggedIn()) {
     return <NotLoggedIn />;
   }
 
   return (
-    <Query query={USER_FRIENDS_AND_ALL_USERS_QUERY}>
+    <UserFriendsAndAllUsersQuery query={USER_FRIENDS_AND_ALL_USERS_QUERY}>
       {({ data, loading, error }) => {
         if (loading) {
           return (
@@ -55,7 +57,7 @@ const FriendsPage = () => {
 
         return null;
       }}
-    </Query>
+    </UserFriendsAndAllUsersQuery>
   );
 };
 

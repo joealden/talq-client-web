@@ -1,19 +1,19 @@
 import React from "react";
 
-import { user, removeMember, NoMatches, StyledList } from "./utils";
+import { removeMember, NoMatches, StyledList } from "./utils";
 import MembersListItem from "./MembersListItem";
 
 interface MembersListProps {
-  members: Array<user>;
+  members: Array<{ username: string }>;
   searchTerm: string;
   removeMember: removeMember;
 }
 
-const MembersList = ({
+const MembersList: React.SFC<MembersListProps> = ({
   members,
   searchTerm,
   removeMember
-}: MembersListProps) => {
+}) => {
   const normalisedSearchTerm = searchTerm.toLowerCase();
 
   const filteredMembers = members.filter(member => {

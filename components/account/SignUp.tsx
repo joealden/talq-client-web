@@ -26,13 +26,31 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-export interface SignUpState {
+interface SignupMutationData {
+  signup: {
+    username: string;
+  };
+}
+
+interface SignupMutationVariables {
   email: string;
   username: string;
   firstName: string;
   lastName: string;
   password: string;
 }
+
+class SignupMutation extends Mutation<
+  SignupMutationData,
+  SignupMutationVariables
+> {}
+
+/**
+ * NOTE:
+ * Signup component state has the exact same structure as the
+ * mutation variables. This is why the type is aliased here.
+ */
+type SignUpState = SignupMutationVariables;
 
 class SignUp extends React.Component<{}, SignUpState> {
   state = {
@@ -66,7 +84,7 @@ class SignUp extends React.Component<{}, SignUpState> {
 
   render() {
     return (
-      <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
+      <SignupMutation mutation={SIGNUP_MUTATION} variables={this.state}>
         {(signUp, { loading, error }) => {
           return (
             <form
@@ -125,7 +143,7 @@ class SignUp extends React.Component<{}, SignUpState> {
             </form>
           );
         }}
-      </Mutation>
+      </SignupMutation>
     );
   }
 }

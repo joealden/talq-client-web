@@ -6,6 +6,8 @@ import Router from "next/router";
 import SearchBox from "../SearchBox";
 import { UserDetailsContext } from "../layout";
 
+import { ChatListQueryData } from "./ChatList";
+
 /**
  * TODO: Update cache for sidebar with latest message when user sends
  * a message (Or just wait for GraphQL Subscriptions to be added?).
@@ -17,18 +19,7 @@ import { UserDetailsContext } from "../layout";
  */
 
 interface ChatListUIProps {
-  data: {
-    chats: Array<{
-      id: string;
-      title: string;
-      messages: Array<{
-        author: {
-          username: string;
-        };
-        content: string;
-      }>;
-    }>;
-  };
+  data: ChatListQueryData;
 }
 
 /* TODO: Improve tying */

@@ -3,18 +3,14 @@ import styled from "styled-components";
 
 import constants from "../../utils/constants";
 
-export const AccountPageHeader = () => (
+export const AccountPageHeader: React.SFC = () => (
   <React.Fragment>
     <h1>Talq</h1>
     <h2>A Modern Communication Platform</h2>
   </React.Fragment>
 );
 
-interface AccountPageWrapperProps {
-  children: JSX.Element;
-}
-
-export const AccountPageWrapper = ({ children }: AccountPageWrapperProps) => (
+export const AccountPageWrapper: React.SFC = ({ children }) => (
   <Main>
     <AccountPageWrapperInternal>
       <AccountPageHeader />

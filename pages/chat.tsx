@@ -31,6 +31,26 @@ export const CHAT_PAGE_QUERY = gql`
   }
 `;
 
+export interface ChatPageQueryData {
+  chat: {
+    title: string;
+    members: Array<{ username: string }>;
+    messages: Array<{
+      id: string;
+      author: {
+        username: string;
+      };
+      content: string;
+    }>;
+  };
+}
+
+interface ChatPageQueryVariables {
+  chatId: string;
+}
+
+class ChatPageQuery extends Query<ChatPageQueryData, ChatPageQueryVariables> {}
+
 const CHAT_PAGE_SUBSCRIPTION = gql`
   subscription CHAT_PAGE_SUBSCRIPTION($chatId: ID!) {
     newChatMessage(chatId: $chatId) {
@@ -52,7 +72,7 @@ const FALLBACK_CHAT_PAGE_QUERY = gql`
   }
 `;
 
-const ChatPage = ({ router }: WithRouterProps) => {
+const ChatPage: React.SFC<WithRouterProps> = ({ router }) => {
   /* Makes sure client side routing checks for auth */
   if (typeof window !== "undefined" && !loggedIn()) {
     return <NotLoggedIn />;
@@ -91,7 +111,10 @@ const ChatPage = ({ router }: WithRouterProps) => {
   }
 
   return (
-    <Query query={CHAT_PAGE_QUERY} variables={{ chatId: router.query.id }}>
+    <ChatPageQuery
+      query={CHAT_PAGE_QUERY}
+      variables={{ chatId: String(router.query.id) }}
+    >
       {({ data, loading, error, subscribeToMore }) => {
         /**
          * Render data.chat.title if it exists, otherwise render default
@@ -120,7 +143,34 @@ const ChatPage = ({ router }: WithRouterProps) => {
                       updateQuery: (previous, { subscriptionData }) => {
                         if (!subscriptionData.data) return previous;
 
-                        const newMessage = subscriptionData.data.newChatMessage;
+                        /**
+                         * NOTE:
+                         * Currently, it seems as though apollo-client's
+                         * typings don't allow for fetchMore/subscribeToMore
+                         * to return data that has a diffrent structure to
+                         * the original query.
+                         *
+                         * This is an issue because it means that in this case,
+                         * apollo types subscriptionData.data incorrectly, even
+                         * though we have provided a different documentNode to
+                         * the subscribeToMore function. For this reason,
+                         * newMessage has to be manually typed.
+                         */
+
+                        // @ts-ignore
+                        const { data } = subscriptionData as {
+                          data: {
+                            newChatMessage: {
+                              id: string;
+                              author: {
+                                username: string;
+                              };
+                              content: string;
+                            };
+                          };
+                        };
+
+                        const { newChatMessage } = data;
 
                         /**
                          * TODO: Think about scenario where the same account
@@ -132,7 +182,8 @@ const ChatPage = ({ router }: WithRouterProps) => {
                          * other devices that are logged into the same account
                          * but didn't make the mutation.
                          */
-                        if (newMessage.author.username === username) {
+
+                        if (newChatMessage.author.username === username) {
                           return previous;
                         }
 
@@ -140,7 +191,10 @@ const ChatPage = ({ router }: WithRouterProps) => {
                           ...previous,
                           chat: {
                             ...previous.chat,
-                            messages: [...previous.chat.messages, newMessage]
+                            messages: [
+                              ...previous.chat.messages,
+                              newChatMessage
+                            ]
                           }
                         };
                       }
@@ -165,7 +219,7 @@ const ChatPage = ({ router }: WithRouterProps) => {
 
         return null;
       }}
-    </Query>
+    </ChatPageQuery>
   );
 };
 

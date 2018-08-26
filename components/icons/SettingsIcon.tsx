@@ -4,7 +4,7 @@ interface SettingsIconProps {
   className?: string;
 }
 
-const SettingsIcon = ({ className }: SettingsIconProps) => (
+const SettingsIcon: React.SFC<SettingsIconProps> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

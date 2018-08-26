@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 
 import { DataProxy } from "apollo-cache";
-import { FetchResult } from "react-apollo";
+import { Mutation, FetchResult, Query } from "react-apollo";
 
 import constants from "../../utils/constants";
 
@@ -45,6 +45,17 @@ export const USER_FRIENDS_AND_ALL_USERS_QUERY = gql`
   }
 `;
 
+interface UserFriendsAndAllUsersQueryData {
+  users: Array<{ username: string }>;
+  user: {
+    friends: Array<{ username: string }>;
+  };
+}
+
+export class UserFriendsAndAllUsersQuery extends Query<
+  UserFriendsAndAllUsersQueryData
+> {}
+
 /* ----------------------- ADD FRIEND MUTATION ----------------------- */
 
 export const ADD_FRIEND_MUTATION = gql`
@@ -54,6 +65,21 @@ export const ADD_FRIEND_MUTATION = gql`
     }
   }
 `;
+
+interface AddFriendMutationData {
+  addFriend: {
+    username: string;
+  };
+}
+
+interface AddFriendMutationVariables {
+  username: string;
+}
+
+export class AddFriendMutation extends Mutation<
+  AddFriendMutationData,
+  AddFriendMutationVariables
+> {}
 
 interface IUpdateCacheForFriendAddition {
   cache: DataProxy;
@@ -89,6 +115,21 @@ export const REMOVE_FRIEND_MUTATION = gql`
     }
   }
 `;
+
+interface RemoveFriendMutationData {
+  removeFriend: {
+    username: string;
+  };
+}
+
+interface RemoveFriendMutationVariables {
+  username: string;
+}
+
+export class RemoveFriendMutation extends Mutation<
+  RemoveFriendMutationData,
+  RemoveFriendMutationVariables
+> {}
 
 export interface IUpdateCacheForFriendRemoval {
   cache: DataProxy;

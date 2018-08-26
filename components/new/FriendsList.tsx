@@ -1,23 +1,23 @@
 import React from "react";
 
-import { user, removeMember, addMember, NoMatches, StyledList } from "./utils";
+import { removeMember, addMember, NoMatches, StyledList } from "./utils";
 import FriendsListItem from "./FriendsListItem";
 
 interface MembersListProps {
-  friends: Array<user>;
-  members: Array<user>;
+  friends: Array<{ username: string }>;
+  members: Array<{ username: string }>;
   searchTerm: string;
   removeMember: removeMember;
   addMember: addMember;
 }
 
-const FriendsList = ({
+const FriendsList: React.SFC<MembersListProps> = ({
   friends,
   members,
   searchTerm,
   removeMember,
   addMember
-}: MembersListProps) => {
+}) => {
   const normalisedSearchTerm = searchTerm.toLowerCase();
 
   const filteredFriends = friends.filter(friend => {

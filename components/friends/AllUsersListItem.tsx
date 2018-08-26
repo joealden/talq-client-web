@@ -1,12 +1,14 @@
 import React from "react";
-import { Mutation } from "react-apollo";
 
 import { UserDetailsContext } from "../layout";
 import ShowApolloError from "../ApolloError";
 
+/* TODO: Move documentNodes into utils file */
 import {
   ADD_FRIEND_MUTATION,
+  AddFriendMutation,
   REMOVE_FRIEND_MUTATION,
+  RemoveFriendMutation,
   updateCacheForFriendAddition,
   updateCacheForFriendRemoval,
   user,
@@ -19,7 +21,10 @@ interface AllUsersListItemProps {
   friends: Array<user>;
 }
 
-const AllUsersListItem = ({ user, friends }: AllUsersListItemProps) => (
+const AllUsersListItem: React.SFC<AllUsersListItemProps> = ({
+  user,
+  friends
+}) => (
   <UserDetailsContext.Consumer>
     {({ username }) => {
       /**
@@ -42,7 +47,7 @@ const AllUsersListItem = ({ user, friends }: AllUsersListItemProps) => (
 
       if (userIsAlreadyAFriend) {
         return (
-          <Mutation mutation={REMOVE_FRIEND_MUTATION}>
+          <RemoveFriendMutation mutation={REMOVE_FRIEND_MUTATION}>
             {(removeFriend, { loading, error }) => (
               <li>
                 <ShowApolloError error={error} />
@@ -73,12 +78,12 @@ const AllUsersListItem = ({ user, friends }: AllUsersListItemProps) => (
                 </RemoveButton>
               </li>
             )}
-          </Mutation>
+          </RemoveFriendMutation>
         );
       }
 
       return (
-        <Mutation mutation={ADD_FRIEND_MUTATION}>
+        <AddFriendMutation mutation={ADD_FRIEND_MUTATION}>
           {(addFriend, { loading, error }) => (
             <li>
               <ShowApolloError error={error} />
@@ -109,7 +114,7 @@ const AllUsersListItem = ({ user, friends }: AllUsersListItemProps) => (
               </AddButton>
             </li>
           )}
-        </Mutation>
+        </AddFriendMutation>
       );
     }}
   </UserDetailsContext.Consumer>

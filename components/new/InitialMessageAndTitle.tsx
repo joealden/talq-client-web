@@ -4,8 +4,6 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import Router from "next/router";
 
-import { user } from "./utils";
-
 import { UserDetailsContext } from "../layout";
 import ShowApolloError from "../ApolloError";
 import { CHAT_LIST_QUERY } from "../layout/ChatList";
@@ -27,8 +25,25 @@ const START_CHAT_MUTATION = gql`
   }
 `;
 
+interface StartChatMutationData {
+  startChat: {
+    id: string;
+  };
+}
+
+interface StartChatMutationVariables {
+  title: string;
+  usernames: string[];
+  initialMessage: string;
+}
+
+class StartChatMutation extends Mutation<
+  StartChatMutationData,
+  StartChatMutationVariables
+> {}
+
 interface InitialMessageBoxProps {
-  members: Array<user>;
+  members: Array<{ username: string }>;
 }
 
 interface InitialMessageBoxState {
@@ -58,7 +73,7 @@ class InitialMessageBox extends React.Component<
     const usernames = members.map(member => member.username);
 
     return (
-      <Mutation mutation={START_CHAT_MUTATION}>
+      <StartChatMutation mutation={START_CHAT_MUTATION}>
         {(startChat, { loading, error }) => {
           const initalMessageEmpty = this.state.message.trim() === "";
           const buttonDisabled =
@@ -148,7 +163,7 @@ class InitialMessageBox extends React.Component<
             </UserDetailsContext.Consumer>
           );
         }}
-      </Mutation>
+      </StartChatMutation>
     );
   }
 }

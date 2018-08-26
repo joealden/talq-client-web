@@ -4,26 +4,10 @@ import styled from "styled-components";
 import MessageList from "./MessageList";
 import CreateMessageBox from "./CreateMessageBox";
 
-interface user {
-  username: string;
-  firstName: string;
-  lastName: string;
-}
-
-export interface message {
-  id: string;
-  author: user;
-  content: string;
-}
+import { ChatPageQueryData } from "../../pages/chat";
 
 interface ChatUIProps {
-  data: {
-    chat: {
-      title: string;
-      members: user[];
-      messages: message[];
-    };
-  };
+  data: ChatPageQueryData;
   subscribeToMoreMessages: Function;
 }
 

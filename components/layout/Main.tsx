@@ -18,7 +18,7 @@ interface MainProps {
   children: JSX.Element;
 }
 
-const Main = ({ title, children }: MainProps) => (
+const Main: React.SFC<MainProps> = ({ title, children }) => (
   <MainWrapper>
     <TitleWrapper>
       <h1>{title}</h1>

@@ -8,10 +8,10 @@ interface CurrentFriendsListProps {
   searchTerm: string;
 }
 
-const CurrentFriendsList = ({
+const CurrentFriendsList: React.SFC<CurrentFriendsListProps> = ({
   friends,
   searchTerm
-}: CurrentFriendsListProps) => {
+}) => {
   const normalisedSearchTerm = searchTerm.toLowerCase();
 
   const filteredFriends = friends.filter(friend => {

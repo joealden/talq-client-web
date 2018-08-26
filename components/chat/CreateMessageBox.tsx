@@ -27,6 +27,22 @@ const SEND_MUTATION = gql`
   }
 `;
 
+interface SendMutationData {
+  sendMessageToChat: {
+    id: string;
+    author: {
+      username: string;
+    };
+  };
+}
+
+interface SendMutationVariables {
+  chatId: string;
+  content: string;
+}
+
+class SendMutation extends Mutation<SendMutationData, SendMutationVariables> {}
+
 interface CreateMessageBoxProps {
   scrollMessageListToBottom: Function;
 }
@@ -49,7 +65,7 @@ class CreateMessageBox extends React.Component<
 
   render() {
     return (
-      <Mutation mutation={SEND_MUTATION}>
+      <SendMutation mutation={SEND_MUTATION}>
         {(sendMessage, { loading, error }) => (
           <UserDetailsContext.Consumer>
             {({ username }) => (
@@ -186,7 +202,7 @@ class CreateMessageBox extends React.Component<
             )}
           </UserDetailsContext.Consumer>
         )}
-      </Mutation>
+      </SendMutation>
     );
   }
 }

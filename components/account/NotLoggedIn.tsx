@@ -5,7 +5,7 @@ import Link from "next/link";
 import constants from "../../utils/constants";
 import { AccountPageHeader } from "./account";
 
-const AlreadyLoggedIn = () => (
+const AlreadyLoggedIn: React.SFC = () => (
   <Main>
     <Wrapper>
       <AccountPageHeader />

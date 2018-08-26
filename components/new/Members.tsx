@@ -1,11 +1,11 @@
 import React from "react";
 
-import { user, removeMember, CenterDiv, ListWrapper } from "./utils";
+import { removeMember, CenterDiv, ListWrapper } from "./utils";
 import SearchBox from "../SearchBox";
 import MembersList from "./MembersList";
 
 interface MembersProps {
-  members: Array<user>;
+  members: Array<{ username: string }>;
   removeMember: removeMember;
 }
 

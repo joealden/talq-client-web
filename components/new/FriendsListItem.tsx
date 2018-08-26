@@ -1,26 +1,22 @@
 import React from "react";
 
-import {
-  user,
-  removeMember,
-  addMember,
-  RemoveButton,
-  AddButton
-} from "./utils";
+import { removeMember, addMember, RemoveButton, AddButton } from "./utils";
 
 interface FriendsListItemProps {
-  friend: user;
-  members: Array<user>;
+  friend: {
+    username: string;
+  };
+  members: Array<{ username: string }>;
   removeMember: removeMember;
   addMember: addMember;
 }
 
-const FriendsListItem = ({
+const FriendsListItem: React.SFC<FriendsListItemProps> = ({
   friend,
   members,
   removeMember,
   addMember
-}: FriendsListItemProps) => {
+}) => {
   const friendIsAlreadyAMember = members.some(
     member => member.username === friend.username
   );

@@ -9,7 +9,11 @@ interface AllUsersListProps {
   searchTerm: string;
 }
 
-const AllUsersList = ({ users, friends, searchTerm }: AllUsersListProps) => {
+const AllUsersList: React.SFC<AllUsersListProps> = ({
+  users,
+  friends,
+  searchTerm
+}) => {
   const normalisedSearchTerm = searchTerm.toLowerCase();
 
   const filteredUsers = users.filter(user => {

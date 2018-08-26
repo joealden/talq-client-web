@@ -17,13 +17,21 @@ const USER_QUERY = gql`
   }
 `;
 
+interface UserQueryData {
+  user: {
+    username: string;
+  };
+}
+
+class UserQuery extends Query<UserQueryData> {}
+
 interface LayoutProps {
   mainTitle: string;
   children: JSX.Element;
 }
 
-const Layout = ({ mainTitle, children }: LayoutProps) => (
-  <Query query={USER_QUERY}>
+const Layout: React.SFC<LayoutProps> = ({ mainTitle, children }) => (
+  <UserQuery query={USER_QUERY}>
     {({ data: { user }, loading, error }) => {
       /* TODO: Replace with spinner */
       if (!user || loading) return null;
@@ -38,7 +46,7 @@ const Layout = ({ mainTitle, children }: LayoutProps) => (
         </UserDetailsContext.Provider>
       );
     }}
-  </Query>
+  </UserQuery>
 );
 
 export default Layout;
