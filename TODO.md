@@ -9,7 +9,9 @@ with the WebSocket connection that Apollo creates.
 
 ## Now
 
-- Update chatlist cache when sending a message from a chat page
+- Add GraphQL Subscriptions for:
+  - Chats in sidebar
+  - Update chatlist cache when sending a message from a chat page
 
 ## Later
 
@@ -17,8 +19,6 @@ with the WebSocket connection that Apollo creates.
 - Extract out Remove and Add buttons in friends lists
 - Extract out common code between new chat page and friends page (into root
   `/utils` folder)
-- Add GraphQL Subscriptions for:
-  - Chats in sidebar
 - Add more features to chat page
   - Will require modifying Layout component to accept arbitrary component
   - Button and popup to change chat title
