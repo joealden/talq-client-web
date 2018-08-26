@@ -26,7 +26,8 @@ class AllUsers extends React.Component<AllUsersProps, AllUsersState> {
   render() {
     const { users, friends } = this.props;
 
-    if (users.length === 0) {
+    /* Users length will be 1 as the current user is included */
+    if (users.length === 1) {
       return (
         <CenterDiv>
           <p>You are the sole member of talq :(</p>
