@@ -6,6 +6,8 @@ import { Mutation } from "react-apollo";
 import { ChatIdContext } from "../../pages/chat";
 import { UserDetailsContext } from "../layout";
 import { CHAT_PAGE_QUERY } from "../../pages/chat";
+import { CHAT_LIST_QUERY } from "../layout/ChatList";
+
 import ShowApolloError from "../ApolloError";
 import constants from "../../utils/constants";
 
@@ -59,6 +61,96 @@ class CreateMessageBox extends React.Component<
     message: ""
   };
 
+  updateApolloCacheWithNewMessage = async ({
+    sendMessage,
+    chatId,
+    username
+  }: {
+    sendMessage: Function;
+    chatId: string;
+    username: string;
+  }) => {
+    const trimmedMessage = this.state.message.trim();
+
+    if (trimmedMessage === "") {
+      return;
+    }
+
+    await sendMessage({
+      variables: {
+        chatId,
+        content: this.state.message
+      },
+
+      update: (cache, { data: { sendMessageToChat } }) => {
+        /* ----- Update current chat cache ----- */
+
+        const { chat } = cache.readQuery({
+          query: CHAT_PAGE_QUERY,
+          variables: { chatId }
+        });
+
+        const newMessage = {
+          __typename: "Message",
+          id: sendMessageToChat.id,
+          author: sendMessageToChat.author,
+          content: trimmedMessage
+        };
+
+        chat.messages.push(newMessage);
+
+        cache.writeQuery({
+          query: CHAT_PAGE_QUERY,
+          variables: { chatId },
+          data: { chat }
+        });
+
+        /* ------ Update chat list cache ------ */
+
+        const { chats } = cache.readQuery({
+          query: CHAT_LIST_QUERY
+        });
+
+        const currentChat = chats.find(chat => chat.id === chatId);
+
+        const chatListWithoutCurrentChat = chats.filter(
+          chat => chat.id !== chatId
+        );
+
+        const currentChatWithNewMessage = {
+          ...currentChat,
+          messages: [...currentChat.messages, newMessage]
+        };
+
+        const updatedChatList = [
+          currentChatWithNewMessage,
+          ...chatListWithoutCurrentChat
+        ];
+
+        cache.writeQuery({
+          query: CHAT_LIST_QUERY,
+          data: { chats: updatedChatList }
+        });
+      },
+
+      optimisticResponse: {
+        __typename: "Mutation",
+        sendMessageToChat: {
+          __typename: "Message",
+          /* Placeholder ID value */
+          id: "0",
+          author: {
+            __typename: "PublicUser",
+            username: username
+          }
+        }
+      }
+    });
+
+    this.setState({ message: "" });
+    this.props.scrollMessageListToBottom();
+  };
+
   updateMessageState = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ message: event.target.value });
   };
@@ -78,60 +170,14 @@ class CreateMessageBox extends React.Component<
                       disabled={loading}
                       value={this.state.message}
                       onChange={this.updateMessageState}
-                      onKeyDown={async event => {
+                      onKeyDown={event => {
                         /* If key pressed is the enter key */
                         if (event.keyCode === 13) {
-                          const trimmedMessage = this.state.message.trim();
-
-                          if (trimmedMessage === "") {
-                            return;
-                          }
-
-                          await sendMessage({
-                            variables: {
-                              chatId,
-                              content: this.state.message
-                            },
-
-                            update: (
-                              cache,
-                              { data: { sendMessageToChat } }
-                            ) => {
-                              const { chat } = cache.readQuery({
-                                query: CHAT_PAGE_QUERY,
-                                variables: { chatId }
-                              });
-
-                              chat.messages.push({
-                                __typename: "Message",
-                                id: sendMessageToChat.id,
-                                author: sendMessageToChat.author,
-                                content: trimmedMessage
-                              });
-
-                              cache.writeQuery({
-                                query: CHAT_PAGE_QUERY,
-                                variables: { chatId },
-                                data: { chat }
-                              });
-                            },
-
-                            optimisticResponse: {
-                              __typename: "Mutation",
-                              sendMessageToChat: {
-                                /* Placeholder ID value */
-                                __typename: "Message",
-                                id: "0",
-                                author: {
-                                  __typename: "PublicUser",
-                                  username: username
-                                }
-                              }
-                            }
+                          this.updateApolloCacheWithNewMessage({
+                            sendMessage,
+                            chatId,
+                            username
                           });
-
-                          this.setState({ message: "" });
-                          this.props.scrollMessageListToBottom();
                         }
                       }}
                     />
@@ -143,55 +189,12 @@ class CreateMessageBox extends React.Component<
                           : null
                       }
                       disabled={this.state.message.trim() === "" || loading}
-                      onClick={async () => {
-                        const trimmedMessage = this.state.message.trim();
-
-                        if (trimmedMessage === "") {
-                          return;
-                        }
-
-                        await sendMessage({
-                          variables: {
-                            chatId,
-                            content: this.state.message
-                          },
-
-                          update: (cache, { data: { sendMessageToChat } }) => {
-                            const { chat } = cache.readQuery({
-                              query: CHAT_PAGE_QUERY,
-                              variables: { chatId }
-                            });
-
-                            chat.messages.push({
-                              __typename: "Message",
-                              id: sendMessageToChat.id,
-                              author: sendMessageToChat.author,
-                              content: trimmedMessage
-                            });
-
-                            cache.writeQuery({
-                              query: CHAT_PAGE_QUERY,
-                              variables: { chatId },
-                              data: { chat }
-                            });
-                          },
-
-                          optimisticResponse: {
-                            __typename: "Mutation",
-                            sendMessageToChat: {
-                              /* Placeholder ID value */
-                              __typename: "Message",
-                              id: "0",
-                              author: {
-                                __typename: "PublicUser",
-                                username: username
-                              }
-                            }
-                          }
+                      onClick={() => {
+                        this.updateApolloCacheWithNewMessage({
+                          sendMessage,
+                          chatId,
+                          username
                         });
-
-                        this.setState({ message: "" });
-                        this.props.scrollMessageListToBottom();
                       }}
                     >
                       Send
