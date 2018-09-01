@@ -9,9 +9,7 @@ with the WebSocket connection that Apollo creates.
 
 ## Now
 
-- Add GraphQL Subscriptions for:
-  - Chats in sidebar
-  - Update chatlist cache when sending a message from a chat page
+- Update chatlist cache when sending a message from a chat page
 
 ## Later
 

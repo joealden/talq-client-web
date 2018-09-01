@@ -48,10 +48,25 @@ export interface ChatListQueryData {
 
 class ChatListQuery extends Query<ChatListQueryData> {}
 
+const CHAT_LIST_SUBSCRIPTION = gql`
+  subscription CHAT_LIST_SUBSCRIPTION {
+    updatedChat {
+      id
+      title
+      messages(first: 1, orderBy: createdAt_DESC) {
+        author {
+          username
+        }
+        content
+      }
+    }
+  }
+`;
+
 const ChatList: React.SFC = () => (
   <ChatListWrapper>
     <ChatListQuery query={CHAT_LIST_QUERY}>
-      {({ data, error, loading }) => {
+      {({ data, error, loading, subscribeToMore }) => {
         if (error) return <ShowApolloError error={error} />;
         if (loading) return <CenterDiv>Loading...</CenterDiv>;
 
@@ -64,7 +79,66 @@ const ChatList: React.SFC = () => (
             );
           }
 
-          return <ChatListUI data={data} />;
+          const subscribeToChatUpdates = () =>
+            subscribeToMore({
+              document: CHAT_LIST_SUBSCRIPTION,
+              updateQuery: (previous, { subscriptionData }) => {
+                if (!subscriptionData.data) return previous;
+
+                /**
+                 * NOTE:
+                 * Currently, it seems as though apollo-client's
+                 * typings don't allow for fetchMore/subscribeToMore
+                 * to return data that has a diffrent structure to
+                 * the original query.
+                 *
+                 * This is an issue because it means that in this case,
+                 * apollo types subscriptionData.data incorrectly, even
+                 * though we have provided a different documentNode to
+                 * the subscribeToMore function. For this reason,
+                 * newMessage has to be manually typed.
+                 */
+
+                // @ts-ignore
+                const { data: subData } = subscriptionData as {
+                  data: {
+                    updatedChat: {
+                      id: string;
+                      title: string;
+                      messages: Array<{
+                        author: {
+                          username: string;
+                        };
+                        content: string;
+                      }>;
+                    };
+                  };
+                };
+
+                const { updatedChat } = subData;
+
+                /**
+                 * If the updatedChat already exists in the current list of
+                 * chats, that item will be filtered out.
+                 */
+                const chatListWithoutUpdatedChat = previous.chats.filter(
+                  chat => chat.id !== updatedChat.id
+                );
+
+                /* Prepend the updatedChat with the previous chat list */
+                return {
+                  ...previous,
+                  chats: [updatedChat, ...chatListWithoutUpdatedChat]
+                };
+              }
+            });
+
+          return (
+            <ChatListUI
+              data={data}
+              subscribeToChatUpdates={subscribeToChatUpdates}
+            />
+          );
         }
 
         return null;
