@@ -110,10 +110,58 @@ const ChatPage: React.SFC<WithRouterProps> = ({ router }) => {
     );
   }
 
+  /**
+   * NOTE:
+   * ChatPageQuery has a key prop so that when the user navigates
+   * to other chat, an entirely new component instance is created
+   * instead of the current instance just being updated. This means
+   * that all state contained at and below this point in the tree
+   * is cleared. Look at the following link for more information:
+   *
+   * https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
+   *
+   * The reason that this component needs to be recreated is because
+   * when a ChatUI component instance is created, a GraphQL subscription
+   * is set up in the componentDidMount lifecycle method. Unfortunately,
+   * as far as I can see, Apollo does not allow you to unsubscribe from
+   * a subscription (there is no 'unsubscribeToMore' counterpart to
+   * subscribeToMore).
+   *
+   * The issue that I was experiencing was that when a chat page loaded,
+   * a subscription would be set up. This worked as expected until the
+   * user navigated to another chat. At this point, the subscription for
+   * the previous chat was still active. This meant that if another member
+   * of the previous chat posted a message in the previous chat, it would
+   * appear in the newly opened chat.
+   *
+   * By using this key technique, when the previous chats component tree
+   * gets unmounted, the subscription socket gets disconnected.
+   */
   return (
     <ChatPageQuery
       query={CHAT_PAGE_QUERY}
+      /**
+       * TODO: This of a better way to solve the below issue, because
+       * with this fix, switching between chats is a lot slower because
+       * an API request is always made even when it might not be needed.
+       * This may be solved by instead setting up a central caching
+       * strategy, where all chats that are in the sidebar are subscribed
+       * to. When a new message is sent in any of these chats and that
+       * chat data has already been cached, append the new message. This
+       * will mean that cached chats will remain quick to access while
+       * fixing the stale cache issue.
+       *
+       * NOTE:
+       * fetch policy has been set to cache-and-network because when a
+       * user sent a message in a chat that the user was not currently on
+       * but was already cached, the new message would not appear in the
+       * another chat when the user revisited it because it was only
+       * showing the cached messages. Setting this to cache-and-network
+       * ensures that new messages will bypass the cache.
+       */
+      fetchPolicy={"cache-and-network"}
       variables={{ chatId: String(router.query.id) }}
+      key={String(router.query.id)}
     >
       {({ data, loading, error, subscribeToMore }) => {
         /**
