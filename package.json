@@ -1,6 +1,7 @@
 {
   "name": "talq-client-web",
   "description": "A communication platform built with React and GraphQL",
+  "author": "Joe Alden <me@joealden.com> (joealden.com)",
   "version": "0.1.0",
   "license": "MIT",
   "private": true,
