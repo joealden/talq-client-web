@@ -27,6 +27,8 @@ submit some PRs to update peer dep requirements for those packages).
 ## Now
 
 - Update chatlist cache when sending a message from a chat page
+  - LOCATE MESSAGE DUPLICATION BUG
+    - FIX
 
 ## Later
 
