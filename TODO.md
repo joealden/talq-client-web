@@ -9,21 +9,6 @@ results in a network error from Apollo. This is likely because HMR uses a
 WebSocket connection to provide the updates to the browser, and this is messing
 with the WebSocket connection that Apollo creates.
 
-### 2
-
-I have updated the `graphql` package to v14. It seems to work fine, however
-pulling deps in produces plenty of warnings about the following packages having
-peer deps of v0.13 max:
-
-- `apollo-link`
-- `apollo-link-http`
-- `graphql-tag`
-- `babel-plugin-graphql-tag`
-- `subscription-transport-ws`
-
-Monitor the peer dep requirements that these packages require (and potentially
-submit some PRs to update peer dep requirements for those packages).
-
 ## Now
 
 - Update chatlist cache when sending a message from a chat page
