@@ -8,17 +8,48 @@ import ShowApolloError from "../ApolloError";
 import ChatListUI from "./ChatListUI";
 
 /**
+ * NOTE:
+ *
+ * Unlike other queries that query for messages on a Chat type, this
+ * query does not have a connection directive attached to its messages
+ * field. The connection directive tells Apollo Client that queries
+ * with different parameters (in this case, messages(last: x)) that
+ * they are indeed the same data and can be safely treated as the same
+ * piece of data in the cache. This means that instead of different
+ * cache items for messages(last: 1) and messages(last: 50), then are
+ * both just 'messages'.
+ *
+ * For more information on the connection directive, visit the following link:
+ * https://www.apollographql.com/docs/react/advanced/caching.html#connection-directive
+ *
+ * The reason why this query does not have a connection directive is
+ * because as it stands, there is a race condition between this query
+ * and the query called `CHAT_PAGE_QUERY` located in `pages/chat.tsx`.
+ * This is because both queries query for some of the same data. The
+ * issue is that whatever query finishes last overwrites the data
+ * stored in the cache of the query that finshes first. In this case,
+ * it is common for `CHAT_PAGE_QUERY` to finish before `CHAT_LIST_QUERY`.
+ * This results in the messages fetched by `CHAT_PAGE_QUERY` being discarded.
+ * As a result, the chat page UI only shows the more recently sent message.
+ *
+ * By removing the connection directive, this issue is mitigated as instead
+ * of there being a single entry in the cache for a chats messages, there is
+ * two. This means that no matter what query returns first, there is no
+ * possiblity of the two queries conflicting and potentially overwriting each
+ * others data. Now, the issue is that there is two sets of identical data in
+ * the cache, which seems a bit hacky to me.
+ *
  * TODO:
- * Alter return of chats query so that instead 'messages' with
- * params, replace with mostRecentMessage of type message instead
- * of [message] (also modify below interface to conform to this).
+ * De-hackify the solution to the above problem.
  */
+
 export const CHAT_LIST_QUERY = gql`
-  query {
+  query CHAT_LIST_QUERY {
     chats {
       id
       title
-      messages(first: 1, orderBy: createdAt_DESC) {
+      messages(last: 1) {
+        id
         author {
           username
         }
@@ -53,7 +84,8 @@ const CHAT_LIST_SUBSCRIPTION = gql`
     updatedChat {
       id
       title
-      messages(first: 1, orderBy: createdAt_DESC) {
+      messages(last: 1) @connection(key: "messages") {
+        id
         author {
           username
         }

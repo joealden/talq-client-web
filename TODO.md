@@ -11,12 +11,15 @@ with the WebSocket connection that Apollo creates.
 
 ## Now
 
-- Update chatlist cache when sending a message from a chat page
-  - LOCATE MESSAGE DUPLICATION BUG
-    - FIX
+- Add now.json
+  - Add github hooks
+- Fix issue on chrome where after sending a message, focus is lost on input
+- Implement pagination
 
 ## Later
 
+- Figure out a way to duduplicate cache storage due to race condition. This is
+  explained more at the top of `components/layout/ChatList.tsx`.
 - Extract out common code in new chat components
 - Extract out Remove and Add buttons in friends lists
 - Extract out common code between new chat page and friends page (into root
@@ -34,8 +37,6 @@ with the WebSocket connection that Apollo creates.
 - Type component data props better
   - Implement Apollo CLI codegen workflow to automatically creates types for
     query and mutation responses
-- Add now.json
-  - Add github hooks
 - Look into https://github.com/lfades/next-with-apollo more
   - Had problem in \_app.js where apollo was not being accepted as a prop by
     TypeScript

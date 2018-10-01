@@ -14,7 +14,7 @@ import constants from "../../utils/constants";
 /**
  * TODO:
  * - Make message state change when navigating between chats
- * - Dedupe sendMessage mutation calls
+ *   - Restore message state when navigating back to same schat
  * - Work out updating cache if using GraphQL Subscriptons
  */
 
@@ -81,6 +81,12 @@ class CreateMessageBox extends React.Component<
         chatId,
         content: this.state.message
       },
+
+      /**
+       * NOTE:
+       * Read note at the top of `/components/layout/ChatList.tsx`
+       * for information on why there needs to be two cache updates.
+       */
 
       update: (cache, { data: { sendMessageToChat } }) => {
         /* ----- Update current chat cache ----- */

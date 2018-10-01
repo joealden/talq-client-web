@@ -8,7 +8,6 @@ import { ChatPageQueryData } from "../../pages/chat";
 
 interface ChatUIProps {
   data: ChatPageQueryData;
-  subscribeToMoreMessages: Function;
 }
 
 interface ChatUIState {
@@ -19,10 +18,6 @@ class ChatUI extends React.Component<ChatUIProps, ChatUIState> {
   state = {
     messageListRef: undefined as React.RefObject<HTMLUListElement>
   };
-
-  componentDidMount() {
-    this.props.subscribeToMoreMessages();
-  }
 
   componentDidUpdate() {
     this.scrollMessageListToBottom();
