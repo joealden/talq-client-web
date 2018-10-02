@@ -32,12 +32,12 @@ interface LayoutProps {
 
 const Layout: React.SFC<LayoutProps> = ({ mainTitle, children }) => (
   <UserQuery query={USER_QUERY}>
-    {({ data: { user }, loading, error }) => {
+    {({ data, loading, error }) => {
       /* TODO: Replace with spinner */
-      if (!user || loading) return null;
+      if (!data || loading) return null;
 
       return (
-        <UserDetailsContext.Provider value={user}>
+        <UserDetailsContext.Provider value={data.user}>
           <ShowApolloError error={error} />
           <Page>
             <Sidebar />
