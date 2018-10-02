@@ -11,9 +11,26 @@ with the WebSocket connection that Apollo creates.
 
 ## Now
 
-- Add now.json
-  - Add github hooks
+- Investigate duplication of messages that is happen in prod (try more in dev on
+  laptop)
+- Investigate the following issue:
+  - REPRODUCTION
+    - Two users are logged in
+    - The users are not friends
+    - One of the users adds the other as a friend
+    - The same user then creates a chat with this new friend
+  - ISSUE
+  - The user that did not create the chat does not get their chat list updated
+    with this new chat
 - Fix issue on chrome where after sending a message, focus is lost on input
+  (think it must be something to do with the disable behaviour in chrome)
+- Warning: `<title>` should not be used in `\_document.js's` `<Head>`.
+  https://err.sh/next.js/no-document-title
+- If loggedIn field is session storage is set to true, delete the entry if a
+  JWTToken error occurs (Happens when token cookie gets deleted manually by
+  user)
+- Better document development and production deployments of both client and API
+  including using seperate staging environments for the prisma service
 - Implement pagination
 
 ## Later

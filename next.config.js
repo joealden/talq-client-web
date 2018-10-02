@@ -1,10 +1,8 @@
 const withTypescript = require("@zeit/next-typescript");
-const nextRuntimeDotenv = require("next-runtime-dotenv");
 
-const withConfig = nextRuntimeDotenv({
-  path: ".env",
-  public: ["API_ENDPOINT", "API_SUBSCRIPTION_ENDPOINT"],
-  server: ["PORT"]
+module.exports = withTypescript({
+  publicRuntimeConfig: {
+    API_ENDPOINT: process.env.API_ENDPOINT,
+    API_SUBSCRIPTION_ENDPOINT: process.env.API_SUBSCRIPTION_ENDPOINT
+  }
 });
-
-module.exports = withConfig(withTypescript());

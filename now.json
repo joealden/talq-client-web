@@ -1,0 +1,15 @@
+{
+  "name": "talq",
+  "alias": "talq.joealden.com",
+  "scale": {
+    "bru1": {
+      "min": 1,
+      "max": 1
+    }
+  },
+  "env": {
+    "PORT": "3000",
+    "API_ENDPOINT": "https://talq-api.joealden.com",
+    "API_SUBSCRIPTION_ENDPOINT": "wss://talq-api.joealden.com"
+  }
+}
