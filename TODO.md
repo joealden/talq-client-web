@@ -31,10 +31,10 @@ with the WebSocket connection that Apollo creates.
   user)
 - Better document development and production deployments of both client and API
   including using seperate staging environments for the prisma service
-- Implement pagination
 
 ## Later
 
+- Implement pagination
 - Figure out a way to duduplicate cache storage due to race condition. This is
   explained more at the top of `components/layout/ChatList.tsx`.
 - Extract out common code in new chat components
