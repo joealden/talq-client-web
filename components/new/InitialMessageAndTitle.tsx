@@ -120,6 +120,11 @@ class InitialMessageBox extends React.Component<
                               query: CHAT_LIST_QUERY
                             });
 
+                            /**
+                             * TODO:
+                             * Add id to inital message to get rid of
+                             * warning in console when creating a new chat
+                             */
                             const newChat = {
                               __typename: "Chat",
                               id: newChatId,
