@@ -9,6 +9,13 @@ results in a network error from Apollo. This is likely because HMR uses a
 WebSocket connection to provide the updates to the browser, and this is messing
 with the WebSocket connection that Apollo creates.
 
+### 2
+
+Once Zeit has got back to me on twitter about the questions I have with upgrade
+to a paid plan, get a paid plan and reconfigure scaling (Min back to 0 probably
+during development). This will mean that the Now Github intergration will start
+working correctly.
+
 ## Now
 
 - Investigate duplication of messages that is happen in prod (try more in dev on
