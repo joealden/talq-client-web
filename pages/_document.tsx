@@ -16,7 +16,10 @@ export default class MyDocument extends Document {
       <html>
         <Head>
           <title>Talq</title>
-          {this.props.styleTags}
+          {
+            //@ts-ignore
+            this.props.styleTags
+          }
         </Head>
         <body>
           <Main />
