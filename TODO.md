@@ -27,14 +27,12 @@ iterated over).
   - ISSUE
   - The user that did not create the chat does not get their chat list updated
     with this new chat
-- Fix issue on chrome where after sending a message, focus is lost on input
-  (think it must be something to do with the disable behaviour in chrome)
-- Better document development and production deployments of both client and API
-  including using seperate staging environments for the prisma service
 
 ## Later
 
 - Implement pagination
+- Better document development and production deployments of both client and API
+  including using seperate staging environments for the prisma service
 - Figure out a way to duduplicate cache storage due to race condition. This is
   explained more at the top of `components/layout/ChatList.tsx`.
 - Extract out common code in new chat components
