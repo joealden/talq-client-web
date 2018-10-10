@@ -161,6 +161,20 @@ class CreateMessageBox extends React.Component<
     this.setState({ message: event.target.value });
   };
 
+  /**
+   * In chrome (and I'm guessing in other chrome based browsers such
+   * as opera), when an textarea gets disabled that had focus, then gets
+   * enabled again, the focus is lost, and focus is returned to the pages
+   * <body /> element. This is not an issue in firefox, focus is correctly
+   * kept on the textarea when it is enabled again. Because of this issue
+   * with chrome, focus needs to be regained by the textarea manually.
+   *
+   * A ref is used to do this because you cannot get a reference to the
+   * current element inside of the `onKeyDown` event. If this was possible,
+   * a ref wouldn't be needed.
+   */
+  textAreaRef = React.createRef<HTMLTextAreaElement>();
+
   render() {
     return (
       <SendMutation mutation={SEND_MUTATION}>
@@ -176,14 +190,39 @@ class CreateMessageBox extends React.Component<
                       disabled={loading}
                       value={this.state.message}
                       onChange={this.updateMessageState}
-                      onKeyDown={event => {
+                      ref={this.textAreaRef}
+                      onKeyDown={async event => {
                         /* If key pressed is the enter key */
                         if (event.keyCode === 13) {
-                          this.updateApolloCacheWithNewMessage({
+                          /* Stops onChange from triggering */
+                          event.preventDefault();
+
+                          await this.updateApolloCacheWithNewMessage({
                             sendMessage,
                             chatId,
                             username
                           });
+
+                          /**
+                           * Please read the comment located at the
+                           * ref's declaration for why this is required.
+                           *
+                           * To keep the modified focus behaviour as close
+                           * to the behaviour found in firefox (and for
+                           * a11y reasons), a check is first made to see
+                           * if the user has manually focused another
+                           * element. In chrome, the behaviour is to focus
+                           * the body element when the textarea gets
+                           * disabled. So, if for example the user focuses
+                           * another text box or a button, the focus on
+                           * that element will not be lost. If however the
+                           * focus is on the body element, the focus will
+                           * be given to the textarea, mimicing the firefox
+                           * focus behaviour.
+                           */
+                          if (document.activeElement.nodeName === "BODY") {
+                            this.textAreaRef.current.focus();
+                          }
                         }
                       }}
                     />
