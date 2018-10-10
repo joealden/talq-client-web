@@ -2,6 +2,7 @@ import React from "react";
 import App, { Container } from "next/app";
 import { injectGlobal } from "styled-components";
 import { ApolloProvider } from "react-apollo";
+import Head from "next/head";
 
 import client from "../utils/apolloClient";
 
@@ -48,6 +49,9 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <Container>
+        <Head>
+          <title>Talq</title>
+        </Head>
         <ApolloProvider client={client}>
           <Component {...pageProps} />
         </ApolloProvider>

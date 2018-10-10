@@ -38,8 +38,6 @@ iterated over).
     with this new chat
 - Fix issue on chrome where after sending a message, focus is lost on input
   (think it must be something to do with the disable behaviour in chrome)
-- Warning: `<title>` should not be used in `\_document.js's` `<Head>`.
-  https://err.sh/next.js/no-document-title
 - If loggedIn field is session storage is set to true, delete the entry if a
   JWTToken error occurs (Happens when token cookie gets deleted manually by
   user)
