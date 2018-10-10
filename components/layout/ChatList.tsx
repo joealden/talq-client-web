@@ -100,17 +100,9 @@ const ChatList: React.SFC = () => (
     <ChatListQuery query={CHAT_LIST_QUERY}>
       {({ data, error, loading, subscribeToMore }) => {
         if (error) return <ShowApolloError error={error} />;
-        if (loading) return <CenterDiv>Loading...</CenterDiv>;
+        if (loading || !data) return <CenterDiv>Loading...</CenterDiv>;
 
         if (data.chats) {
-          if (data.chats.length === 0) {
-            return (
-              <CenterDiv>
-                <p>Chat list is empty.</p>
-              </CenterDiv>
-            );
-          }
-
           const subscribeToChatUpdates = () =>
             subscribeToMore({
               document: CHAT_LIST_SUBSCRIPTION,
