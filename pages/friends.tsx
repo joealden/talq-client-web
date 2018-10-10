@@ -21,7 +21,17 @@ const FriendsPage: React.SFC = () => {
   }
 
   return (
-    <UserFriendsAndAllUsersQuery query={USER_FRIENDS_AND_ALL_USERS_QUERY}>
+    <UserFriendsAndAllUsersQuery
+      query={USER_FRIENDS_AND_ALL_USERS_QUERY}
+      /**
+       * So that users created after list has been cached
+       * are shown. Note that "cache-and-network" first
+       * shows the cache results, then makes a network
+       * request and updates the cache and the dependent
+       * views.
+       */
+      fetchPolicy="cache-and-network"
+    >
       {({ data, loading, error }) => {
         if (loading) {
           return (
