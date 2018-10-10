@@ -47,6 +47,45 @@ const messageReducer = (acc: any[], currentMessage: message) => {
     ];
   }
 
+  /**
+   * NOTE:
+   *
+   * Dirty hack to get around Apollo cache rollback issue.
+   * For some reason, I think it has something to do with the @connection
+   * directives, on slow internet connections, the cache does not
+   * rollback properly, which in turn results in the sent message being
+   * displayed twice.
+   *
+   * The following implementation does not work:
+   *
+   * `if (R.last(acc).id === currentMessage.id) return acc;`
+   *
+   * This is because there could potentially be a race condition where if
+   * another member of the chat sends a message near the same time as the
+   * user sends a message, the other members message could be added to
+   * list before the user gets a response from the server about their own
+   * message. If this happened, the message would still be duplicated.
+   * This is because using the above implementation, only sequential
+   * messages in the list are checked to have the same id. In the
+   * explained case, it means that the messages are not seqential.
+   *
+   * To get around this issue, we instead check the whole message list to
+   * see if any messages have the same id as the message we are about to
+   * add.
+   *
+   * This works fine, but it may incur a signifcant performance penalty
+   * as everytime a new message is recieved, the whole message list needs
+   * to be iterated over using the `some` array method.
+   *
+   * If this does become a performance issue, the best solution would be
+   * to figure out why the cache rollback issue is happening and fix it.
+   * This would mean that this check would not need to be made. Note that
+   * I have already tried quite hard to locate the cause of the issue
+   * with no success.
+   */
+
+  if (acc.some(message => message.id === currentMessage.id)) return acc;
+
   /* If the current message has the same author as the previous */
   const previousMessageUsername = R.last(acc).author.username;
   const currentMessageUsername = currentMessage.author.username;

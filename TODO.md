@@ -11,15 +11,22 @@ with the WebSocket connection that Apollo creates.
 
 ### 2
 
-Once Zeit has got back to me on twitter about the questions I have with upgrade
-to a paid plan, get a paid plan and reconfigure scaling (Min back to 0 probably
-during development). This will mean that the Now Github intergration will start
-working correctly.
+The message duplication issue that was happening on slow network connections has
+been mitigated, however it was it a rather hacky fashion. The issue was that for
+some reason, the cache was not getting correctly rolled back, causing the
+optimistic response version of the message to remain when the client got a
+response from the server. I believe the cause of the issue lies somewhere in the
+implementation of Apollo cache, possibly something to do with the `@connection`
+directive. The issue was mitigated by performing a check in the `messageReducer`
+found in `/components/chat/MessageList.tsx` to ensure that no messages in the
+list have the same message id. While this means that the user no longer sees the
+issue, the duplicated messages still exist in the apollo cache, we are just
+ignoring them. As noted in the reducer, a better solution should be found as the
+check may cause performance issues (as the whole message array has to be
+iterated over).
 
 ## Now
 
-- Investigate duplication of messages that is happen in prod (try more in dev on
-  laptop)
 - Investigate the following issue:
   - REPRODUCTION
     - Two users are logged in
