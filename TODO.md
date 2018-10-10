@@ -1,15 +1,6 @@
 # TODO
 
-## Notes
-
-### 1
-
-Subsciptions get completely borked by HMR updates when in dev mode. This will
-results in a network error from Apollo. This is likely because HMR uses a
-WebSocket connection to provide the updates to the browser, and this is messing
-with the WebSocket connection that Apollo creates.
-
-### 2
+## Note
 
 The message duplication issue that was happening on slow network connections has
 been mitigated, however it was it a rather hacky fashion. The issue was that for
@@ -38,9 +29,6 @@ iterated over).
     with this new chat
 - Fix issue on chrome where after sending a message, focus is lost on input
   (think it must be something to do with the disable behaviour in chrome)
-- If loggedIn field is session storage is set to true, delete the entry if a
-  JWTToken error occurs (Happens when token cookie gets deleted manually by
-  user)
 - Better document development and production deployments of both client and API
   including using seperate staging environments for the prisma service
 

@@ -10,6 +10,7 @@
   "env": {
     "PORT": "3000",
     "API_ENDPOINT": "https://talq-api.joealden.com",
-    "API_SUBSCRIPTION_ENDPOINT": "wss://talq-api.joealden.com"
+    "API_SUBSCRIPTION_ENDPOINT": "wss://talq-api.joealden.com",
+    "LOG_APOLLO_ERRORS": "false"
   }
 }
