@@ -65,9 +65,9 @@ const AllUsersListItem: React.SFC<AllUsersListItemProps> = ({
                         });
                       },
                       optimisticResponse: {
-                        //@ts-ignore
                         __typename: "Mutation",
                         removeFriend: {
+                          //@ts-ignore
                           __typename: "User",
                           username
                         }
@@ -102,9 +102,9 @@ const AllUsersListItem: React.SFC<AllUsersListItemProps> = ({
                       });
                     },
                     optimisticResponse: {
-                      //@ts-ignore
                       __typename: "Mutation",
                       addFriend: {
+                        //@ts-ignore
                         __typename: "User",
                         username
                       }

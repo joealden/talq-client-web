@@ -18,6 +18,7 @@ iterated over).
 
 ## Now
 
+- Update React types from React.SFC to React.FunctionComponent
 - Investigate the following issue:
   - REPRODUCTION
     - Two users are logged in

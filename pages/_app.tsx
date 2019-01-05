@@ -1,12 +1,12 @@
 import React from "react";
 import App, { Container } from "next/app";
-import { injectGlobal } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import { ApolloProvider } from "react-apollo";
 import Head from "next/head";
 
 import client from "../utils/apolloClient";
 
-injectGlobal`
+const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto');
 
   * {
@@ -54,6 +54,7 @@ export default class MyApp extends App {
         </Head>
         <ApolloProvider client={client}>
           <Component {...pageProps} />
+          <GlobalStyles />
         </ApolloProvider>
       </Container>
     );

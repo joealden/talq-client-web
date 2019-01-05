@@ -37,9 +37,9 @@ const CurrentFriendsListItem: React.SFC<CurrentFriendsListItemProps> = ({
                     });
                   },
                   optimisticResponse: {
-                    //@ts-ignore
                     __typename: "Mutation",
                     removeFriend: {
+                      //@ts-ignore
                       __typename: "User",
                       username
                     }

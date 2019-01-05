@@ -5,7 +5,7 @@ interface SearchBoxProps {
   boxHeight?: number /* Defaults to 36(px) */;
 }
 
-const SearchBox = styled<SearchBoxProps, "input">("input")`
+const SearchBox = styled("input")<SearchBoxProps>`
   margin: ${({ boxMargin }) => (boxMargin ? boxMargin : 0)}px;
   width: calc(100% - ${({ boxMargin }) => (boxMargin ? boxMargin * 2 : 0)}px);
   height: ${({ boxHeight }) => (boxHeight ? boxHeight : 36)}px;
