@@ -17,7 +17,9 @@ const Toolbar: React.SFC = () => (
         <StyledSettingsIcon />
       </a>
     </Link>
-    <h1>Talq</h1>
+    <LogoWrapper>
+      <img src="/static/talq-icon.svg" alt="Talq logo" />
+    </LogoWrapper>
     <Link prefetch href="/new">
       <a title="Create a new chat">
         <StyledNewChatIcon />
@@ -43,10 +45,15 @@ const ToolbarWrapper = styled.div`
     justify-content: center;
     align-items: center;
   }
+`;
 
-  h1 {
-    font-size: 17px;
-    font-weight: normal;
+const LogoWrapper = styled.div`
+  display: flex;
+  user-select: none;
+
+  img {
+    width: 50px;
+    margin-bottom: -6px;
   }
 `;
 

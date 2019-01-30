@@ -5,10 +5,21 @@ import constants from "../../utils/constants";
 
 export const AccountPageHeader: React.SFC = () => (
   <React.Fragment>
-    <h1>Talq</h1>
+    <LogoWrapper>
+      <img src="/static/talq-icon.svg" alt="Talq Logo" />
+    </LogoWrapper>
     <h2>A Modern Communication Platform</h2>
   </React.Fragment>
 );
+
+const LogoWrapper = styled.div`
+  margin-bottom: 20px;
+  user-select: none;
+
+  img {
+    width: 200px;
+  }
+`;
 
 export const AccountPageWrapper: React.SFC = ({ children }) => (
   <Main>
