@@ -14,7 +14,7 @@ of the project with the following environment variables:
 * `API_ENDPOINT` (String) - The regular HTTP endpoint for Talq's API.
 * `API_SUBSCRIPTION_ENDPOINT` (String) - The WebSocket subscription endpoint for Talq's API.
 * `LOG_APOLLO_ERRORS` (Boolean) - Controls if Apollo errors should be logged.
-* `PORT` (String) - The port to run the development server on.
+* `PORT` (Number) - The port to run the development server on.
 
 An example `.env` file can be found at `.env.example`.
 
